@@ -14,4 +14,10 @@ class Project < ApplicationRecord
   has_one :api_keys, dependent: :destroy
 
   validates :name, presence: true
+
+  before_save :titleize_name
+
+  def titleize_name
+    self.name = name.titleize
+  end
 end

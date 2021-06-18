@@ -6,8 +6,8 @@ class ProjectsController < ApplicationController
   def show
     @events = Event
               .where(
-                project_id: params[:id],
-                name: params[:event].tr!('_', ' ').titleize,
+                project: Project.find_by!(name: parse_project_name(params[:project_slug])),
+                name: params[:event].tr('-', ' ').titleize,
                 staging: params[:staging] == 'true'
               )
               .group("date_trunc('day', created_at)::date").count.sort.to_h
@@ -18,5 +18,11 @@ class ProjectsController < ApplicationController
   def create
     project = Project.create!(name: params[:name])
     ApiKey.create!(project: project)
+  end
+
+  private
+
+  def parse_project_name(project_name)
+    project_name.tr('-', ' ').titleize
   end
 end

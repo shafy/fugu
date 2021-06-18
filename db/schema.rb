@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_17_235020) do
+ActiveRecord::Schema.define(version: 2021_06_18_081647) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 2021_06_17_235020) do
     t.bigint "project_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["key_value"], name: "index_api_keys_on_key_value", unique: true
     t.index ["project_id"], name: "index_api_keys_on_project_id"
   end
 

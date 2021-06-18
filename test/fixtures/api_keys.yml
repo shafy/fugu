@@ -10,6 +10,7 @@
 #
 # Indexes
 #
+#  index_api_keys_on_key_value   (key_value) UNIQUE
 #  index_api_keys_on_project_id  (project_id)
 #
 # Foreign Keys

@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :projects
+  get ':username/:project_slug', to: 'projects#show', as: :project
 
   namespace :api do
     namespace :v1 do
