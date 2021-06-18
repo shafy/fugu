@@ -1,0 +1,9 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+
+
+a {
+  @apply underline
+}
+
+@import "tailwindcss/utilities";
