@@ -8,12 +8,12 @@ class ProjectsController < ApplicationController
     api_key = if params[:test] == 'true'
                 project.api_key_test
               else
-                project.api_key
+                project.api_key_live
               end
     @events = Event
               .where(
                 api_key: api_key,
-                name: params[:event].tr('-', ' ').titleize,
+                name: params[:event].tr('-', ' ').titleize
               )
               .group("date_trunc('day', created_at)::date").count.sort.to_h
 

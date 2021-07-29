@@ -27,7 +27,7 @@ class Project < ApplicationRecord
     ApiKey.create(project: self, test: true)
   end
 
-  def api_key
+  def api_key_live
     api_keys.find_by(test: false)
   end
 

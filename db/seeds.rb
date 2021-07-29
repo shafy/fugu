@@ -25,7 +25,7 @@ random_times = [
 for i in 0..50
    event = Event.create!({
     name: 'Visited Page 1',
-    api_key: [project.api_key, project.api_key_test].sample,
+    api_key: [project.api_key_live, project.api_key_test].sample,
     properties: {
       favorite_animal: 'Donkey',
       type: 'Early user'
@@ -37,7 +37,7 @@ end
 for i in 0..40
    event = Event.create!({
     name: 'Visited Page 2',
-    api_key: [project.api_key, project.api_key_test].sample,
+    api_key: [project.api_key_live, project.api_key_test].sample,
     properties: {
       favorite_animal: 'Donkey',
       type: 'Early user'
@@ -50,7 +50,7 @@ end
 for i in 0..30
    event = Event.create!({
     name: 'Visited Page 3',
-    api_key: [project.api_key, project.api_key_test].sample,
+    api_key: [project.api_key_live, project.api_key_test].sample,
     properties: {
       favorite_animal: 'Donkey',
       type: 'Early user'
