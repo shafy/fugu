@@ -1,19 +1,19 @@
 <% content_for :main do %>
   <div class="p-4">
     <% unless @event_names.empty? %>
-      <h1 class="text-xl mb-4">Your fucking data for the event <%= params[:event].tr('-', ' ').titleize %></h1>
-      <% if params[:staging] == 'true' %>
+      <h1 class="text-xl mb-4">Your fucking data for the event <%= @selected_event.tr('-', ' ').titleize %></h1>
+      <% if params[:test] == 'true' %>
         (staging mode)
       <% end %>
       <div class="flex flex-row w-full">
         <div class="p-4">
           <% @event_names.each do |event_name| %>
             <div class="">
-              <%= link_to event_name, project_path(params[:username], params[:project_slug], event: event_name.tr(' ', '-').downcase, staging: params[:staging]) %>
+              <%= link_to event_name, project_path(params[:username], params[:project_slug], event: event_name.tr(' ', '-').downcase, test: params[:test]) %>
             </div>
           <% end %>
         </div>
-        <div data-controller="chart" data-chart-events-value="<%= @events.to_json %>" data-chart-event-name-value="<%= params[:event].titleize %>" class="p-4 w-1/2">
+        <div data-controller="chart" data-chart-events-value="<%= @events.to_json %>" data-chart-event-name-value="<%= @selected_event.titleize %>" class="p-4 w-1/2">
           <canvas data-chart-target="chart"></canvas>
         </div>
       </div>

@@ -16,12 +16,13 @@ class ProjectsController < ApplicationController
               end
 
     @event_names = Event.where(api_key: api_key).order(name: :asc).distinct.pluck(:name)
+    set_selected_event
 
     @events = unless @event_names.empty?
                 Event
                   .where(
                     api_key: api_key,
-                    name: event_name_from_param
+                    name: @selected_event
                   )
                   .group("date_trunc('day', created_at)::date").count.sort.to_h
               end
@@ -37,11 +38,11 @@ class ProjectsController < ApplicationController
     params[:project_slug].tr('-', ' ').titleize
   end
 
-  def event_name_from_param
-    if params[:event]
-      params[:event].tr('-', ' ').titleize
-    else
-      @event_names.first
-    end
+  def set_selected_event
+    @selected_event = if params[:event]
+                        params[:event].tr('-', ' ').titleize
+                      else
+                        @event_names.first
+                      end
   end
 end
