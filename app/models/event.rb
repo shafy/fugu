@@ -25,23 +25,17 @@ class Event < ApplicationRecord
   validates :name, presence: true
   validate :properties_is_json
 
-  before_save :format_properties
-
   private
 
   def properties_is_json
-    return if properties.empty? || properties.is_a?(Hash)
+    return if properties.empty?
+
+    return errors.add(:properties, 'must be valid JSON') unless properties.is_a?(String)
 
     begin
       JSON.parse(properties)
     rescue StandardError
       errors.add(:properties, 'must be valid JSON')
     end
-  end
-
-  def format_properties
-    return unless properties.is_a?(String)
-
-    self.properties = JSON.parse(properties)
   end
 end
