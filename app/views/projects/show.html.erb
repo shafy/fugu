@@ -3,7 +3,7 @@
     <% unless @event_names.empty? %>
       <h1 class="text-xl mb-4">Your fucking data for the event <%= @selected_event.tr('-', ' ').titleize %></h1>
       <% if params[:test] == 'true' %>
-        (staging mode)
+        (test mode)
       <% end %>
       <div class="flex flex-row w-full">
         <div class="p-4">
