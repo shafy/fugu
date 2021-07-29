@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_18_081647) do
+ActiveRecord::Schema.define(version: 2021_07_29_145810) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 2021_06_18_081647) do
     t.bigint "project_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "test", default: false
     t.index ["key_value"], name: "index_api_keys_on_key_value", unique: true
     t.index ["project_id"], name: "index_api_keys_on_project_id"
   end
@@ -29,9 +30,8 @@ ActiveRecord::Schema.define(version: 2021_06_18_081647) do
     t.json "properties"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "project_id", null: false
-    t.boolean "staging", default: false
-    t.index ["project_id"], name: "index_events_on_project_id"
+    t.bigint "api_key_id", null: false
+    t.index ["api_key_id"], name: "index_events_on_api_key_id"
   end
 
   create_table "projects", force: :cascade do |t|
@@ -41,5 +41,5 @@ ActiveRecord::Schema.define(version: 2021_06_18_081647) do
   end
 
   add_foreign_key "api_keys", "projects"
-  add_foreign_key "events", "projects"
+  add_foreign_key "events", "api_keys"
 end

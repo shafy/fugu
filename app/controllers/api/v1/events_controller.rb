@@ -8,8 +8,7 @@ class Api::V1::EventsController < Api::ApiController
 
     event = Event.create(
       name: name_titleized,
-      project: api_key.project,
-      staging: params[:staging] == true,
+      api_key: api_key,
       properties: params[:properties]
     )
 

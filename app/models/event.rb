@@ -7,21 +7,20 @@
 #  id         :bigint           not null, primary key
 #  name       :string           not null
 #  properties :json
-#  staging    :boolean          default(FALSE)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  project_id :bigint           not null
+#  api_key_id :bigint           not null
 #
 # Indexes
 #
-#  index_events_on_project_id  (project_id)
+#  index_events_on_api_key_id  (api_key_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (project_id => projects.id)
+#  fk_rails_...  (api_key_id => api_keys.id)
 #
 class Event < ApplicationRecord
-  belongs_to :project, validate: true
- 
+  belongs_to :api_key, validate: true
+  
   validates :name, presence: true
 end

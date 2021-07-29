@@ -11,8 +11,6 @@
 
 project = Project.create(name: "Fun Project")
 
-ApiKey.create(project: project)
-
 random_times = [
   1.hour.ago,
   1.day.ago,
@@ -27,8 +25,7 @@ random_times = [
 for i in 0..50
    event = Event.create!({
     name: 'Visited Page 1',
-    project: project,
-    staging: [true, false].sample,
+    api_key: [project.api_key, project.api_key_test].sample,
     properties: {
       favorite_animal: 'Donkey',
       type: 'Early user'
@@ -40,8 +37,7 @@ end
 for i in 0..40
    event = Event.create!({
     name: 'Visited Page 2',
-    project: project,
-    staging: [true, false].sample,
+    api_key: [project.api_key, project.api_key_test].sample,
     properties: {
       favorite_animal: 'Donkey',
       type: 'Early user'
@@ -54,8 +50,7 @@ end
 for i in 0..30
    event = Event.create!({
     name: 'Visited Page 3',
-    project: project,
-    staging: [true, false].sample,
+    api_key: [project.api_key, project.api_key_test].sample,
     properties: {
       favorite_animal: 'Donkey',
       type: 'Early user'

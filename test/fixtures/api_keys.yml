@@ -4,6 +4,7 @@
 #
 #  id         :bigint           not null, primary key
 #  key_value  :string           not null
+#  test       :boolean          default(FALSE)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  project_id :bigint           not null
