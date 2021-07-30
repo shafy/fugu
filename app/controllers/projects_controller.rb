@@ -9,9 +9,6 @@ class ProjectsController < ApplicationController
     # TODO
     # redirect_to user_dashbaord unless project
 
-    puts "current user"
-    puts current_user
-
     api_key = if params[:test] == 'true'
                 project.api_key_test
               else
