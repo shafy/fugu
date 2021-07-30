@@ -2,8 +2,12 @@
 @import "tailwindcss/components";
 
 
+h2 {
+  @apply text-xl;
+}
+
 a {
-  @apply underline
+  @apply underline;
 }
 
 @import "tailwindcss/utilities";

@@ -1,15 +1,13 @@
 # frozen_string_literal: true
 
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+user = User.create!({
+  email: "aegon@fugu.lol",
+  password: "iloveghost12", 
+  password_confirmation: "iloveghost12"
+})
 
 
-project = Project.create(name: "Fun Project")
+project = Project.create(name: "Fun Project", user: user)
 
 random_times = [
   1.hour.ago,
@@ -26,10 +24,10 @@ for i in 0..50
    event = Event.create!({
     name: 'Visited Page 1',
     api_key: [project.api_key_live, project.api_key_test].sample,
-    properties: {
-      favorite_animal: 'Donkey',
-      type: 'Early user'
-    }
+    properties: %({
+      "favorite_animal": "Donkey",
+      "type": "Early user"
+    })
   })
   event.update(created_at: random_times.sample)
 end
@@ -38,10 +36,10 @@ for i in 0..40
    event = Event.create!({
     name: 'Visited Page 2',
     api_key: [project.api_key_live, project.api_key_test].sample,
-    properties: {
-      favorite_animal: 'Donkey',
-      type: 'Early user'
-    }
+    properties: %({
+      "color": "Blue",
+      "size": "12"
+    })
   })
   event.update(created_at: random_times.sample)
 end
@@ -51,10 +49,10 @@ for i in 0..30
    event = Event.create!({
     name: 'Visited Page 3',
     api_key: [project.api_key_live, project.api_key_test].sample,
-    properties: {
-      favorite_animal: 'Donkey',
-      type: 'Early user'
-    }
+    properties: %({
+      "tree": "Oak",
+      "width": "300"
+    })
   })
   event.update(created_at: random_times.sample)
 end
