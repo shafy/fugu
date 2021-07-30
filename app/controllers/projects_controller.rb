@@ -1,13 +1,16 @@
 # frozen_string_literal: true
 
 class ProjectsController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: [:create]
+  before_action :authenticate_user!
 
   def show
     project = Project.find_by(name: project_name_from_param)
 
     # TODO
     # redirect_to user_dashbaord unless project
+
+    puts "current user"
+    puts current_user
 
     api_key = if params[:test] == 'true'
                 project.api_key_test

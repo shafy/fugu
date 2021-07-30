@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: users
@@ -12,6 +14,7 @@
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
 #  unconfirmed_email      :string
+#  username               :string           not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #
@@ -22,8 +25,10 @@
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #
 class User < ApplicationRecord
-  has_many :projects
-  
+  has_many :projects, dependent: :destroy
+
+  validates :username, uniqueness: true, presence: true
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
