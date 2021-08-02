@@ -14,21 +14,21 @@
           <canvas data-chart-target="chart"></canvas>
         </div>
       </div>
-      <div>
-        <% if params[:test] == 'true' %>
-          *Test mode* <br />
-          <%= link_to 'Toggle live mode', project_path(params[:project_slug], event: params[:event]) %>
-        <% else %>
-          <%= link_to 'Toggle test mode', project_path(params[:project_slug], event: params[:event], test: 'true') %>
-        <% end %>
-      </div>
-      <div>
-        Test API key: <%= @project.api_key_test.key_value %><br />
-        Live API key: <%=  @project.api_key_live.key_value %>
-      </div>
     <% else %>
       <h1 class="text-xl mb-4">You didn't send any events yet. Just do it!</h1>
     <% end %>
+    <div>
+      <% if params[:test] == 'true' %>
+        *Test mode* <br />
+        <%= link_to 'Toggle live mode', project_path(params[:project_slug], event: params[:event]) %>
+      <% else %>
+        <%= link_to 'Toggle test mode', project_path(params[:project_slug], event: params[:event], test: 'true') %>
+      <% end %>
+    </div>
+    <div>
+      Test API key: <%= @project.api_key_test.key_value %><br />
+      Live API key: <%=  @project.api_key_live.key_value %>
+    </div>
 
   </div>
 
