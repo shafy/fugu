@@ -39,7 +39,7 @@ class ProjectsController < ApplicationController
   def create
     project = Project.create(name: project_params[:name], user: current_user)
     if project
-      redirect_to project_path(project.parameterize)
+      redirect_to project_path(project.name.parameterize)
     else
       flash[:error] = project.errors.full_messages
       render action: :new, status: :unprocessable_entity
