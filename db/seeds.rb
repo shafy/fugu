@@ -2,7 +2,6 @@
 
 user = User.create!({
   email: "aegon@fugu.lol",
-  username: "jonsnow",
   password: "iloveghost12", 
   password_confirmation: "iloveghost12"
 })

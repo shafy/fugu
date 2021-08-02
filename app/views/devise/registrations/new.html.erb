@@ -9,11 +9,6 @@
         <%= render "devise/shared/error_messages", resource: resource %>
 
         <div class="mb-4">
-          <%= f.label :username %><br />
-          <%= f.text_field :username, autofocus: true, class: 'rounded-lg w-full' %>
-        </div>
-
-        <div class="mb-4">
           <%= f.label :email %><br />
           <%= f.email_field :email, autocomplete: "email", class: 'rounded-lg w-full' %>
         </div>
