@@ -2,20 +2,29 @@
   <div class="p-4">
     <% unless @event_names.empty? %>
       <h1 class="text-xl mb-4">Your fucking data for the event <%= @selected_event.tr('-', ' ').titleize %></h1>
-      <% if params[:test] == 'true' %>
-        (test mode)
-      <% end %>
       <div class="flex flex-row w-full">
         <div class="p-4">
           <% @event_names.each do |event_name| %>
             <div class="">
-              <%= link_to event_name, project_path(params[:username], params[:project_slug], event: event_name.tr(' ', '-').downcase, test: params[:test]) %>
+              <%= link_to event_name, project_path(params[:project_slug], event: event_name.parameterize, test: params[:test]) %>
             </div>
           <% end %>
         </div>
         <div data-controller="chart" data-chart-events-value="<%= @events.to_json %>" data-chart-event-name-value="<%= @selected_event.titleize %>" class="p-4 w-1/2">
           <canvas data-chart-target="chart"></canvas>
         </div>
+      </div>
+      <div>
+        <% if params[:test] == 'true' %>
+          *Test mode* <br />
+          <%= link_to 'Toggle live mode', project_path(params[:project_slug], event: params[:event]) %>
+        <% else %>
+          <%= link_to 'Toggle test mode', project_path(params[:project_slug], event: params[:event], test: 'true') %>
+        <% end %>
+      </div>
+      <div>
+        Test API key: <%= @project.api_key_test.key_value %><br />
+        Live API key: <%=  @project.api_key_live.key_value %>
       </div>
     <% else %>
       <h1 class="text-xl mb-4">You didn't send any events yet. Just do it!</h1>
