@@ -1,0 +1,14 @@
+<% content_for :main do %>
+  <div class="p-4">
+      <h1 class="text-xl mb-4">Your projects</h1>
+      <div class="flex flex-row w-full">
+        <div class="p-4">
+          <% @projects.each do |project| %>
+            <div class="">
+              <%= link_to project.name, project_path(project.name.parameterize) %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <%= link_to 'Add a new project', new_project_path %>
+<% end %>

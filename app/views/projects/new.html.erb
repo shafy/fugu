@@ -1,0 +1,16 @@
+<% content_for :main do %>
+  <div class="w-full p-4 flex flex-col justify-center items-center">
+    <h2>Add a new project</h2>
+    <%= form_with model: @project do |form| %>
+      <div class="mb-4">
+        <div class="mb-2">
+          <%= form.label :name, 'Project name' %>
+        </div>
+        <%= form.text_field :name, autofocus: true, class: 'rounded-lg' %>
+      </div>
+      <div cass="mb-4">
+        <%= form.submit 'Add', class: 'py-2 px-4 bg-green-500 text-white font-semibold rounded-lg shadow-md focus:outline-none hover:bg-green-300 cursor-pointer w-full' %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

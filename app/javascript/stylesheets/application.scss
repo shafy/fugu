@@ -2,8 +2,13 @@
 @import "tailwindcss/components";
 
 
+h1 {
+  @apply text-2xl mb-4;
+}
+
+
 h2 {
-  @apply text-xl;
+  @apply text-xl mb-4;
 }
 
 a {
