@@ -1,9 +1,16 @@
 module.exports = {
-  purge: [
-    "./app/**/*.html.erb",
-    "./app/helpers/**/*.rb",
-    "./app/javascript/**/*.js",
-  ],
+  purge: {
+    content: [
+      "./app/**/*.html.erb",
+      "./app/helpers/**/*.rb",
+      "./app/javascript/**/*.js",
+    ],
+    options: {
+      safelist: [
+        "type",
+      ]
+    }
+  },
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {},

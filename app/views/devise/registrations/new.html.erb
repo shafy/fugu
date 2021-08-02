@@ -10,12 +10,12 @@
 
         <div class="mb-4">
           <%= f.label :username %><br />
-          <%= f.text_field :username, autofocus: true, class: 'rounded-lg' %>
+          <%= f.text_field :username, autofocus: true, class: 'rounded-lg w-full' %>
         </div>
 
         <div class="mb-4">
           <%= f.label :email %><br />
-          <%= f.email_field :email, autocomplete: "email", class: 'rounded-lg' %>
+          <%= f.email_field :email, autocomplete: "email", class: 'rounded-lg w-full' %>
         </div>
 
         <div class="mb-4">
@@ -23,12 +23,12 @@
           <% if @minimum_password_length %>
           <em>(<%= @minimum_password_length %> characters minimum)</em>
           <% end %><br />
-          <%= f.password_field :password, autocomplete: "new-password", class: 'rounded-lg' %>
+          <%= f.password_field :password, autocomplete: "new-password", class: 'rounded-lg w-full' %>
         </div>
 
         <div class="mb-4">
           <%= f.label :password_confirmation %><br />
-          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'rounded-lg' %>
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'rounded-lg w-full' %>
         </div>
 
         <div class="mb-4">
