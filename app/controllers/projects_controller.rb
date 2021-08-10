@@ -5,6 +5,12 @@ class ProjectsController < ApplicationController
   before_action :set_project, only: %i[show]
   before_action :authorize_project_user, only: %i[show]
 
+  AGG_HASH = {
+    'd' => 'day',
+    'm' => 'month',
+    'y' => 'year'
+  }.freeze
+
   def index
     @projects = Project.where(user: current_user)
   end
@@ -28,7 +34,7 @@ class ProjectsController < ApplicationController
                     api_key: api_key,
                     name: @selected_event
                   )
-                  .group("date_trunc('day', created_at)::date").count.sort.to_h
+                  .group("date_trunc('#{aggregation}', created_at)::date").count.sort.to_h
               end
   end
 
@@ -54,6 +60,10 @@ class ProjectsController < ApplicationController
                       else
                         @event_names.first
                       end
+  end
+
+  def aggregation
+    AGG_HASH.key?(params[:agg]) ? AGG_HASH[params[:agg]] : 'day'
   end
 
   def project_params
