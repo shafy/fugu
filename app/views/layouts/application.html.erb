@@ -13,9 +13,11 @@
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body>
+  <body class="font-system">
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
-    <%= yield :main %>
+    <div class="w-full p-4 flex flex-col justify-center items-center">
+      <%= yield :main %>
+    </div>
   </body>
 </html>

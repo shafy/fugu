@@ -1,37 +1,42 @@
 <% content_for :main do %>
-  <div class="p-4">
-    <% unless @event_names.empty? %>
-      <h1 class="text-xl mb-4">Your fucking data for the event <%= @selected_event.tr('-', ' ').titleize %></h1>
-      <div class="flex flex-row w-full">
-        <div class="p-4">
-          <h2>Events</h2>
-          <% @event_names.each do |event_name| %>
-            <div class="">
-              <%= link_to event_name, project_path(params[:project_slug], event: event_name.parameterize, test: params[:test], agg: params[:agg]) %>
-            </div>
-          <% end %>
-        </div>
-        <div data-controller="chart" data-chart-events-value="<%= @events.to_json %>" data-chart-event-name-value="<%= @selected_event.titleize %>" class="p-4 w-1/2">
-          <canvas data-chart-target="chart"></canvas>
-        </div>
-        <div class="p-4">
-          <h2>Aggregation</h2>
-          <ul>
-            <li>
-              <%= link_to 'Daily', project_path(params[:project_slug], event: params[:event], test: params[:test], agg: 'd') %>
-            </li>
-            <li>
-              <%= link_to 'Monthly', project_path(params[:project_slug], event: params[:event], test: params[:test], agg: 'm') %>
-            </li>
-            <li>
-              <%= link_to 'Yearly', project_path(params[:project_slug], event: params[:event], test: params[:test], agg: 'y') %>
-            </li>
-          <ul>
-        </div>
+  <% unless @event_names.empty? %>
+    <h1 class="text-xl mb-4 font-medium mb-8"><%= @project.name %></h1>
+    <div class="flex flex-row w-full">
+      <div class="p-4 w-1/5 rounded-md shadow-md bg-yellow-50 mr-2">
+        <h2>Events</h2>
+        <% @event_names.each do |event_name| %>
+          <div class="">
+            <%= link_to event_name, project_path(params[:project_slug], event: event_name.parameterize, test: params[:test], agg: params[:agg]), class: "#{'font-medium' if event_name == @selected_event}" %>
+            <%= '👈' if event_name == @selected_event %>
+          </div>
+        <% end %>
       </div>
-    <% else %>
-      <h1 class="text-xl mb-4">You didn't send any events yet. Just do it!</h1>
-    <% end %>
+      <div data-controller="chart" data-chart-events-value="<%= @events.to_json %>" data-chart-event-name-value="<%= @selected_event.titleize %>" class="p-4 w-3/5 rounded-md shadow-md bg-yellow-50 mx-2">
+        <canvas data-chart-target="chart"></canvas>
+      </div>
+      <div class="p-4 w-1/5 rounded-md shadow-md bg-yellow-50 ml-2">
+        <h2>Aggregation</h2>
+        <ul>
+          <li>
+            <%= link_to 'Daily', project_path(params[:project_slug], event: params[:event], test: params[:test], agg: 'd'), class: "#{'font-medium' if params[:agg] == 'd' || params[:agg].blank?}" %>
+            <%= '👈' if params[:agg] == 'd' || params[:agg].blank? %>
+          </li>
+          <li>
+            <%= link_to 'Monthly', project_path(params[:project_slug], event: params[:event], test: params[:test], agg: 'm'), class: "#{'font-medium' if params[:agg] == 'm'}" %>
+            <%= '👈' if params[:agg] == 'm' %>
+          </li>
+          <li>
+            <%= link_to 'Yearly', project_path(params[:project_slug], event: params[:event], test: params[:test], agg: 'y'), class: "#{'font-medium' if params[:agg] == 'y'}" %>
+            <%= '👈' if params[:agg] == 'y' %>
+          </li>
+        <ul>
+      </div>
+    </div>
+  <% else %>
+    <h1 class="text-xl mb-4">You didn't send any events yet. Just do it!</h1>
+  <% end %>
+  <div class="flex flex-col items-start justify-center w-full p-4 rounded-md shadow-md bg-gray-50 mt-4">
+    <h2>Settings</h2>
     <div>
       <% if params[:test] == 'true' %>
         *Test mode* <br />
@@ -44,7 +49,5 @@
       Test API key: <%= @project.api_key_test.key_value %><br />
       Live API key: <%=  @project.api_key_live.key_value %>
     </div>
-
   </div>
-
 <% end %>
