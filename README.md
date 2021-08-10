@@ -16,7 +16,6 @@ Send a `POST` request to `https://app.fugu.lol/api/v1/events` with the following
   name: <string>, // Name of your event (required)
   properties: <JSON> // arbitrary JSON containing custom data (optional)
 }
-
 ```
 
 Replace the domain with your own if you're self-hosting.

@@ -31,6 +31,7 @@ export default class extends Controller {
       type: 'line',
       data,
       options: {
+        spanGaps: true,
         plugins: {
           legend: {
              display: false,

@@ -18,6 +18,8 @@ random_times = [
   5.days.ago,
   6.days.ago,
   7.days.ago,
+  9.days.ago,
+  11.days.ago
 ]
 
 for i in 0..50
