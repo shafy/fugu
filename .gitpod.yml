@@ -1,0 +1,25 @@
+image:
+  file: .gitpod.Dockerfile
+
+ports:
+  # Rails server
+  - port: 3000
+    onOpen: ignore
+  # PostgreSQL server
+  - port: 5432
+    onOpen: ignore
+
+tasks:
+  - init: >
+      bundle install &&
+      yarn install &&
+      rails db:setup
+
+github:
+  prebuilds:
+    branches: false
+    pullRequests: true
+
+vscode:
+  extensions:
+    - rebornix.ruby
