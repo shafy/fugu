@@ -15,6 +15,11 @@ tasks:
       yarn install &&
       rails db:setup
 
+github:
+  prebuilds:
+    branches: false
+    pullRequests: true
+
 vscode:
   extensions:
     - rebornix.ruby
