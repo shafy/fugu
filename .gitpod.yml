@@ -12,7 +12,6 @@ ports:
 tasks:
   - init: >
       bundle install &&
-      yarn install &&
       rails db:setup
 
 github:

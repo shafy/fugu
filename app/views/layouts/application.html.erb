@@ -9,8 +9,8 @@
 
     <%= favicon_link_tag asset_path('fugu_favicon.png') %>
 
-    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_importmap_tags %>
+    <%= stylesheet_link_tag "tailwind" %>
   </head>
 
   <body class="font-system">
