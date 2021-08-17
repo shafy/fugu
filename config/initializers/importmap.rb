@@ -5,6 +5,8 @@ Rails.application.config.importmap.draw do
 
   pin "application"
 
+  pin "chart.js", to: "https://cdn.jsdelivr.net/npm/chart.js/+esm"
+
   # Use libraries available via the asset pipeline (locally or via gems).
   # pin "@rails/actioncable", to: "actioncable.esm.js"
   # pin "@rails/activestorage", to: "activestorage.esm.js"

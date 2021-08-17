@@ -4,3 +4,4 @@
 // import "@rails/activestorage"
 
 import "@hotwired/stimulus-importmap-autoloader"
+import "chart.js"
