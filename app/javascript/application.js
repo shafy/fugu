@@ -2,3 +2,5 @@
 
 // import "@rails/actioncable"
 // import "@rails/activestorage"
+
+import "@hotwired/stimulus-importmap-autoloader"

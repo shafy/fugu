@@ -31,6 +31,8 @@ gem 'bootsnap', '>= 1.4.4', require: false
 
 gem 'importmap-rails'
 
+gem 'stimulus-rails'
+
 gem 'devise', '~> 4.8.0'
 
 group :development, :test do

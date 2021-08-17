@@ -1,4 +1,8 @@
 Rails.application.config.importmap.draw do
+  pin "@hotwired/stimulus", to: "stimulus.js"
+  pin "@hotwired/stimulus-importmap-autoloader", to: "stimulus-importmap-autoloader.js"
+  pin_all_from "app/javascript/controllers", under: "controllers"
+
   pin "application"
 
   # Use libraries available via the asset pipeline (locally or via gems).
