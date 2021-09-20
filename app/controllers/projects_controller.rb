@@ -43,16 +43,28 @@ class ProjectsController < ApplicationController
   end
 
   def create
-    project = Project.create(name: project_params[:name], user: current_user)
-    if project
+    project = Project.new(name: project_params[:name], user: current_user)
+    if project.save
       redirect_to project_path(project.name.parameterize)
     else
-      flash[:error] = project.errors.full_messages
+      flash[:error] = "We couldn't create your project: #{project.errors.full_messages.first}"
       render action: :new, status: :unprocessable_entity
     end
   end
 
   private
+
+  def set_project
+    @project = Project.find_by(name: params[:project_slug])
+  end
+
+  def authorize_project_user
+    return redirect_to projects_path unless current_user
+
+    return redirect_to projects_path unless @project
+
+    return redirect_to projects_path unless current_user == @project.user
+  end
 
   def set_selected_event
     @selected_event = if params[:event]

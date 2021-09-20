@@ -7,7 +7,7 @@ user = User.create!({
 })
 
 
-project = Project.create(name: "Fun Project", user: user)
+project = Project.create(name: "fun-project", user: user)
 
 random_times = [
   1.hour.ago,

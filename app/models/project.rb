@@ -22,15 +22,23 @@ class Project < ApplicationRecord
   has_many :api_keys, dependent: :destroy
   belongs_to :user
 
-  validates :name, presence: true
+  validates :name,
+            presence: true,
+            format:
+              {
+                with: /\A[a-zA-Z0-9-]*\z/,
+                message: "only numbers, letters and hypens allowed"
+              }
   validates :user, presence: true
 
-  before_save :titleize_name
+  validate :name_cannot_be_one_of
+
+  before_save :downcase_name
 
   after_create :create_api_keys
 
-  def titleize_name
-    self.name = name.titleize
+  def downcase_name
+    self.name = name.downcase
   end
 
   def create_api_keys
@@ -44,5 +52,13 @@ class Project < ApplicationRecord
 
   def api_key_test
     api_keys.find_by(test: true)
+  end
+
+  private
+
+  def name_cannot_be_one_of
+    if %w[projects project].include? name
+      errors.add(:name, "can't be #{name}")
+    end
   end
 end

@@ -14,8 +14,9 @@
   </head>
 
   <body class="font-system">
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+    <% flash.each do |key, value| %>
+      <%= content_tag :div, value, class: "flash #{key}" unless value.blank? %>
+    <% end %>
     <div class="w-full p-4 flex flex-col justify-center items-center">
       <%= yield :main %>
     </div>
