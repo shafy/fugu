@@ -24,6 +24,7 @@ class Project < ApplicationRecord
 
   validates :name,
             presence: true,
+            uniqueness: { scope: :user },
             format:
               {
                 with: /\A[a-zA-Z0-9-]*\z/,
@@ -33,7 +34,7 @@ class Project < ApplicationRecord
 
   validate :name_cannot_be_one_of
 
-  before_save :downcase_name
+  before_validation :downcase_name
 
   after_create :create_api_keys
 

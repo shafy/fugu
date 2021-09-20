@@ -44,12 +44,12 @@ class ProjectsController < ApplicationController
   end
 
   def create
-    project = Project.new(name: project_params[:name], user: current_user)
-    if project.save
-      redirect_to project_path(project.name.parameterize)
+    @project = Project.new(name: project_params[:name], user: current_user)
+    if @project.save
+      redirect_to project_path(@project.name.parameterize)
     else
-      flash[:error] = "We couldn't create your project: #{project.errors.full_messages.first}"
-      render action: :new, status: :unprocessable_entity
+      flash[:error] = "We couldn't create your project: #{@project.errors.full_messages.first}"
+      render new_project_path, status: :unprocessable_entity
     end
   end
 
