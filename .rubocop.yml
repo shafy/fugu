@@ -15,6 +15,12 @@ AllCops:
 Layout/LineLength:
   Max: 100
 
+Metrics/ClassLength:
+  Max: 120
+
+Metrics/MethodLength:
+  Max: 15
+
 Metrics/BlockLength:
   Exclude:
     - config/**/*
@@ -26,3 +32,6 @@ Lint/AmbiguousBlockAssociation:
 
 Style/Documentation:
   Enabled: false
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes

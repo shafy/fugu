@@ -73,3 +73,7 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "tailwindcss-rails", "~> 0.3.3"
+
+gem "sentry-ruby", "~> 4.7"
+
+gem "sentry-rails", "~> 4.7"
