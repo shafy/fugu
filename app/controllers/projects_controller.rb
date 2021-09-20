@@ -7,6 +7,7 @@ class ProjectsController < ApplicationController
 
   AGG_HASH = {
     'd' => 'day',
+    'w' => 'week',
     'm' => 'month',
     'y' => 'year'
   }.freeze
@@ -55,7 +56,7 @@ class ProjectsController < ApplicationController
   private
 
   def set_project
-    @project = Project.find_by(name: params[:project_slug])
+    @project = Project.find_by(name: params[:project_slug].downcase)
   end
 
   def authorize_project_user

@@ -22,6 +22,10 @@
             <%= '👈' if params[:agg] == 'd' || params[:agg].blank? %>
           </li>
           <li>
+            <%= link_to 'Weekly', project_path(params[:project_slug], event: params[:event], test: params[:test], agg: 'w'), class: "#{'font-medium' if params[:agg] == 'w'}" %>
+            <%= '👈' if params[:agg] == 'w' %>
+          </li>
+          <li>
             <%= link_to 'Monthly', project_path(params[:project_slug], event: params[:event], test: params[:test], agg: 'm'), class: "#{'font-medium' if params[:agg] == 'm'}" %>
             <%= '👈' if params[:agg] == 'm' %>
           </li>
