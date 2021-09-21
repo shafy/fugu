@@ -20,7 +20,18 @@
 require "test_helper"
 
 class EventTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test "has a valid factory" do
+    assert build(:event)
+  end
+
+  context "validations" do
+    subject { build(:event) }
+
+    should validate_presence_of(:name)
+
+    should belong_to(:api_key)
+
+    should_not allow_value("Non JSON String").for(:properties)
+    should_not allow_value("{invalid_json: \"12\"}").for(:properties)
+  end
 end

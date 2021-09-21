@@ -24,7 +24,11 @@ class Project < ApplicationRecord
 
   validates :name,
             presence: true,
-            uniqueness: { scope: :user },
+            uniqueness: {
+              scope: :user_id,
+              message: "You already have a project with this name",
+              case_insensitive: true
+            },
             format:
               {
                 with: /\A[a-zA-Z0-9-]*\z/,
@@ -36,10 +40,8 @@ class Project < ApplicationRecord
 
   before_validation :downcase_name
 
-  after_create :create_api_keys
-
   def downcase_name
-    self.name = name.downcase
+    self.name = name.downcase if name
   end
 
   def create_api_keys

@@ -24,7 +24,9 @@
 require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test "has a valid factory" do
+    assert build(:user)
+  end
+
+  should validate_presence_of(:email)
 end

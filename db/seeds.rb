@@ -8,6 +8,7 @@ user = User.create!({
 
 
 project = Project.create(name: "fun-project", user: user)
+project.create_api_keys
 
 random_times = [
   1.hour.ago,

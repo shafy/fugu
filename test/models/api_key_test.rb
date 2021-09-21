@@ -21,7 +21,13 @@
 require "test_helper"
 
 class ApiKeyTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test "has a valid factory" do
+    assert build(:api_key)
+  end
+
+  context "validations" do
+    subject { build(:api_key) }
+
+    should belong_to(:project)
+  end
 end

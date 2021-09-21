@@ -41,6 +41,7 @@ class ProjectsController < ApplicationController
   def create
     @project = Project.new(name: project_params[:name], user: current_user)
     if @project.save
+      @project.create_api_keys
       redirect_to project_path(@project.name.parameterize)
     else
       flash[:error] = "We couldn't create your project: #{@project.errors.full_messages.first}"
