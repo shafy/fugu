@@ -35,6 +35,19 @@ export default class extends Controller {
       type: "line",
       data,
       options: {
+        layout: {
+          padding: 0
+        },
+        scales: {
+          y: {
+            grace: '10%',
+            min: 0,
+            ticks: {
+              format: { style: "decimal", minimumFractionDigits: "0" },
+              padding: 10,
+            }
+          }
+        },
         spanGaps: true,
         plugins: {
           legend: {
