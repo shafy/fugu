@@ -23,19 +23,16 @@ class Event < ApplicationRecord
   belongs_to :api_key, validate: true
 
   validates :name, presence: true
-  validate :properties_is_json
+
+  before_validation :convert_properties_to_hash
 
   private
 
-  def properties_is_json
-    return if properties.empty?
+  def convert_properties_to_hash
+    return if properties.is_a?(Hash) || properties.nil?
 
-    return errors.add(:properties, 'must be valid JSON') unless properties.is_a?(String)
-
-    begin
-      JSON.parse(properties)
-    rescue StandardError
-      errors.add(:properties, 'must be valid JSON')
-    end
+    self.properties = JSON.parse(properties) if properties
+  rescue StandardError
+    errors.add(:properties, 'must be valid JSON')
   end
 end

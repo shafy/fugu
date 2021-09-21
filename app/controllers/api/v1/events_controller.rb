@@ -13,14 +13,13 @@ class Api::V1::EventsController < Api::ApiController
     if event.errors.empty?
       render json: { success: true, event: event }, status: :ok
     else
-      render json: {
-        success: false,
-        error: event.errors.full_messages.first
-      }, status: :unprocessable_entity
+      raise ArgumentError, event.errors.full_messages.first
     end
   end
 
   def validate_param_keys
     raise ArgumentError, "missing 'name' key" unless params.key?(:name)
+
+    raise ArgumentError, "'name' can't be nil" if params[:name].nil?
   end
 end

@@ -16,6 +16,8 @@ class Api::ApiController < ApplicationController
 
   private
 
+  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/AbcSize
   def handle_exceptions
     begin
       yield
@@ -27,7 +29,7 @@ class Api::ApiController < ApplicationController
       @status = 500
       @error_type = e.class.to_s
     rescue ArgumentError => e
-      @status = 400
+      @status = 422
       @error_type = e.class.to_s
     rescue StandardError => e
       @status = 500
@@ -36,4 +38,6 @@ class Api::ApiController < ApplicationController
 
     render json: {error: {type: @error_type, message: e.message }}, status: @status unless e.class == NilClass
   end
+  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/AbcSize
 end

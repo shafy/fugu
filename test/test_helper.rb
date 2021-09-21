@@ -1,6 +1,7 @@
 ENV['RAILS_ENV'] ||= 'test'
 require_relative "../config/environment"
 require "rails/test_help"
+require "database_cleaner/active_record"
 
 class ActiveSupport::TestCase
   # Run tests in parallel with specified workers
@@ -13,9 +14,30 @@ class ActiveSupport::TestCase
   include FactoryBot::Syntax::Methods
 end
 
+# Shoulda Matchers
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
     with.test_framework :minitest
     with.library :rails
   end
+end
+
+# Database Cleaner
+
+DatabaseCleaner.strategy = :transaction
+
+module AroundEachTest
+  def before_setup
+    super
+    DatabaseCleaner.start
+  end
+
+  def after_teardown
+    super
+    DatabaseCleaner.clean
+  end
+end
+
+class Minitest::Test
+  include AroundEachTest
 end

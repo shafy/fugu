@@ -44,7 +44,6 @@ group :development, :test do
   gem 'rubocop'
   gem 'rubocop-performance'
   gem 'rubocop-rails'
-  gem 'rubocop-rspec'
 
   gem 'factory_bot_rails', '~> 6.2.0'
 end
@@ -71,6 +70,8 @@ group :test do
   gem 'webdrivers'
 
   gem 'shoulda', '~> 4.0'
+
+  gem 'database_cleaner-active_record', '~> 2.0.1'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
