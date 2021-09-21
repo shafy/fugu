@@ -13,7 +13,7 @@ tasks:
   - init: >
       bundle install &&
       rails db:setup RAILS_ENV=development &&
-      rails db:setup RAILS_ENV=test &&
+      rails db:setup RAILS_ENV=test
 
 github:
   prebuilds:
