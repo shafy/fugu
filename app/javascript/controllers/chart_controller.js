@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 
-import { Chart, registerables } from 'chart.js';
+import { Chart, registerables } from "chart.js";
 Chart.register(...registerables);
 
 export default class extends Controller {
@@ -9,29 +9,30 @@ export default class extends Controller {
   } */
   static targets = [ "chart"]
   static values = {
-    events: Object,
+    events: Array,
     eventName: String,
   }
 
   connect() {
+    console.log(this.eventsValue)
     this.showChart();
   }
 
   showChart() {
     const data = {
-      labels: Object.keys(this.eventsValue),
+      labels: this.eventsValue.map(e => e["date"]),
       datasets: [
         {
           label: this.eventNameValue,
-          backgroundColor: 'rgb(255, 99, 132)',
-          borderColor: 'rgb(255, 99, 132)',
-          data: Object.values(this.eventsValue),
+          backgroundColor: "rgb(255, 99, 132)",
+          borderColor: "rgb(255, 99, 132)",
+          data: this.eventsValue.map(e => e["count"]),
         }
       ]
     };
 
     const config = {
-      type: 'line',
+      type: "line",
       data,
       options: {
         spanGaps: true,
