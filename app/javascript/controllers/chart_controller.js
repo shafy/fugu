@@ -14,11 +14,13 @@ export default class extends Controller {
   }
 
   connect() {
+    console.log("yolo")
     console.log(this.eventsValue)
     this.showChart();
   }
 
   showChart() {
+    console.log(this.eventsValue)
     const data = {
       labels: this.eventsValue.map(e => e["date"]),
       datasets: [

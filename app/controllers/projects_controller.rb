@@ -32,6 +32,8 @@ class ProjectsController < ApplicationController
     @events = ActiveRecord::Base.connection.execute(
       event_sql_query(@selected_event, api_key.id, aggregation)
     ).to_a
+
+    puts @events
   end
 
   def new
@@ -62,7 +64,7 @@ class ProjectsController < ApplicationController
         SELECT date_trunc('#{aggregation}', min(created_at)) as minval,
                date_trunc('#{aggregation}', max(created_at)) as maxval
         FROM events
-        WHERE name='#{event_name}' AND api_key_id='#{api_key_id}'),
+        WHERE name='#{event_name}' AND api_key_id=#{api_key_id}),
 
       week_range AS (
         SELECT generate_series(minval, maxval, '1 #{aggregation}'::interval) as date
@@ -73,7 +75,7 @@ class ProjectsController < ApplicationController
         SELECT date_trunc('#{aggregation}', created_at) as date,
                count(*) as count
         FROM events
-        WHERE name='#{event_name}' AND api_key_id='#{api_key_id}'
+        WHERE name='#{event_name}' AND api_key_id=#{api_key_id}
         GROUP BY 1
       )
 
