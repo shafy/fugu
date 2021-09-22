@@ -299,7 +299,7 @@ DEPENDENCIES
   devise (~> 4.8.0)
   dotenv-rails
   factory_bot_rails (~> 6.2.0)
-  importmap-rails
+  importmap-rails (~> 0.7.3)
   jbuilder (~> 2.7)
   listen (~> 3.3)
   pg
@@ -314,7 +314,7 @@ DEPENDENCIES
   sentry-ruby (~> 4.7)
   shoulda (~> 4.0)
   spring
-  stimulus-rails
+  stimulus-rails (~> 0.5.4)
   tailwindcss-rails (~> 0.3.3)
   turbolinks (~> 5)
   tzinfo-data
