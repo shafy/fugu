@@ -42,7 +42,7 @@ class ProjectsController < ApplicationController
     @project = Project.new(name: project_params[:name], user: current_user)
     if @project.save
       @project.create_api_keys
-      redirect_to project_path(@project.name.parameterize)
+      redirect_to project_path(@project.name)
     else
       flash[:error] = "We couldn't create your project: #{@project.errors.full_messages.first}"
       render new_project_path, status: :unprocessable_entity
@@ -50,6 +50,10 @@ class ProjectsController < ApplicationController
   end
 
   private
+
+  def aggregation
+    AGG_HASH.key?(params[:agg]) ? AGG_HASH[params[:agg]] : 'day'
+  end
 
   # rubocop:disable Metrics/MethodLength
   def event_sql_query(event_name, api_key_id, aggregation)
@@ -81,8 +85,12 @@ class ProjectsController < ApplicationController
   end
   # rubocop:enable Metrics/MethodLength
 
+  def project_params
+    params.require(:project).permit(:name)
+  end
+
   def set_project
-    @project = Project.find_by(name: params[:project_slug].downcase)
+    @project = Project.find_by(name: params[:slug].downcase)
   end
 
   def authorize_project_user
@@ -99,13 +107,5 @@ class ProjectsController < ApplicationController
                       else
                         @event_names.first
                       end
-  end
-
-  def aggregation
-    AGG_HASH.key?(params[:agg]) ? AGG_HASH[params[:agg]] : 'day'
-  end
-
-  def project_params
-    params.require(:project).permit(:name)
   end
 end

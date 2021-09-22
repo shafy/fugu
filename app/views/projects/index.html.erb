@@ -5,7 +5,7 @@
         <div class="p-4">
           <% @projects.each do |project| %>
             <div class="">
-              <%= link_to project.name, project_path(project.name.parameterize) %>
+              <%= link_to project.name, project_path(project.name) %>
             </div>
           <% end %>
         </div>

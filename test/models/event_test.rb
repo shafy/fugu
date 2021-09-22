@@ -4,7 +4,7 @@
 #
 #  id         :bigint           not null, primary key
 #  name       :string           not null
-#  properties :json
+#  properties :jsonb
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  api_key_id :bigint           not null

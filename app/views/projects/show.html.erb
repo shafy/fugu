@@ -6,7 +6,7 @@
         <h2>Events</h2>
         <% @event_names.each do |event_name| %>
           <div class="">
-            <%= link_to event_name, project_path(params[:project_slug], event: event_name.parameterize, test: params[:test], agg: params[:agg]), class: "#{'font-medium' if event_name == @selected_event}" %>
+            <%= link_to event_name, project_path(params[:slug], event: event_name.parameterize, test: params[:test], agg: params[:agg]), class: "#{'font-medium' if event_name == @selected_event}" %>
             <%= '👈' if event_name == @selected_event %>
           </div>
         <% end %>
@@ -18,19 +18,19 @@
         <h2>Aggregation</h2>
         <ul>
           <li>
-            <%= link_to 'Daily', project_path(params[:project_slug], event: params[:event], test: params[:test], agg: 'd'), class: "#{'font-medium' if params[:agg] == 'd' || params[:agg].blank?}" %>
+            <%= link_to 'Daily', project_path(params[:slug], event: params[:event], test: params[:test], agg: 'd'), class: "#{'font-medium' if params[:agg] == 'd' || params[:agg].blank?}" %>
             <%= '👈' if params[:agg] == 'd' || params[:agg].blank? %>
           </li>
           <li>
-            <%= link_to 'Weekly', project_path(params[:project_slug], event: params[:event], test: params[:test], agg: 'w'), class: "#{'font-medium' if params[:agg] == 'w'}" %>
+            <%= link_to 'Weekly', project_path(params[:slug], event: params[:event], test: params[:test], agg: 'w'), class: "#{'font-medium' if params[:agg] == 'w'}" %>
             <%= '👈' if params[:agg] == 'w' %>
           </li>
           <li>
-            <%= link_to 'Monthly', project_path(params[:project_slug], event: params[:event], test: params[:test], agg: 'm'), class: "#{'font-medium' if params[:agg] == 'm'}" %>
+            <%= link_to 'Monthly', project_path(params[:slug], event: params[:event], test: params[:test], agg: 'm'), class: "#{'font-medium' if params[:agg] == 'm'}" %>
             <%= '👈' if params[:agg] == 'm' %>
           </li>
           <li>
-            <%= link_to 'Yearly', project_path(params[:project_slug], event: params[:event], test: params[:test], agg: 'y'), class: "#{'font-medium' if params[:agg] == 'y'}" %>
+            <%= link_to 'Yearly', project_path(params[:slug], event: params[:event], test: params[:test], agg: 'y'), class: "#{'font-medium' if params[:agg] == 'y'}" %>
             <%= '👈' if params[:agg] == 'y' %>
           </li>
         <ul>
@@ -44,9 +44,9 @@
     <div>
       <% if params[:test] == 'true' %>
         *Test mode* <br />
-        <%= link_to 'Toggle live mode', project_path(params[:project_slug], event: params[:event]) %>
+        <%= link_to 'Toggle live mode', project_path(params[:slug], event: params[:event]) %>
       <% else %>
-        <%= link_to 'Toggle test mode', project_path(params[:project_slug], event: params[:event], test: 'true') %>
+        <%= link_to 'Toggle test mode', project_path(params[:slug], event: params[:event], test: 'true') %>
       <% end %>
     </div>
     <div>

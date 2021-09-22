@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_30_101807) do
+ActiveRecord::Schema.define(version: 2021_09_22_065433) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 2021_07_30_101807) do
 
   create_table "events", force: :cascade do |t|
     t.string "name", null: false
-    t.json "properties"
+    t.jsonb "properties"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "api_key_id", null: false
