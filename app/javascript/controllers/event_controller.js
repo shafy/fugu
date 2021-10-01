@@ -1,7 +1,10 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = [ "eventSelect"]
+  static targets = [
+    "eventSelect",
+    "aggSelect"
+  ]
 
   static values = {
     events: Array,
@@ -9,25 +12,26 @@ export default class extends Controller {
   }
 
   connect() {
-    this.setSelectedEvent()
+    this.setSelectedOption(this.eventSelectTarget, "event")
+    this.setSelectedOption(this.aggSelectTarget, "agg")
   }
 
-  showEvent(event) {
+  navigateToSelectUrl(event) {
     window.location.href = event.currentTarget.selectedOptions[0].dataset.url;
   }
 
-  setSelectedEvent() {
-    let currentEvent = new URLSearchParams(window.location.search).get("event")
+  setSelectedOption(selectElement, param) {
+    let paramValue = new URLSearchParams(window.location.search).get(param)
 
-    if (!currentEvent) {
-      this.eventSelectTarget.selectedIndex = 0
+    if (!paramValue) {
+      selectElement.selectedIndex = 0
       return
     }
 
-    let options = this.eventSelectTarget.options
+    let options = selectElement.options
     for (let i = 0; i < options.length; i++) {
-      if (options[i].dataset.name == currentEvent) {
-        this.eventSelectTarget.selectedIndex = i
+      if (options[i].dataset.name == paramValue) {
+        selectElement.selectedIndex = i
         break
       }
     }

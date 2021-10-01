@@ -1,45 +1,31 @@
 <% content_for :main do %>
   <% unless @event_names.empty? %>
     <h1 class="text-xl mb-4 font-medium mb-8"><%= @project.name %></h1>
-    <div class="flex flex-row w-full" data-controller="event">
-      <%= select_tag "events",
-          raw(event_select_options(@event_names, params[:slug], params[:test], params[:agg])),
-          data: { action: "change->event#showEvent", event_target: "eventSelect"}
+    <div class="flex flex-row w-full mb-4 p-4 w-full rounded-md shadow-md bg-yellow-50 gap-x-5"
+          data-controller="event"
+    >
+      <div class="flex flex-col items-start justify-center">
+        <%= label_tag 'events', 'Events', class: "text-sm font-medium mb-2" %>
+        <%= select_tag "events",
+            raw(event_select_options(@event_names, params[:slug], params[:test], params[:agg])),
+            data: { action: "change->event#navigateToSelectUrl", event_target: "eventSelect"}
         %>
+      </div>
+      <div class="flex flex-col items-start justify-center">
+        <%= label_tag 'aggregation', 'Aggregation', class: "text-sm font-medium mb-2" %>
+        <%= select_tag "aggregation",
+            raw(agg_select_options(params[:event], params[:slug], params[:test])),
+            data: { action: "change->event#navigateToSelectUrl", event_target: "aggSelect"}
+        %>
+      </div>
     </div>
     <div class="flex flex-row w-full">
-      <div class="p-4 w-1/5 rounded-md shadow-md bg-yellow-50 mr-2">
-        <h2>Events</h2>
-        <% @event_names.each do |event_name| %>
-          <div class="">
-            <%= link_to event_name, project_path(params[:slug], event: event_name.parameterize, test: params[:test], agg: params[:agg]), class: "#{'font-medium' if event_name == @selected_event}" %>
-            <%= '👈' if event_name == @selected_event %>
-          </div>
-        <% end %>
-      </div>
-      <div data-controller="chart" data-chart-events-value="<%= @events.to_json %>" data-chart-event-name-value="<%= @selected_event.titleize %>" class="p-4 w-3/5 rounded-md shadow-md bg-yellow-50 mx-2">
+      <div data-controller="chart"
+            data-chart-events-value="<%= @events.to_json %>"
+            data-chart-event-name-value="<%= @selected_event.titleize %>"
+            class="p-4 w-full rounded-md shadow-md bg-yellow-50"
+      >
         <canvas data-chart-target="chart"></canvas>
-      </div>
-      <div class="p-4 w-1/5 rounded-md shadow-md bg-yellow-50 ml-2">
-        <h2>Aggregation</h2>
-        <ul>
-          <li>
-            <%= link_to 'Daily', project_path(params[:slug], event: params[:event], test: params[:test], agg: 'd'), class: "#{'font-medium' if params[:agg] == 'd' || params[:agg].blank?}" %>
-            <%= '👈' if params[:agg] == 'd' || params[:agg].blank? %>
-          </li>
-          <li>
-            <%= link_to 'Weekly', project_path(params[:slug], event: params[:event], test: params[:test], agg: 'w'), class: "#{'font-medium' if params[:agg] == 'w'}" %>
-            <%= '👈' if params[:agg] == 'w' %>
-          </li>
-          <li>
-            <%= link_to 'Monthly', project_path(params[:slug], event: params[:event], test: params[:test], agg: 'm'), class: "#{'font-medium' if params[:agg] == 'm'}" %>
-            <%= '👈' if params[:agg] == 'm' %>
-          </li>
-          <li>
-            <%= link_to 'Yearly', project_path(params[:slug], event: params[:event], test: params[:test], agg: 'y'), class: "#{'font-medium' if params[:agg] == 'y'}" %>
-            <%= '👈' if params[:agg] == 'y' %>
-          </li>
-        <ul>
       </div>
     </div>
   <% else %>

@@ -26,6 +26,15 @@ class Event < ApplicationRecord
 
   before_validation :convert_properties_to_hash
 
+  def self.aggregations
+    {
+      "d" => "day",
+      "w" => "week",
+      "m" => "month",
+      "y" => "year"
+    }
+  end
+
   private
 
   def convert_properties_to_hash

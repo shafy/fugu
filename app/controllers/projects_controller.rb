@@ -5,13 +5,6 @@ class ProjectsController < ApplicationController
   before_action :set_project, only: %i[show]
   before_action :authorize_project_user, only: %i[show]
 
-  AGG_HASH = {
-    "d" => "day",
-    "w" => "week",
-    "m" => "month",
-    "y" => "year"
-  }.freeze
-
   def index
     @projects = Project.where(user: current_user)
   end
@@ -64,7 +57,7 @@ class ProjectsController < ApplicationController
   private
 
   def aggregation
-    AGG_HASH.key?(params[:agg]) ? AGG_HASH[params[:agg]] : 'day'
+    Event.aggregations.key?(params[:agg]) ? Event.aggregations[params[:agg]] : 'day'
   end
 
   # rubocop:disable Metrics/MethodLength

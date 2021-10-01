@@ -1,0 +1,16 @@
+/* ...
+ *= require_self
+ *= require_tree .
+ */
+
+select {
+  border-radius: 0.25rem;
+  border-width: 2px;
+  border-color: rgba(75, 85, 99);
+  background-color: rgba(255, 251, 235);
+}
+
+select:focus {
+  box-shadow: none;
+  border-color: rgba(16, 185, 129);
+}
