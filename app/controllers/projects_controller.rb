@@ -6,10 +6,10 @@ class ProjectsController < ApplicationController
   before_action :authorize_project_user, only: %i[show]
 
   AGG_HASH = {
-    'd' => 'day',
-    'w' => 'week',
-    'm' => 'month',
-    'y' => 'year'
+    "d" => "day",
+    "w" => "week",
+    "m" => "month",
+    "y" => "year"
   }.freeze
 
   def index
@@ -33,7 +33,17 @@ class ProjectsController < ApplicationController
       event_sql_query(@selected_event, api_key.id, aggregation)
     ).to_a
 
-    puts @events
+    query = %(
+      SELECT
+        DISTINCT field
+      FROM (
+        SELECT jsonb_object_keys(properties) AS field
+        FROM events
+        WHERE name = '#{@selected_event}'
+      ) AS subquery
+    )
+    result = ActiveRecord::Base.connection.execute(query)
+    puts result.map { |row| row['field'] }
   end
 
   def new

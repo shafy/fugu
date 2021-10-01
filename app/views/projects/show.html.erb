@@ -1,6 +1,12 @@
 <% content_for :main do %>
   <% unless @event_names.empty? %>
     <h1 class="text-xl mb-4 font-medium mb-8"><%= @project.name %></h1>
+    <div class="flex flex-row w-full" data-controller="event">
+      <%= select_tag "events",
+          raw(event_select_options(@event_names, params[:slug], params[:test], params[:agg])),
+          data: { action: "change->event#showEvent", event_target: "eventSelect"}
+        %>
+    </div>
     <div class="flex flex-row w-full">
       <div class="p-4 w-1/5 rounded-md shadow-md bg-yellow-50 mr-2">
         <h2>Events</h2>
