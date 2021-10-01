@@ -12,6 +12,13 @@
         %>
       </div>
       <div class="flex flex-col items-start justify-center">
+        <%= label_tag 'properties', 'Properties', class: "text-sm font-medium mb-2" %>
+        <%= select_tag "properties",
+            raw(property_select_options(@event_names, params[:slug], params[:test])),
+            data: { action: "change->event#navigateToSelectUrl", event_target: "propertySelect"}
+        %>
+      </div>
+      <div class="flex flex-col items-start justify-center">
         <%= label_tag 'aggregation', 'Aggregation', class: "text-sm font-medium mb-2" %>
         <%= select_tag "aggregation",
             raw(agg_select_options(params[:event], params[:slug], params[:test])),

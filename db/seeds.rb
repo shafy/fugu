@@ -47,6 +47,30 @@ for i in 0..40
   event.update(created_at: random_times.sample)
 end
 
+for i in 0..20
+  event = Event.create!({
+   name: 'Visited Page 2',
+   api_key: [project.api_key_live, project.api_key_test].sample,
+   properties: %({
+     "color": "Red",
+     "size": "12"
+   })
+ })
+ event.update(created_at: random_times.sample)
+end
+
+for i in 0..10
+  event = Event.create!({
+   name: 'Visited Page 2',
+   api_key: [project.api_key_live, project.api_key_test].sample,
+   properties: %({
+     "color": "Red",
+     "size": "10"
+   })
+ })
+ event.update(created_at: random_times.sample)
+end
+
 
 for i in 0..30
    event = Event.create!({

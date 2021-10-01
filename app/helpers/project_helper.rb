@@ -13,6 +13,12 @@ module ProjectHelper
     end
   end
 
+  def property_select_options(event_name, slug, test)
+    Event.aggregations.map do |k, v|
+      "<option data-url='#{build_agg_url(event_name, slug, test, k)}' data-name='#{k}'>#{v.capitalize}</option>"
+    end
+  end
+
   def build_event_url(event_name, slug, test, agg)
     project_path(slug, event: event_name.parameterize, test: test, agg: agg)
   end
