@@ -4,9 +4,6 @@ import { Chart, registerables } from "chart.js";
 Chart.register(...registerables);
 
 export default class extends Controller {
-  /* static get targets() {
-    return [ "chart" ]
-  } */
   static targets = [ "chart"]
   static values = {
     events: Array,
@@ -14,13 +11,10 @@ export default class extends Controller {
   }
 
   connect() {
-    console.log("yolo")
-    console.log(this.eventsValue)
     this.showChart();
   }
 
   showChart() {
-    console.log(this.eventsValue)
     const data = {
       labels: this.eventsValue.map(e => e["date"]),
       datasets: [

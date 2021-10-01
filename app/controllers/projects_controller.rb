@@ -5,13 +5,6 @@ class ProjectsController < ApplicationController
   before_action :set_project, only: %i[show]
   before_action :authorize_project_user, only: %i[show]
 
-  AGG_HASH = {
-    'd' => 'day',
-    'w' => 'week',
-    'm' => 'month',
-    'y' => 'year'
-  }.freeze
-
   def index
     @projects = Project.where(user: current_user)
   end
@@ -33,7 +26,17 @@ class ProjectsController < ApplicationController
       event_sql_query(@selected_event, api_key.id, aggregation)
     ).to_a
 
-    puts @events
+    query = %(
+      SELECT
+        DISTINCT field
+      FROM (
+        SELECT jsonb_object_keys(properties) AS field
+        FROM events
+        WHERE name = '#{@selected_event}'
+      ) AS subquery
+    )
+    result = ActiveRecord::Base.connection.execute(query)
+    puts result.map { |row| row['field'] }
   end
 
   def new
@@ -54,7 +57,7 @@ class ProjectsController < ApplicationController
   private
 
   def aggregation
-    AGG_HASH.key?(params[:agg]) ? AGG_HASH[params[:agg]] : 'day'
+    Event.aggregations.key?(params[:agg]) ? Event.aggregations[params[:agg]] : 'day'
   end
 
   # rubocop:disable Metrics/MethodLength

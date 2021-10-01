@@ -11,13 +11,14 @@
 
     <%= javascript_importmap_tags %>
     <%= stylesheet_link_tag "tailwind" %>
+    <%= stylesheet_link_tag "application", media: "all" %>
   </head>
 
   <body class="font-system">
     <% flash.each do |key, value| %>
       <%= content_tag :div, value, class: "flash #{key}" unless value.blank? %>
     <% end %>
-    <div class="w-full p-4 flex flex-col justify-center items-center">
+    <div class="w-full max-w-5xl p-4 flex flex-col justify-center items-center mx-auto">
       <%= yield :main %>
     </div>
   </body>
