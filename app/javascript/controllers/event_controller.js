@@ -3,7 +3,8 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = [
     "eventSelect",
-    "aggSelect"
+    "aggSelect",
+    "propertySelect"
   ]
 
   static values = {
@@ -13,7 +14,8 @@ export default class extends Controller {
 
   connect() {
     this.setSelectedOption(this.eventSelectTarget, "event")
-    this.setSelectedOption(this.aggSelectTarget, "agg")
+    this.setSelectedOption(this.aggSelectTarget, "agg"),
+    this.setSelectedOption(this.propertySelectTarget, "prop")
   }
 
   navigateToSelectUrl(event) {

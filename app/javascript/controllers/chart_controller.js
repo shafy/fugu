@@ -47,7 +47,8 @@ export default class extends Controller {
           //   scheme: 'brewer.Paired12'
           // },
           legend: {
-             display: false,
+             display: true,
+             position: 'bottom'
           }
         }
       }

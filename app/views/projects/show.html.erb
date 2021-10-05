@@ -7,21 +7,21 @@
       <div class="flex flex-col items-start justify-center">
         <%= label_tag 'events', 'Events', class: "text-sm font-medium mb-2" %>
         <%= select_tag "events",
-            raw(event_select_options(@event_names, params[:slug], params[:test], params[:agg])),
+            raw(event_select_options(@event_names, params)),
             data: { action: "change->event#navigateToSelectUrl", event_target: "eventSelect"}
         %>
       </div>
       <div class="flex flex-col items-start justify-center">
         <%= label_tag 'properties', 'Properties', class: "text-sm font-medium mb-2" %>
         <%= select_tag "properties",
-            raw(property_select_options(@event_names, params[:slug], params[:test])),
+            raw(property_select_options(@properties, params)),
             data: { action: "change->event#navigateToSelectUrl", event_target: "propertySelect"}
         %>
       </div>
       <div class="flex flex-col items-start justify-center">
         <%= label_tag 'aggregation', 'Aggregation', class: "text-sm font-medium mb-2" %>
         <%= select_tag "aggregation",
-            raw(agg_select_options(params[:event], params[:slug], params[:test])),
+            raw(agg_select_options(params)),
             data: { action: "change->event#navigateToSelectUrl", event_target: "aggSelect"}
         %>
       </div>

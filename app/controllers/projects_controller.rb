@@ -4,6 +4,8 @@ class ProjectsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_project, only: %i[show]
   before_action :authorize_project_user, only: %i[show]
+  before_action :set_property, only: %i[show]
+  before_action :set_aggregation, only: %i[show]
 
   def index
     @projects = Project.where(user: current_user)
@@ -26,13 +28,13 @@ class ProjectsController < ApplicationController
     end_date = Event.where(name: @selected_event, api_key: api_key).maximum("created_at")
 
     @properties = Event.distinct_properties(@selected_event, api_key.id)
-    @property_values = Event.distinct_property_values(@selected_event, api_key.id, "color")
+    @property_values = Event.distinct_property_values(@selected_event, api_key.id, @property)
 
     events_array = Event.with_aggregation(
       @selected_event,
       api_key.id,
-      aggregation,
-      "color",
+      @aggregation,
+      @property,
       @property_values.join(","),
       start_date,
       end_date
@@ -40,9 +42,7 @@ class ProjectsController < ApplicationController
 
     @dates = events_array.uniq { |e| e["date"]}.map { |d| d["date"] }
     @events = events_array.group_by { |e| e["property_value"] }.each_value { |v| v.map! { |vv| vv["count"]} }
-    
-    puts @dates
-    puts @events
+
   end
 
   def new
@@ -62,8 +62,14 @@ class ProjectsController < ApplicationController
 
   private
 
-  def aggregation
-    Event.aggregations.key?(params[:agg]) ? Event.aggregations[params[:agg]] : 'day'
+  def set_aggregation
+    @aggregation = Event.aggregations.key?(params[:agg]) ? Event.aggregations[params[:agg]] : "day"
+  end
+
+  def set_property
+    return if !params.key?("prop") || params[:prop] == "All"
+
+    @property = params[:prop]
   end
 
   def project_params
