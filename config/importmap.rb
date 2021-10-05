@@ -6,6 +6,7 @@
 pin "application"
 
 pin "chart.js", to: "https://cdn.jsdelivr.net/npm/chart.js/+esm"
+pin "chartjs-plugin-colorschemes", to: "https://cdn.jsdelivr.net/npm/chartjs-plugin-colorschemes"
 pin "@hotwired/stimulus", to: "stimulus.js"
 pin "@hotwired/stimulus-importmap-autoloader", to: "stimulus-importmap-autoloader.js"
 

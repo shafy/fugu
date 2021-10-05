@@ -3,10 +3,13 @@ import { Controller } from "@hotwired/stimulus"
 import { Chart, registerables } from "chart.js";
 Chart.register(...registerables);
 
+// import "chartjs-plugin-colorschemes";
+
 export default class extends Controller {
   static targets = [ "chart"]
   static values = {
-    events: Array,
+    dates: Array,
+    events: Object,
     eventName: String,
   }
 
@@ -16,15 +19,8 @@ export default class extends Controller {
 
   showChart() {
     const data = {
-      labels: this.eventsValue.map(e => e["date"]),
-      datasets: [
-        {
-          label: this.eventNameValue,
-          backgroundColor: "rgb(255, 99, 132)",
-          borderColor: "rgb(255, 99, 132)",
-          data: this.eventsValue.map(e => e["count"]),
-        }
-      ]
+      labels: this.datesValue,
+      datasets: Object.keys(this.eventsValue).map(e => this.createDataSet(e, this.eventsValue[e]))
     };
 
     const config = {
@@ -46,6 +42,10 @@ export default class extends Controller {
         },
         spanGaps: true,
         plugins: {
+          // Waiting for update to work with chart.js > 3.0
+          // colorschemes: {
+          //   scheme: 'brewer.Paired12'
+          // },
           legend: {
              display: false,
           }
@@ -57,5 +57,15 @@ export default class extends Controller {
       this.chartTarget,
       config
     );
+  }
+
+  createDataSet(label, data) {
+    return {
+      label: label,
+      backgroundColor: "rgb(255, 99, 0)",
+      // random stuff while waiting for the colorschemes plugin update
+      borderColor: `rgb(255, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)})`,
+      data: data
+    }
   }
 }
