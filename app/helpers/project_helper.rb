@@ -48,4 +48,14 @@ module ProjectHelper
       prop: prop
     )
   end
+  
+  def build_test_toggle_url(test, url_params)
+    project_path(
+      url_params[:slug],
+      event: url_params[:event],
+      agg: url_params[:agg],
+      prop: url_params[:prop],
+      test: test
+    )
+  end
 end

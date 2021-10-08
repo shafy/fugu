@@ -95,7 +95,8 @@ class ProjectsController < ApplicationController
 
   def set_selected_event
     @selected_event = if params[:event]
-                        params[:event].tr('-', ' ').titleize
+                        e = params[:event].tr('-', ' ').titleize
+                        Event.exists?(name: e, api_key: @api_key) ? e : @event_names.first
                       else
                         @event_names.first
                       end

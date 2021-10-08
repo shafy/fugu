@@ -44,9 +44,9 @@
     <div>
       <% if params[:test] == 'true' %>
         *Test mode* <br />
-        <%= link_to 'Toggle live mode', project_path(params[:slug], event: params[:event]) %>
+        <%= link_to 'Toggle live mode', build_test_toggle_url(false, params) %>
       <% else %>
-        <%= link_to 'Toggle test mode', project_path(params[:slug], event: params[:event], test: 'true') %>
+        <%= link_to 'Toggle test mode', build_test_toggle_url(true, params) %>
       <% end %>
     </div>
     <div>
