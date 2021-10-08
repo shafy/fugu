@@ -47,7 +47,7 @@ export default class extends Controller {
           //   scheme: 'brewer.Paired12'
           // },
           legend: {
-             display: true,
+             display: Object.keys(this.eventsValue).length != 1,
              position: 'bottom'
           }
         }

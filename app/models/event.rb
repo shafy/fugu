@@ -35,9 +35,14 @@ class Event < ApplicationRecord
     }
   end
 
-  def self.with_aggregation(name, api_key_id, agg, prop_name, prop_values, start_date, end_date)
+  def self.with_aggregation(event_name:, api_key_id:, agg:, prop_name:, prop_values:, start_date:, end_date:)
     ActiveRecord::Base.connection.execute(
-      with_agg_sql_query(name, api_key_id, agg, prop_name, prop_values, start_date, end_date)
+      with_agg_sql_query(
+        event_name: event_name, api_key_id: api_key_id, agg: agg,
+        prop_name: prop_name, prop_values: prop_values,
+        start_date: start_date, end_date: end_date,
+        prop_breakdown: prop_breakdown?(prop_name, prop_values)
+      )
     ).to_a
   end
 
@@ -53,7 +58,10 @@ class Event < ApplicationRecord
     ).map { |row| row["property"] }
   end
 
-  # rubocop:disable Metrics/MethodLength
+  def self.prop_breakdown?(prop_name, prop_values)
+    prop_name.present? && !prop_name.casecmp?("all") && prop_values && prop_values.any?
+  end
+
   def self.distinct_properties_sql_query(event_name, api_key_id)
     %(
       SELECT
@@ -74,45 +82,72 @@ class Event < ApplicationRecord
     )
   end
 
-  def self.with_agg_sql_query(event_name, api_key_id, aggregation, prop_name, prop_values, start_date, end_date)
+  def self.with_agg_sql_query(event_name:, api_key_id:, agg:, prop_name:, prop_values:, start_date:, end_date:, prop_breakdown:)
     %(
       WITH
 
       week_and_prop_range AS (
+        #{week_and_prop_range_sql(prop_values, start_date, end_date, agg, prop_breakdown)}
+      ),
+
+      weekly_counts AS (
+        #{weekly_counts_sql(prop_name, agg, event_name, api_key_id, prop_breakdown)}
+      )
+
+      SELECT week_and_prop_range.date::date,
+        #{"week_and_prop_range.property_value," if prop_breakdown}
+        CASE WHEN weekly_counts.count is NULL THEN 0 ELSE weekly_counts.count END AS count
+      FROM week_and_prop_range
+      LEFT OUTER JOIN weekly_counts ON week_and_prop_range.date = weekly_counts.date
+      #{" AND week_and_prop_range.property_value = weekly_counts.property_value" if prop_breakdown} 
+      ORDER BY week_and_prop_range.date ASC;
+    )
+  end
+
+  def self.weekly_counts_sql(prop_name, agg, event_name, api_key_id, prop_breakdown)
+    %(
+      SELECT date_trunc('#{agg}', created_at) AS date,
+              count(*) AS count
+              #{", properties->>'#{prop_name}' AS property_value" if prop_breakdown}
+      FROM events
+      WHERE name='#{event_name}' AND api_key_id=#{api_key_id}
+      GROUP BY date #{", property_value" if prop_breakdown}
+    )
+  end
+
+  def self.week_and_prop_range_sql(prop_values, start_date, end_date, agg, prop_breakdown)
+    if prop_breakdown
+      %(
         SELECT (
           SELECT property_val_arr[n_property_val] AS property_value
           FROM
           (
-            SELECT '{#{prop_values}}'::text[] AS property_val_arr
+            SELECT '{#{prop_values.join(",")}}'::text[] AS property_val_arr
           ) property_values
         ),
-        generate_series(
-          '#{start_date}'::date,
-          '#{end_date}'::date,
-          '1 #{aggregation}'::interval
-        ) as date
-        FROM generate_series(1,2) AS n_property_val
-      ),
-
-      weekly_counts AS (
-        SELECT date_trunc('#{aggregation}', created_at) AS date,
-               count(*) AS count,
-               properties->>'#{prop_name}' AS property_value
-        FROM events
-        WHERE name='#{event_name}' AND api_key_id=#{api_key_id}
-        GROUP BY date, property_value
+        #{generate_series_dates_sql(start_date, end_date, agg)}
+        FROM generate_series(1,#{prop_values.length}) AS n_property_val
       )
+    else
+      week_range_sql(start_date, end_date, agg)
+    end
+  end
 
-      SELECT week_and_prop_range.date::date,
-        week_and_prop_range.property_value,
-        CASE WHEN weekly_counts.count is NULL THEN 0 ELSE weekly_counts.count END AS count
-      FROM week_and_prop_range
-      LEFT OUTER JOIN weekly_counts ON week_and_prop_range.date = weekly_counts.date AND
-      week_and_prop_range.property_value = weekly_counts.property_value
-      ORDER BY week_and_prop_range.date ASC;
+  def self.week_range_sql(start_date, end_date, agg)
+    %(
+      SELECT #{generate_series_dates_sql(start_date, end_date, agg)}
     )
   end
-  # rubocop:enable Metrics/MethodLength
+
+  def self.generate_series_dates_sql(start_date, end_date, agg)
+    %(
+      generate_series(
+        '#{start_date}'::date,
+        '#{end_date}'::date,
+        '1 #{agg}'::interval
+      ) as date
+    )
+  end
 
   private
 

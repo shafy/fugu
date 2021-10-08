@@ -15,34 +15,33 @@ class ProjectsController < ApplicationController
     # TODO
     # redirect_to user_dashbaord unless project
 
-    api_key = if params[:test] == 'true'
+    @api_key = if params[:test] == 'true'
                 @project.api_key_test
               else
                 @project.api_key_live
               end
 
-    @event_names = Event.where(api_key: api_key).order(name: :asc).distinct.pluck(:name)
+    @event_names = Event.where(api_key: @api_key).order(name: :asc).distinct.pluck(:name)
     set_selected_event
 
-    start_date = Event.where(name: @selected_event, api_key: api_key).minimum("created_at")
-    end_date = Event.where(name: @selected_event, api_key: api_key).maximum("created_at")
+    start_date = Event.where(name: @selected_event, api_key: @api_key).minimum("created_at")
+    end_date = Event.where(name: @selected_event, api_key: @api_key).maximum("created_at")
 
-    @properties = Event.distinct_properties(@selected_event, api_key.id)
-    @property_values = Event.distinct_property_values(@selected_event, api_key.id, @property)
+    @properties = Event.distinct_properties(@selected_event, @api_key.id)
+    set_property_values
 
     events_array = Event.with_aggregation(
-      @selected_event,
-      api_key.id,
-      @aggregation,
-      @property,
-      @property_values.join(","),
-      start_date,
-      end_date
+      event_name: @selected_event,
+      api_key_id: @api_key.id,
+      agg: @aggregation,
+      prop_name: @property,
+      prop_values: @property_values,
+      start_date: start_date,
+      end_date: end_date
     )
 
     @dates = events_array.uniq { |e| e["date"]}.map { |d| d["date"] }
     @events = events_array.group_by { |e| e["property_value"] }.each_value { |v| v.map! { |vv| vv["count"]} }
-
   end
 
   def new
@@ -70,6 +69,12 @@ class ProjectsController < ApplicationController
     return if !params.key?("prop") || params[:prop] == "All"
 
     @property = params[:prop]
+  end
+
+  def set_property_values
+    return if @property.blank? || @property.casecmp?("all")
+
+    @property_values = Event.distinct_property_values(@selected_event, @api_key.id, @property)
   end
 
   def project_params
