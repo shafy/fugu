@@ -8,14 +8,16 @@
         <%= label_tag 'events', 'Events', class: "text-sm font-medium mb-2" %>
         <%= select_tag "events",
             raw(event_select_options(@event_names, params)),
-            data: { action: "change->event#navigateToSelectUrl", event_target: "eventSelect"}
+            data: { action: "change->event#navigateToSelectUrl", event_target: "eventSelect"},
+            class: "w-48"
         %>
       </div>
       <div class="flex flex-col items-start justify-center">
         <%= label_tag 'properties', 'Properties', class: "text-sm font-medium mb-2" %>
         <%= select_tag "properties",
             raw(property_select_options(@properties, params)),
-            data: { action: "change->event#navigateToSelectUrl", event_target: "propertySelect"}
+            data: { action: "change->event#navigateToSelectUrl", event_target: "propertySelect"},
+            class: "w-40"
         %>
       </div>
       <div class="flex flex-col items-start justify-center">
