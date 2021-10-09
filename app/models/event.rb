@@ -26,6 +26,8 @@ class Event < ApplicationRecord
 
   before_validation :convert_properties_to_hash
 
+  before_create :property_values_to_s
+
   def self.aggregations
     {
       "d" => "day",
@@ -156,6 +158,10 @@ class Event < ApplicationRecord
 
     self.properties = JSON.parse(properties) if properties
   rescue StandardError
-    errors.add(:properties, 'must be valid JSON')
+    errors.add(:properties, "must be valid JSON")
+  end
+
+  def property_values_to_s
+    properties.map { |k, v| properties[k] = v.to_s }
   end
 end

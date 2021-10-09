@@ -68,7 +68,7 @@ export default class extends Controller {
 
   createDataSet(label, data, index) {
     return {
-      label: label,
+      label: this.htmlDecode(label),
       backgroundColor: this.colorPalette[index % this.colorPalette.length],
       borderColor: this.colorPalette[index % this.colorPalette.length],
       borderJointStyle: "round",
@@ -95,5 +95,10 @@ export default class extends Controller {
       "rgb(243, 114, 44)",
       "rgb(249, 65, 68)"
     ]
+  }
+
+  htmlDecode(input) {
+    var doc = new DOMParser().parseFromString(input, "text/html");
+    return doc.documentElement.textContent;
   }
 }

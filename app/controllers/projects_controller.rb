@@ -30,6 +30,8 @@ class ProjectsController < ApplicationController
       end_date: @end_date
     )
 
+    puts events_array
+
     @dates = events_array.uniq { |e| e["date"]}.map { |d| d["date"] }
     @events = events_array.group_by { |e| e["property_value"] }.each_value { |v| v.map! { |vv| vv["count"]} }
   end
@@ -69,19 +71,21 @@ class ProjectsController < ApplicationController
   end
 
   def set_aggregation
-    @aggregation = Event.aggregations.key?(params[:agg]) ? Event.aggregations[params[:agg]] : "day"
+    a = Event.aggregations.key?(params[:agg]) ? Event.aggregations[params[:agg]] : "day"
+    @aggregation = CGI.escapeHTML(a)
   end
 
   def set_property
     return if !params.key?("prop") || params[:prop] == "All"
 
-    @property = params[:prop]
+    @property = CGI.escapeHTML(params[:prop])
   end
 
   def set_property_values
     return if @property.blank? || @property.casecmp?("all")
 
-    @property_values = Event.distinct_property_values(@selected_event, @api_key.id, @property)
+    pv = Event.distinct_property_values(@selected_event, @api_key.id, @property)
+    @property_values = pv.map { |p| CGI.escapeHTML(p) }
   end
 
   def project_params
@@ -101,11 +105,12 @@ class ProjectsController < ApplicationController
   end
 
   def set_selected_event
-    @selected_event = if params[:event]
-                        e = params[:event].tr('-', ' ').titleize
-                        Event.exists?(name: e, api_key: @api_key) ? e : @event_names.first
-                      else
-                        @event_names.first
-                      end
+    ev = if params[:event]
+           e = params[:event].tr('-', ' ').titleize
+           Event.exists?(name: e, api_key: @api_key) ? e : @event_names.first
+         else
+           @event_names.first
+         end
+    @selected_event = CGI.escapeHTML(ev)
   end
 end
