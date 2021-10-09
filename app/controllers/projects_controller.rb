@@ -4,7 +4,13 @@ class ProjectsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_project, only: %i[show]
   before_action :authorize_project_user, only: %i[show]
+  before_action :set_api_key, only: %i[show]
+  before_action :set_event_names, only: %i[show]
+  before_action :set_selected_event, only: %i[show]
+  before_action :set_dates, only: %i[show]
   before_action :set_property, only: %i[show]
+  before_action :set_properties, only: %i[show]
+  before_action :set_property_values, only: %i[show]
   before_action :set_aggregation, only: %i[show]
 
   def index
@@ -13,31 +19,15 @@ class ProjectsController < ApplicationController
 
   def show
     # TODO
-    # redirect_to user_dashbaord unless project
-
-    @api_key = if params[:test] == 'true'
-                @project.api_key_test
-              else
-                @project.api_key_live
-              end
-
-    @event_names = Event.where(api_key: @api_key).order(name: :asc).distinct.pluck(:name)
-    set_selected_event
-
-    start_date = Event.where(name: @selected_event, api_key: @api_key).minimum("created_at")
-    end_date = Event.where(name: @selected_event, api_key: @api_key).maximum("created_at")
-
-    @properties = Event.distinct_properties(@selected_event, @api_key.id)
-    set_property_values
-
+    # redirect_to dashboard unless project
     events_array = Event.with_aggregation(
       event_name: @selected_event,
       api_key_id: @api_key.id,
       agg: @aggregation,
       prop_name: @property,
       prop_values: @property_values,
-      start_date: start_date,
-      end_date: end_date
+      start_date: @start_date,
+      end_date: @end_date
     )
 
     @dates = events_array.uniq { |e| e["date"]}.map { |d| d["date"] }
@@ -60,6 +50,23 @@ class ProjectsController < ApplicationController
   end
 
   private
+
+  def set_api_key
+    @api_key = params[:test] == "true" ? @project.api_key_test : @project.api_key_live
+  end
+
+  def set_event_names
+    @event_names = Event.where(api_key: @api_key).order(name: :asc).distinct.pluck(:name)
+  end
+
+  def set_dates
+    @start_date = Event.where(name: @selected_event, api_key: @api_key).minimum("created_at")
+    @end_date = Event.where(name: @selected_event, api_key: @api_key).maximum("created_at")
+  end
+
+  def set_properties
+    @properties = Event.distinct_properties(@selected_event, @api_key.id)
+  end
 
   def set_aggregation
     @aggregation = Event.aggregations.key?(params[:agg]) ? Event.aggregations[params[:agg]] : "day"
