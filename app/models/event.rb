@@ -86,25 +86,25 @@ class Event < ApplicationRecord
     %(
       WITH
 
-      week_and_prop_range AS (
-        #{week_and_prop_range_sql(prop_values, start_date, end_date, agg, prop_breakdown)}
+      interval_and_prop_range AS (
+        #{interval_and_prop_range_sql(prop_values, start_date, end_date, agg, prop_breakdown)}
       ),
 
-      weekly_counts AS (
-        #{weekly_counts_sql(prop_name, agg, event_name, api_key_id, prop_breakdown)}
+      interval_counts AS (
+        #{interval_counts_sql(prop_name, agg, event_name, api_key_id, prop_breakdown)}
       )
 
-      SELECT week_and_prop_range.date::date,
-        #{"week_and_prop_range.property_value," if prop_breakdown}
-        CASE WHEN weekly_counts.count is NULL THEN 0 ELSE weekly_counts.count END AS count
-      FROM week_and_prop_range
-      LEFT OUTER JOIN weekly_counts ON week_and_prop_range.date = weekly_counts.date
-      #{" AND week_and_prop_range.property_value = weekly_counts.property_value" if prop_breakdown} 
-      ORDER BY week_and_prop_range.date ASC;
+      SELECT interval_and_prop_range.date::date,
+        #{"interval_and_prop_range.property_value," if prop_breakdown}
+        CASE WHEN interval_counts.count is NULL THEN 0 ELSE interval_counts.count END AS count
+      FROM interval_and_prop_range
+      LEFT OUTER JOIN interval_counts ON interval_and_prop_range.date = interval_counts.date
+      #{" AND interval_and_prop_range.property_value = interval_counts.property_value" if prop_breakdown} 
+      ORDER BY interval_and_prop_range.date ASC;
     )
   end
 
-  def self.weekly_counts_sql(prop_name, agg, event_name, api_key_id, prop_breakdown)
+  def self.interval_counts_sql(prop_name, agg, event_name, api_key_id, prop_breakdown)
     %(
       SELECT date_trunc('#{agg}', created_at) AS date,
               count(*) AS count
@@ -115,7 +115,7 @@ class Event < ApplicationRecord
     )
   end
 
-  def self.week_and_prop_range_sql(prop_values, start_date, end_date, agg, prop_breakdown)
+  def self.interval_and_prop_range_sql(prop_values, start_date, end_date, agg, prop_breakdown)
     if prop_breakdown
       %(
         SELECT (
@@ -129,11 +129,11 @@ class Event < ApplicationRecord
         FROM generate_series(1,#{prop_values.length}) AS n_property_val
       )
     else
-      week_range_sql(start_date, end_date, agg)
+      interval_range_sql(start_date, end_date, agg)
     end
   end
 
-  def self.week_range_sql(start_date, end_date, agg)
+  def self.interval_range_sql(start_date, end_date, agg)
     %(
       SELECT #{generate_series_dates_sql(start_date, end_date, agg)}
     )
@@ -142,8 +142,8 @@ class Event < ApplicationRecord
   def self.generate_series_dates_sql(start_date, end_date, agg)
     %(
       generate_series(
-        '#{start_date}'::date,
-        '#{end_date}'::date,
+        date_trunc('#{agg}', '#{start_date}'::date)::date,
+        date_trunc('#{agg}', '#{end_date}'::date)::date,
         '1 #{agg}'::interval
       ) as date
     )
