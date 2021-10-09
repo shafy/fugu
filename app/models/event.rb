@@ -26,7 +26,7 @@ class Event < ApplicationRecord
 
   before_validation :convert_properties_to_hash
 
-  before_create :property_values_to_s
+  before_create :sanitize_prop_values
 
   def self.aggregations
     {
@@ -161,7 +161,7 @@ class Event < ApplicationRecord
     errors.add(:properties, "must be valid JSON")
   end
 
-  def property_values_to_s
-    properties.map { |k, v| properties[k] = v.to_s }
+  def sanitize_prop_values
+    properties.map { |k, v| properties[k] = CGI.escapeHTML(v.to_s) }
   end
 end

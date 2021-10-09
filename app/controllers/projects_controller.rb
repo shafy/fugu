@@ -30,8 +30,6 @@ class ProjectsController < ApplicationController
       end_date: @end_date
     )
 
-    puts events_array
-
     @dates = events_array.uniq { |e| e["date"]}.map { |d| d["date"] }
     @events = events_array.group_by { |e| e["property_value"] }.each_value { |v| v.map! { |vv| vv["count"]} }
   end
@@ -84,8 +82,8 @@ class ProjectsController < ApplicationController
   def set_property_values
     return if @property.blank? || @property.casecmp?("all")
 
-    pv = Event.distinct_property_values(@selected_event, @api_key.id, @property)
-    @property_values = pv.map { |p| CGI.escapeHTML(p) }
+    @property_values = Event.distinct_property_values(@selected_event, @api_key.id, @property)
+    #@property_values = pv.map { |p| CGI.escapeHTML(p) }
   end
 
   def project_params

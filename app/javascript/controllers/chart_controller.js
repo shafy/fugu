@@ -34,6 +34,7 @@ export default class extends Controller {
         scales: {
           y: {
             grace: '10%',
+            beginAtZero: true,
             ticks: {
               format: { style: "decimal" },
               precision: 0,
