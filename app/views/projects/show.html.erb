@@ -7,20 +7,30 @@
       <div class="flex flex-col items-start justify-center">
         <%= label_tag 'events', 'Events', class: "text-sm font-medium mb-2" %>
         <%= select_tag "events",
-            raw(event_select_options(@event_names, params[:slug], params[:test], params[:agg])),
-            data: { action: "change->event#navigateToSelectUrl", event_target: "eventSelect"}
+            raw(event_select_options(@event_names, params)),
+            data: { action: "change->event#navigateToSelectUrl", event_target: "eventSelect"},
+            class: "w-48"
+        %>
+      </div>
+      <div class="flex flex-col items-start justify-center">
+        <%= label_tag 'properties', 'Properties', class: "text-sm font-medium mb-2" %>
+        <%= select_tag "properties",
+            raw(property_select_options(@properties, params)),
+            data: { action: "change->event#navigateToSelectUrl", event_target: "propertySelect"},
+            class: "w-40"
         %>
       </div>
       <div class="flex flex-col items-start justify-center">
         <%= label_tag 'aggregation', 'Aggregation', class: "text-sm font-medium mb-2" %>
         <%= select_tag "aggregation",
-            raw(agg_select_options(params[:event], params[:slug], params[:test])),
+            raw(agg_select_options(params)),
             data: { action: "change->event#navigateToSelectUrl", event_target: "aggSelect"}
         %>
       </div>
     </div>
     <div class="flex flex-row w-full">
       <div data-controller="chart"
+            data-chart-dates-value="<%= @dates.to_json %>"
             data-chart-events-value="<%= @events.to_json %>"
             data-chart-event-name-value="<%= @selected_event.titleize %>"
             class="p-4 w-full rounded-md shadow-md bg-yellow-50"
@@ -36,9 +46,9 @@
     <div>
       <% if params[:test] == 'true' %>
         *Test mode* <br />
-        <%= link_to 'Toggle live mode', project_path(params[:slug], event: params[:event]) %>
+        <%= link_to 'Toggle live mode', build_test_toggle_url(false, params) %>
       <% else %>
-        <%= link_to 'Toggle test mode', project_path(params[:slug], event: params[:event], test: 'true') %>
+        <%= link_to 'Toggle test mode', build_test_toggle_url(true, params) %>
       <% end %>
     </div>
     <div>

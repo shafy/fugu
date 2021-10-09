@@ -43,6 +43,7 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
       FactoryBot.create(:api_key, project: @project, test: true)
       api_key_live = FactoryBot.create(:api_key, project: @project, test: false)
       @event = FactoryBot.create(:event, api_key: api_key_live)
+      @event2 = FactoryBot.create(:event, name: "Test Event 2", api_key: api_key_live)
       sign_in user
       get project_path(@project.name)
     end
@@ -57,6 +58,19 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
 
     test "contains event name" do
       assert_match(@event.name, @response.body)
+    end
+
+    test "contain correct event names in dropdown" do
+      assert_match("data-name='test-event-2'>#{@event2.name}</option>", @response.body)
+    end
+
+    test "contain correct property values in dropdown" do
+      assert_match("data-name='color'>color</option>", @response.body)
+    end
+
+    test "is successful for property breakdown" do
+      get project_path(@project.name, p: "color")
+      assert_response :success
     end
   end
 end

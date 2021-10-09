@@ -4,6 +4,14 @@ class ProjectsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_project, only: %i[show]
   before_action :authorize_project_user, only: %i[show]
+  before_action :set_api_key, only: %i[show]
+  before_action :set_event_names, only: %i[show]
+  before_action :set_selected_event, only: %i[show]
+  before_action :set_dates, only: %i[show]
+  before_action :set_property, only: %i[show]
+  before_action :set_properties, only: %i[show]
+  before_action :set_property_values, only: %i[show]
+  before_action :set_aggregation, only: %i[show]
 
   def index
     @projects = Project.where(user: current_user)
@@ -11,32 +19,19 @@ class ProjectsController < ApplicationController
 
   def show
     # TODO
-    # redirect_to user_dashbaord unless project
-
-    api_key = if params[:test] == 'true'
-                @project.api_key_test
-              else
-                @project.api_key_live
-              end
-
-    @event_names = Event.where(api_key: api_key).order(name: :asc).distinct.pluck(:name)
-    set_selected_event
-
-    @events = ActiveRecord::Base.connection.execute(
-      event_sql_query(@selected_event, api_key.id, aggregation)
-    ).to_a
-
-    query = %(
-      SELECT
-        DISTINCT field
-      FROM (
-        SELECT jsonb_object_keys(properties) AS field
-        FROM events
-        WHERE name = '#{@selected_event}'
-      ) AS subquery
+    # redirect_to dashboard unless project
+    events_array = Event.with_aggregation(
+      event_name: @selected_event,
+      api_key_id: @api_key.id,
+      agg: @aggregation,
+      prop_name: @property,
+      prop_values: @property_values,
+      start_date: @start_date,
+      end_date: @end_date
     )
-    result = ActiveRecord::Base.connection.execute(query)
-    puts result.map { |row| row['field'] }
+
+    @dates = events_array.uniq { |e| e["date"]}.map { |d| d["date"] }
+    @events = events_array.group_by { |e| e["property_value"] }.each_value { |v| v.map! { |vv| vv["count"]} }
   end
 
   def new
@@ -56,39 +51,38 @@ class ProjectsController < ApplicationController
 
   private
 
-  def aggregation
-    Event.aggregations.key?(params[:agg]) ? Event.aggregations[params[:agg]] : 'day'
+  def set_api_key
+    @api_key = params[:test] == "true" ? @project.api_key_test : @project.api_key_live
   end
 
-  # rubocop:disable Metrics/MethodLength
-  def event_sql_query(event_name, api_key_id, aggregation)
-    %(
-      WITH range_values AS (
-        SELECT date_trunc('#{aggregation}', min(created_at)) as minval,
-               date_trunc('#{aggregation}', max(created_at)) as maxval
-        FROM events
-        WHERE name='#{event_name}' AND api_key_id=#{api_key_id}),
-
-      week_range AS (
-        SELECT generate_series(minval, maxval, '1 #{aggregation}'::interval) as date
-        FROM range_values
-      ),
-
-      weekly_counts AS (
-        SELECT date_trunc('#{aggregation}', created_at) as date,
-               count(*) as count
-        FROM events
-        WHERE name='#{event_name}' AND api_key_id=#{api_key_id}
-        GROUP BY 1
-      )
-
-      SELECT week_range.date::date,
-        CASE WHEN weekly_counts.count is NULL THEN 0 ELSE weekly_counts.count END AS count
-      FROM week_range
-      LEFT OUTER JOIN weekly_counts on week_range.date = weekly_counts.date;
-    )
+  def set_event_names
+    @event_names = Event.where(api_key: @api_key).order(name: :asc).distinct.pluck(:name)
   end
-  # rubocop:enable Metrics/MethodLength
+
+  def set_dates
+    @start_date = Event.where(name: @selected_event, api_key: @api_key).minimum("created_at")
+    @end_date = Event.where(name: @selected_event, api_key: @api_key).maximum("created_at")
+  end
+
+  def set_properties
+    @properties = Event.distinct_properties(@selected_event, @api_key.id)
+  end
+
+  def set_aggregation
+    @aggregation = Event.aggregations.key?(params[:agg]) ? Event.aggregations[params[:agg]] : "day"
+  end
+
+  def set_property
+    return if !params.key?("prop") || params[:prop] == "All"
+
+    @property = params[:prop]
+  end
+
+  def set_property_values
+    return if @property.blank? || @property.casecmp?("all")
+
+    @property_values = Event.distinct_property_values(@selected_event, @api_key.id, @property)
+  end
 
   def project_params
     params.require(:project).permit(:name)
@@ -108,7 +102,8 @@ class ProjectsController < ApplicationController
 
   def set_selected_event
     @selected_event = if params[:event]
-                        params[:event].tr('-', ' ').titleize
+                        e = params[:event].tr('-', ' ').titleize
+                        Event.exists?(name: e, api_key: @api_key) ? e : @event_names.first
                       else
                         @event_names.first
                       end
