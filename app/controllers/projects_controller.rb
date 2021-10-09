@@ -83,7 +83,7 @@ class ProjectsController < ApplicationController
     return if @property.blank? || @property.casecmp?("all")
 
     @property_values = Event.distinct_property_values(@selected_event, @api_key.id, @property)
-    #@property_values = pv.map { |p| CGI.escapeHTML(p) }
+    @property_values.map! { |p| p.gsub(",", "\\,")}
   end
 
   def project_params

@@ -124,7 +124,7 @@ class Event < ApplicationRecord
           SELECT property_val_arr[n_property_val] AS property_value
           FROM
           (
-            SELECT '{#{prop_values.join(",")}}'::text[] AS property_val_arr
+            SELECT '{#{prop_values.map(&:inspect).join(',')}}'::text[] AS property_val_arr
           ) property_values
         ),
         #{generate_series_dates_sql(start_date, end_date, agg)}
