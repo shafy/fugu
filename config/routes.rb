@@ -6,7 +6,11 @@ Rails.application.routes.draw do
 
   resources :projects, only: [:index, :new, :create]
 
-  get "projects/:slug", to: "projects#show", as: :project
+  scope "projects/" do
+    get "/:slug", to: "projects#show", as: :project
+    get "/:slug/settings", to: "projects#settings", as: :project_settings
+    delete "/:slug", to: "projects#destroy", as: :destroy_project
+  end
 
   scope module: "users" do
     get "settings/", to: "settings#show", as: :users_settings

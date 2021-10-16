@@ -1,6 +1,6 @@
 <% content_for :main do %>
   <h1 class="text-xl mb-4 font-medium mb-8">Account settings</h1>
-  <div class="flex flex-col w-32rem mb-4 p-4 rounded-md shadow-md bg-yellow-50 gap-x-5">
+  <%= render "partials/narrow_box" do %>
     <h2>Email</h2>
     <p class="mb-4">
       <%= current_user.email %>
@@ -28,5 +28,5 @@
       Contact me if you have questions or need help: canolcer@hey.com or
       <a href="https://twitter.com/canolcer" targt="_blank">@canolcer</a>.
     </p>
-  </div>
+  <% end %>
 <% end %>

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ProjectsController < ApplicationController
-  before_action :set_project, only: %i[show]
+  before_action :set_project, only: %i[show settings destroy]
   before_action :authorize_project_user, only: %i[show]
   before_action :set_api_key, only: %i[show]
   before_action :set_event_names, only: %i[show]
@@ -48,6 +48,19 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def destroy
+    if @project.destroy
+      flash[:notice] = "Your project was successfully deleted"
+      redirect_to projects_path
+    else
+      flash[:error] = "We couldn't delete the project: #{@project.errors.full_messages.first}"
+      redirect_to project_path(@project.name)
+    end
+  end
+
+  def settings
+  end
+
   private
 
   def set_api_key
@@ -90,7 +103,7 @@ class ProjectsController < ApplicationController
   end
 
   def set_project
-    @project = Project.find_by(name: params[:slug].downcase)
+    @project = Project.find_by(name: params[:slug].downcase, user: current_user)
   end
 
   def authorize_project_user

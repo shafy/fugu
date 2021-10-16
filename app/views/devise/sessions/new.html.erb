@@ -4,25 +4,25 @@
     <div class="flex flex-col justify-center items-center w-80">
 
       <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-        <div class="mb-4">
+        <div class="mb-4 w-80">
           <%= f.label :email %><br />
-          <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'rounded-lg w-full' %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "mt-2 rounded-lg w-full" %>
         </div>
 
-        <div class="mb-4">
+        <div class="mb-4 w-80">
           <%= f.label :password %><br />
-          <%= f.password_field :password, autocomplete: 'current-password', class: 'rounded-lg w-full' %>
+          <%= f.password_field :password, autocomplete: "current-password", class: "mt-2 rounded-lg w-full" %>
         </div>
 
         <% if devise_mapping.rememberable? %>
-          <div class="mb-4">
-            <%= f.check_box :remember_me, class: 'cursor-pointer' %>
-            <%= f.label :remember_me, class: 'cursor-pointer' %>
+          <div class="mb-4 w-80">
+            <%= f.check_box :remember_me, class: "cursor-pointer" %>
+            <%= f.label :remember_me, class: "cursor-pointer" %>
           </div>
         <% end %>
 
-        <div class="mb-4">
-          <%= f.submit "Log in", class: 'py-2 px-4 bg-green-500 text-white font-semibold rounded-lg shadow-md focus:outline-none hover:bg-green-300 cursor-pointer w-full' %>
+        <div class="mb-4 w-80">
+          <%= f.submit "Log in", class: "py-2 px-4 bg-green-500 text-white font-semibold rounded-lg shadow-md focus:outline-none hover:bg-green-300 cursor-pointer w-full" %>
         </div>
       <% end %>
 
