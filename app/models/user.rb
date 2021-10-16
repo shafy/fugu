@@ -13,9 +13,11 @@
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
+#  status                 :integer          default(0), not null
 #  unconfirmed_email      :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  stripe_customer_id     :string
 #
 # Indexes
 #
@@ -25,6 +27,12 @@
 #
 class User < ApplicationRecord
   has_many :projects, dependent: :destroy
+
+  enum status: {
+    inactive: 0,
+    active: 1,
+    canceled: 2
+  }
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable

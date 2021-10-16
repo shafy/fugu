@@ -14,12 +14,16 @@
     <%= stylesheet_link_tag "application", media: "all" %>
   </head>
 
-  <body class="font-system">
+  <body class="font-system min-h-screen flex flex-col">
+    <%= render "partials/header" %>
     <% flash.each do |key, value| %>
-      <%= content_tag :div, value, class: "flash #{key}" unless value.blank? %>
+      <%= content_tag :div,
+          value,
+          class: "flex flex-row text-center justify-center border-2 p-4 shadow-sm flash-#{key}" unless value.blank? %>
     <% end %>
     <div class="w-full max-w-5xl p-4 flex flex-col justify-center items-center mx-auto">
       <%= yield :main %>
     </div>
+    <%= render "partials/footer" %>
   </body>
 </html>
