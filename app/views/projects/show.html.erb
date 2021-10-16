@@ -1,7 +1,7 @@
 <% content_for :main do %>
   <% unless @event_names.empty? %>
     <h1 class="text-xl mb-4 font-medium mb-8"><%= @project.name %></h1>
-    <div class="flex flex-row w-full mb-4 p-4 w-full rounded-md shadow-md bg-yellow-50 gap-x-5"
+    <div class="flex flex-row w-full mb-4 p-4 rounded-md shadow-md bg-yellow-50 gap-x-5"
           data-controller="event"
     >
       <div class="flex flex-col items-start justify-center">

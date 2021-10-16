@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class ProjectsController < ApplicationController
-  before_action :authenticate_user!
   before_action :set_project, only: %i[show]
   before_action :authorize_project_user, only: %i[show]
   before_action :set_api_key, only: %i[show]

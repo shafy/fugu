@@ -1,0 +1,32 @@
+<% content_for :main do %>
+  <h1 class="text-xl mb-4 font-medium mb-8">Account settings</h1>
+  <div class="flex flex-col w-32rem mb-4 p-4 rounded-md shadow-md bg-yellow-50 gap-x-5">
+    <h2>Email</h2>
+    <p class="mb-4">
+      <%= current_user.email %>
+    </p>
+    <h2>Subscription</h2>
+    <p class="mb-4"> 
+      <% if current_user.active? %>
+        Your Fugu subscription is active and renews monthly.<br>
+        <a href="<%= stripe_customer_portal_url %>">Cancel subscription or update payment method</a>
+      <% elsif current_user.canceled? %>
+         Your Fugu subscription is canceled, but will remain active until <%= @cancel_at %>.<br>
+        <a href="<%= stripe_customer_portal_url %>">Renew subscription</a>
+      <% else %>
+        You don't have an active subscription.<br>
+        Fugu costs $9/month and includes 1 million events/month.<br>
+        <a href="<%= stripe_checkout_session_url %>">Start your subscription now</a>.
+        <% if current_user.stripe_customer_id.present? %>
+          <br><a href="<%= stripe_customer_portal_url %>">View past invoices</a>
+        <% end %>
+      <% end %>
+    </p>
+    <h2>Support</h2>
+    <p class="mb-4">
+      Thanks for being an early Fugu user ❤️
+      Contact me if you have questions or need help: canolcer@hey.com or
+      <a href="https://twitter.com/canolcer" targt="_blank">@canolcer</a>.
+    </p>
+  </div>
+<% end %>
