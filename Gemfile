@@ -80,6 +80,8 @@ group :test do
   gem 'shoulda', '~> 4.0'
 
   gem 'database_cleaner-active_record', '~> 2.0.1'
+
+  gem 'stripe-ruby-mock', '~> 3.1.0.rc3', :require => 'stripe_mock'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
