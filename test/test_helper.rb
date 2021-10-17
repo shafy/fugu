@@ -3,6 +3,8 @@ require_relative "../config/environment"
 require "rails/test_help"
 require "database_cleaner/active_record"
 
+Dir[Rails.root.join("test/support/**/*.rb")].each { |f| require f }
+
 class ActiveSupport::TestCase
   # Run tests in parallel with specified workers
   parallelize(workers: :number_of_processors)
@@ -16,6 +18,7 @@ end
 
 class ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
+  include StripeTestHelper
 end
 
 # Shoulda Matchers

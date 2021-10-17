@@ -5,7 +5,7 @@ class Api::V1::EventsController < Api::ApiController
 
   def create
     event = Event.create(
-      name: params[:name].titleize,
+      name: params[:name],
       api_key: ApiKey.find_by!(key_value: params[:api_key]),
       properties: params[:properties]
     )

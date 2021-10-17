@@ -35,7 +35,8 @@ class ProjectTest < ActiveSupport::TestCase
 
     should belong_to(:user)
 
-    should_not allow_value('Test Project').for(:name)
+    should_not allow_value("Test Project").for(:name)
+    should_not allow_values("project", "projects", "Project").for(:name)
   end
 
   test ".creat_api_keys should create api keys" do

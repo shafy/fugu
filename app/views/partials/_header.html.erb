@@ -4,8 +4,10 @@
       <a href="/" class="no-underline"><%= image_tag "fugu_logo.png" %></a>
     </div>
     <div>
-      <a href="<%= projects_path %>" class="no-underline mx-2">Projects</a>
-      <a href="<%= users_settings_path %>" class="no-underline mx-2">Account settings</a>
+      <% if current_user %>
+        <a href="<%= projects_path %>" class="no-underline mx-2">Projects</a>
+        <a href="<%= users_settings_path %>" class="no-underline mx-2">Account settings</a>
+      <% end %>
     </div>
   </div>
 </header>

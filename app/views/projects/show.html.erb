@@ -1,7 +1,14 @@
 <% content_for :main do %>
+  <div class="flex flex-row items-center justify-between w-full">
+    <div class="w-full text-left">
+      <h1 class="text-lg font-medium mb-2"><%= @project.name %></h1>
+    </div>
+    <div class="w-40 text-right">
+      <%= link_to "Project settings", project_settings_path, class: "font-normal" %>
+    </div>
+  </div>
   <% unless @event_names.empty? %>
-    <h1 class="text-xl mb-4 font-medium mb-8"><%= @project.name %></h1>
-    <div class="flex flex-row w-full mb-4 p-4 rounded-md shadow-md bg-yellow-50 gap-x-5"
+    <div class="flex flex-row w-full mb-2 p-4 rounded-md shadow-md bg-yellow-50 gap-x-5"
           data-controller="event"
     >
       <div class="flex flex-col items-start justify-center">
@@ -9,7 +16,7 @@
         <%= select_tag "events",
             raw(event_select_options(@event_names, params)),
             data: { action: "change->event#navigateToSelectUrl", event_target: "eventSelect"},
-            class: "w-48"
+            class: "w-56 text-sm"
         %>
       </div>
       <div class="flex flex-col items-start justify-center">
@@ -17,14 +24,15 @@
         <%= select_tag "properties",
             raw(property_select_options(@properties, params)),
             data: { action: "change->event#navigateToSelectUrl", event_target: "propertySelect"},
-            class: "w-40"
+            class: "w-40 text-sm"
         %>
       </div>
       <div class="flex flex-col items-start justify-center">
         <%= label_tag 'aggregation', 'Aggregation', class: "text-sm font-medium mb-2" %>
         <%= select_tag "aggregation",
             raw(agg_select_options(params)),
-            data: { action: "change->event#navigateToSelectUrl", event_target: "aggSelect"}
+            data: { action: "change->event#navigateToSelectUrl", event_target: "aggSelect"},
+            class: "text-sm"
         %>
       </div>
     </div>
@@ -33,27 +41,36 @@
             data-chart-dates-value="<%= @dates.to_json %>"
             data-chart-events-value="<%= @events.to_json %>"
             data-chart-event-name-value="<%= @selected_event.titleize %>"
-            class="p-4 w-full rounded-md shadow-md bg-yellow-50"
+            class="p-4 w-full rounded-md shadow-md bg-yellow-50 h-28rem"
       >
-        <canvas data-chart-target="chart"></canvas>
+        <canvas data-chart-target="chart" class="h-full pt-4"></canvas>
       </div>
     </div>
-  <% else %>
-    <h1 class="text-xl mb-4">You didn't send any events yet. Just do it!</h1>
-  <% end %>
-  <div class="flex flex-col items-start justify-center w-full p-4 rounded-md shadow-md bg-gray-50 mt-4">
-    <h2>Settings</h2>
-    <div>
-      <% if params[:test] == 'true' %>
-        *Test mode* <br />
-        <%= link_to 'Toggle live mode', build_test_toggle_url(false, params) %>
+    <div class="flex flex-row items-center justify-end w-full my-4">
+      <% if params[:test] == "true" %>
+        <%= link_to "Toggle LIVE mode", build_test_toggle_url(false, params) %>
       <% else %>
-        <%= link_to 'Toggle test mode', build_test_toggle_url(true, params) %>
+        <%= link_to "Toggle TEST mode", build_test_toggle_url(true, params) %>
       <% end %>
     </div>
-    <div>
-      Test API key: <%= @project.api_key_test.key_value %><br />
-      Live API key: <%=  @project.api_key_live.key_value %>
-    </div>
   </div>
+  <% else %>
+    <div class="flex flex-row w-full mb-4 p-4 rounded-md shadow-md bg-yellow-50 gap-x-5">
+      <p>
+        You haven't tracked any events for this project yet.
+        To get started, call the Fugu API from your mobile or web app.
+        Check out the
+        <a href="https://github.com/shafy/fugu#readme" target="_blank">docs</a> to learn more.<br><br>
+        Tip: You'll find your API keys in your
+        <%= link_to "project settings", project_settings_path  %>.<br><br>
+        <% if params[:test] == "true" %>
+          Did you track events with your test API key?
+          <%= link_to "Toggle live mode!", build_test_toggle_url(false, params) %>
+        <% else %>
+          Did you track events with your test API key?
+          <%= link_to "Toggle test mode!", build_test_toggle_url(true, params) %>
+        <% end %>
+      </p>
+    </div>
+  <% end %>
 <% end %>

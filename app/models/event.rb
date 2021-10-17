@@ -19,13 +19,31 @@
 #
 #  fk_rails_...  (api_key_id => api_keys.id)
 #
+
+# rubocop: disable Metrics/ClassLength
 class Event < ApplicationRecord
   belongs_to :api_key, validate: true
 
-  validates :name, presence: true
+  validates :name,
+            presence: true,
+            length: { maximum: 25 },
+            format:
+              {
+                with: /\A[a-zA-Z0-9\s]*\z/,
+                message: "can only contain numbers, letters and spaces"
+              },
+            exclusion:
+              {
+                in: %w(all All),
+                message: "'%{value}' is a reversed event name by Fugu and can't be used"
+              }
+
+  validate :user_cannot_be_inactive
 
   before_validation :convert_properties_to_hash
+  before_validation :remove_whitespaces_from_name
 
+  before_create :titleize_name
   before_create :sanitize_prop_values
 
   def self.aggregations
@@ -35,6 +53,19 @@ class Event < ApplicationRecord
       "m" => "month",
       "y" => "year"
     }
+  end
+
+  def self.format_for_chart(events_array)
+    events_grouped = events_array.group_by { |e| e["property_value"] }
+    events_grouped.each do |k, v|
+      data = v.map { |vv| vv["count"] }
+      events_grouped[k] = {
+        data: data,
+        total_count: data.sum
+      }
+    end
+
+    events_grouped.sort_by { |k, v| [-v[:total_count], k] }.to_h
   end
 
   def self.with_aggregation(event_name:, api_key_id:, agg:, prop_name:, prop_values:, start_date:, end_date:)
@@ -164,4 +195,21 @@ class Event < ApplicationRecord
   def sanitize_prop_values
     properties.map { |k, v| properties[k] = CGI.escapeHTML(v.to_s) }
   end
+
+  def remove_whitespaces_from_name
+    self.name = name.split.join(" ") if name
+  end
+
+  def titleize_name
+    self.name = name.titleize
+  end
+
+  def user_cannot_be_inactive
+    return unless api_key
+
+    return unless !api_key.test && api_key.project.user.inactive?
+
+    errors.add(:base, "You need an active subscription to capture events with your live API key")
+  end
 end
+# rubocop: enable Metrics/ClassLength

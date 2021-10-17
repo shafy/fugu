@@ -32,16 +32,24 @@ class Project < ApplicationRecord
             format:
               {
                 with: /\A[a-zA-Z0-9-]*\z/,
-                message: "only numbers, letters and hypens allowed"
+                message: "can only contain numbers, letters and hypens allowed"
+              },
+            exclusion:
+              {
+                in: %w[project projects],
+                message: "'%{value}' is a reversed event name by Fugu and can't be used"
               }
   validates :user, presence: true
 
-  validate :name_cannot_be_one_of
-
   before_validation :downcase_name
+  before_validation :strip_name
 
   def downcase_name
     self.name = name.downcase if name
+  end
+
+  def strip_name
+    self.name = name.strip if name
   end
 
   def create_api_keys
@@ -55,13 +63,5 @@ class Project < ApplicationRecord
 
   def api_key_test
     api_keys.find_by(test: true)
-  end
-
-  private
-
-  def name_cannot_be_one_of
-    if %w[projects project].include? name
-      errors.add(:name, "can't be #{name}")
-    end
   end
 end

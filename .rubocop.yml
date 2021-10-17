@@ -40,3 +40,6 @@ Style/StringLiterals:
 
 Style/StringLiteralsInInterpolation:
   EnforcedStyle: double_quotes
+
+Style/FormatStringToken:
+  Enabled: false

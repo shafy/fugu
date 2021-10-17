@@ -1,12 +1,14 @@
 <% content_for :main do %>
-  <h2>Add a new project</h2>
+  <h1>Add a new project</h1>
   <%= form_with model: @project do |form| %>
-    <div class="mb-4">
+    <div class="mb-4 w-80">
       <div class="mb-2">
         <%= form.label :name, 'Project name' %>
       </div>
       <%= form.text_field :name, autofocus: true, required: true, class: 'rounded-lg w-full' %>
-      Project name can't include any special characters except "-".
+      <em class="text-sm text-gray-600">
+        Project name can't include any special characters except "-".
+      </em>
     </div>
     <div cass="mb-4">
       <%= form.submit 'Add', class: 'py-2 px-4 bg-green-500 text-white font-semibold rounded-lg shadow-md focus:outline-none hover:bg-green-300 cursor-pointer w-full' %>

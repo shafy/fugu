@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ProjectsController < ApplicationController
-  before_action :set_project, only: %i[show]
+  before_action :set_project, only: %i[show settings destroy]
   before_action :authorize_project_user, only: %i[show]
   before_action :set_api_key, only: %i[show]
   before_action :set_event_names, only: %i[show]
@@ -11,6 +11,7 @@ class ProjectsController < ApplicationController
   before_action :set_properties, only: %i[show]
   before_action :set_property_values, only: %i[show]
   before_action :set_aggregation, only: %i[show]
+  before_action :show_test_alert, only: %i[show]
 
   def index
     @projects = Project.where(user: current_user)
@@ -19,6 +20,8 @@ class ProjectsController < ApplicationController
   def show
     # TODO
     # redirect_to dashboard unless project
+    return unless @selected_event
+
     events_array = Event.with_aggregation(
       event_name: @selected_event,
       api_key_id: @api_key.id,
@@ -30,7 +33,7 @@ class ProjectsController < ApplicationController
     )
 
     @dates = events_array.uniq { |e| e["date"]}.map { |d| d["date"] }
-    @events = events_array.group_by { |e| e["property_value"] }.each_value { |v| v.map! { |vv| vv["count"]} }
+    @events = Event.format_for_chart(events_array)
   end
 
   def new
@@ -48,7 +51,26 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def destroy
+    if @project.destroy
+      flash[:notice] = "Your project was successfully deleted"
+      redirect_to projects_path
+    else
+      flash[:error] = "We couldn't delete the project: #{@project.errors.full_messages.first}"
+      redirect_to project_path(@project.name)
+    end
+  end
+
+  def settings
+  end
+
   private
+
+  def show_test_alert
+    return unless params[:test] == "true"
+
+    flash.now[:info] = "Heads up: You are currently viewing test data. Test data is deleted after 14 days."
+  end
 
   def set_api_key
     @api_key = params[:test] == "true" ? @project.api_key_test : @project.api_key_live
@@ -90,7 +112,7 @@ class ProjectsController < ApplicationController
   end
 
   def set_project
-    @project = Project.find_by(name: params[:slug].downcase)
+    @project = Project.find_by(name: params[:slug].downcase, user: current_user)
   end
 
   def authorize_project_user
@@ -108,6 +130,6 @@ class ProjectsController < ApplicationController
          else
            @event_names.first
          end
-    @selected_event = CGI.escapeHTML(ev)
+    @selected_event = CGI.escapeHTML(ev) if ev
   end
 end

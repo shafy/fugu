@@ -31,6 +31,8 @@ FactoryBot.define do
       "#{n}@fugu.lol"
     end
 
-    password { 'secure_password' }
+    password { "secure_password" }
+
+    status { "active" }
   end
 end
