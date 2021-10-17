@@ -19,6 +19,8 @@ class ProjectsController < ApplicationController
   def show
     # TODO
     # redirect_to dashboard unless project
+    return unless @selected_event
+
     events_array = Event.with_aggregation(
       event_name: @selected_event,
       api_key_id: @api_key.id,
@@ -121,6 +123,6 @@ class ProjectsController < ApplicationController
          else
            @event_names.first
          end
-    @selected_event = CGI.escapeHTML(ev)
+    @selected_event = CGI.escapeHTML(ev) if ev
   end
 end

@@ -1,11 +1,20 @@
 <% content_for :main do %>
 <h1 class="text-xl mb-4 font-medium mb-8">Projects</h1>
   <%= render "partials/narrow_box" do %>
-    <% @projects.each do |project| %>
-      <div class="mb-4">
-        <%= link_to project.name, project_path(project.name), class: "no-underline text-lg" %>
-      </div>
+    <% if @projects.any? %>
+      <% @projects.each do |project| %>
+        <div class="mb-2">
+          <%= link_to project.name, project_path(project.name), class: "no-underline text-lg" %>
+        </div>
+      <% end %>
+    <% else %>
+      <p class="mb-2">
+        Welcome to Fugu 👋 To get started, add a new project
+        and track your first event by calling the Fugu API.
+        Have a look at the
+        <a href="https://github.com/shafy/fugu#readme" target="_blank">docs</a> for more info.
+      </p>
     <% end %>
-    <%= link_to 'Add a new project', new_project_path %>
+    <%= link_to 'Add a new project', new_project_path, class: "mt-4" %>
   <% end %>
 <% end %>

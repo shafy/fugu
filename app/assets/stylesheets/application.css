@@ -40,6 +40,13 @@ h2 {
   font-weight: 500;
 }
 
+code {
+  font-family: monospace;
+  background-color: rgb(229, 231, 235);
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+}
+
 .w-32rem {
   width: 32rem;
 }

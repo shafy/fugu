@@ -14,10 +14,10 @@
       %>
     </p>
     <h2>API keys</h2>
-    <p>
-      Test API key: <%= @project.api_key_test.key_value %><br />
-      Live API key: <%=  @project.api_key_live.key_value %>
-    </p>
+    <div>
+      <div class="font-medium mb-2">Test API key</div> <code><%= @project.api_key_test.key_value %></code>
+      <div class="font-medium mb-2 mt-4">Live API key</div> <code><%=  @project.api_key_live.key_value %></code>
+    </div>
   <% end %>
   <%= link_to "Back to #{@project.name}", project_path(@project.name) %>
 <% end %>
