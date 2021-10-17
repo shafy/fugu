@@ -73,4 +73,21 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
       assert_response :success
     end
   end
+
+  class PostCreate < ProjectsControllerTest
+    setup do
+      @user = FactoryBot.create(:user)
+      @new_project = FactoryBot.build(:project, user: @user, name: "yolo")
+      sign_in @user
+      post projects_path, params: { project: { name: @new_project.name } }
+    end
+
+    test "be successful" do
+      assert_redirected_to project_path(@new_project.name)
+    end
+
+    test "create the correct project" do
+      assert_not_empty(Project.where(name: @new_project.name, user: @user))
+    end
+  end
 end
