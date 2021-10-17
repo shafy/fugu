@@ -31,6 +31,7 @@ export default class extends Controller {
         layout: {
           padding: 10,
         },
+        maintainAspectRatio: false,
         scales: {
           y: {
             grace: '10%',
@@ -39,6 +40,16 @@ export default class extends Controller {
               format: { style: "decimal" },
               precision: 0,
               padding: 10,
+            },
+            grid: {
+              color: "rgba(254, 243, 199, 0.7)",
+              lineWidth: 2,
+              drawBorder: false
+            }
+          },
+          x: {
+            grid: {
+              display: false
             }
           }
         },
@@ -55,7 +66,7 @@ export default class extends Controller {
         }
       }
     }
-
+    Chart.defaults.font.family = "'-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Oxygen-Sans', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif";
     new Chart(
       this.chartTarget,
       config
@@ -79,7 +90,8 @@ export default class extends Controller {
       pointRadius: 0,
       pointHitRadius: 5,
       hoverBorderWidth: 4,
-      data: data
+      data: data["data"],
+      hidden: index > 5
     }
   }
 

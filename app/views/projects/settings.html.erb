@@ -8,6 +8,7 @@
     <h2>API keys</h2>
     <div>
       <div class="font-medium mb-2">Test API key</div> <code><%= @project.api_key_test.key_value %></code>
+      <div class="text-sm text-gray-600 mb-2 mt-2">Test events are deleted after 14 days</div>
       <div class="font-medium mb-2 mt-4">Live API key</div> <code><%=  @project.api_key_live.key_value %></code>
     </div>
     <div class="mt-6 mb-4">

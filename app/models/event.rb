@@ -55,6 +55,19 @@ class Event < ApplicationRecord
     }
   end
 
+  def self.format_for_chart(events_array)
+    events_grouped = events_array.group_by { |e| e["property_value"] }
+    events_grouped.each do |k, v|
+      data = v.map { |vv| vv["count"] }
+      events_grouped[k] = {
+        data: data,
+        total_count: data.sum
+      }
+    end
+
+    events_grouped.sort_by { |k, v| [-v[:total_count], k] }.to_h
+  end
+
   def self.with_aggregation(event_name:, api_key_id:, agg:, prop_name:, prop_values:, start_date:, end_date:)
     ActiveRecord::Base.connection.execute(
       with_agg_sql_query(

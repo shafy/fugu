@@ -33,7 +33,7 @@ class ProjectsController < ApplicationController
     )
 
     @dates = events_array.uniq { |e| e["date"]}.map { |d| d["date"] }
-    @events = events_array.group_by { |e| e["property_value"] }.each_value { |v| v.map! { |vv| vv["count"]} }
+    @events = Event.format_for_chart(events_array)
   end
 
   def new
@@ -69,7 +69,7 @@ class ProjectsController < ApplicationController
   def show_test_alert
     return unless params[:test] == "true"
 
-    flash.now[:info] = "Heads up: You are currently viewing test data"
+    flash.now[:info] = "Heads up: You are currently viewing test data. Test data is deleted after 14 days."
   end
 
   def set_api_key

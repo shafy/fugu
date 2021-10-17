@@ -4,7 +4,14 @@ Fugu is a simple, privacy-friendly, open source and self-hostable product analyt
 
 
 ## Get Fugu
-Fugu is still under active development and, while in use by some real-life projects, not publicly launched yet. You can create your account [here](https://app.fugu.lol). I don't recommend using Fugu as your only analytics tool in production yet, because there might be breaking changes and you might lose access to your data (although very unlikely). Please reach out to me at canolcer@hey.com after creating an account so I know somebody else is using it. Of course, you can also clone this repo and self-host the whole thing.
+There are two ways to use Fugu: Self-hosting or using Fugu Cloud (managed version by us as a SaaS). 
+
+If you don't have the strict need to host Fugu own your own premises, we recommend using Fugu Cloud. It costs $9/month and you don't need to worry about managing your own version, updating, etc.
+
+Our servers are located in the EU (Germany) and your data doesn't leave the EU. We don't track any personal data. Read more in our [privacy policy](https://fugu.lol/legal/privacy).
+
+Head over to [our website](https://fugu.lol) to sign up and get started super duper fast.
+
 
 ## Docs
 
@@ -20,17 +27,14 @@ Send a `POST` request to `https://app.fugu.lol/api/v1/events` with the following
 
 Replace the domain with your own if you're self-hosting.
 
-## Development
-Clone this repo. You'll need Ruby 3.0.0.
+## Self-hosting
 
-### Env variables
-```
-DATABASE_USER=''
-DATABASE_PW=''
-DEV_DATABASE=''
-TEST_DATABASE=''
-```
+Fugu is and will always be free to host in your own server/cloud. Check out the [self-hosting guide](/blob/main/SELFHOSTING.md) to learn more.
 
 ## Contributing
-I didn't have time to write a contribution guide yet. So, here is a quick one: If you want to contribute, create a PR and let me know. Beware: There is no guarantee that I wil add your code to the project - so maybe check first with me before starting to work.
 
+We welcome contributions to Fugu. These can be bug fixes, UI improvements, new features, code quality improvements etc. Check out the [contribution guide](/blob/main/CONTRIBUTING.md) to get started.
+
+## License
+
+This project uses the [GNU Affero General Public License v3.0](https://github.com/mapzy/mapzy/blob/main/LICENSE) license.
