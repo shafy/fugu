@@ -11,6 +11,7 @@ class ProjectsController < ApplicationController
   before_action :set_properties, only: %i[show]
   before_action :set_property_values, only: %i[show]
   before_action :set_aggregation, only: %i[show]
+  before_action :show_test_alert, only: %i[show]
 
   def index
     @projects = Project.where(user: current_user)
@@ -64,6 +65,12 @@ class ProjectsController < ApplicationController
   end
 
   private
+
+  def show_test_alert
+    return unless params[:test] == "true"
+
+    flash.now[:info] = "Heads up: You are currently viewing test data"
+  end
 
   def set_api_key
     @api_key = params[:test] == "true" ? @project.api_key_test : @project.api_key_live

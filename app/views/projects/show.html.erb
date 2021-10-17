@@ -1,14 +1,14 @@
 <% content_for :main do %>
-  <% unless @event_names.empty? %>
-    <div class="flex flex-row items-center justify-center w-full  mb-8">
-      <div class="w-40"></div>
-      <div class="w-full text-center">
-        <h1 class="text-xl font-medium"><%= @project.name %></h1>
-      </div>
-      <div class="w-40 text-right">
-        <%= link_to "Project settings", project_settings_path, class: "font-normal" %>
-      </div>
+  <div class="flex flex-row items-center justify-center w-full mb-8">
+    <div class="w-40"></div>
+    <div class="w-full text-center">
+      <h1 class="text-xl font-medium"><%= @project.name %></h1>
     </div>
+    <div class="w-40 text-right">
+      <%= link_to "Project settings", project_settings_path, class: "font-normal" %>
+    </div>
+  </div>
+  <% unless @event_names.empty? %>
     <div class="flex flex-row w-full mb-4 p-4 rounded-md shadow-md bg-yellow-50 gap-x-5"
           data-controller="event"
     >
@@ -46,15 +46,31 @@
         <canvas data-chart-target="chart"></canvas>
       </div>
     </div>
+    <div class="flex flex-row items-center justify-end w-full my-4">
+      <% if params[:test] == "true" %>
+        <%= link_to "Toggle LIVE mode", build_test_toggle_url(false, params) %>
+      <% else %>
+        <%= link_to "Toggle TEST mode!", build_test_toggle_url(true, params) %>
+      <% end %>
+    </div>
+  </div>
   <% else %>
-    <%= render "partials/narrow_box" do %>
+    <div class="flex flex-row w-full mb-4 p-4 rounded-md shadow-md bg-yellow-50 gap-x-5">
       <p>
         You haven't tracked any events for this project yet.
-        To get started, call the Fugu API from your mobile or web app.<br>
+        To get started, call the Fugu API from your mobile or web app.
         Check out the
-        <a href="https://github.com/shafy/fugu#readme" target="_blank">docs</a> to learn more.<br>
-        PS: You'll find your API keys in your <%= link_to "project settings", project_settings_path  %>.
+        <a href="https://github.com/shafy/fugu#readme" target="_blank">docs</a> to learn more.<br><br>
+        Tip: You'll find your API keys in your
+        <%= link_to "project settings", project_settings_path  %>.<br><br>
+        <% if params[:test] == "true" %>
+          Did you track events with your test API key?
+          <%= link_to "Toggle live mode!", build_test_toggle_url(false, params) %>
+        <% else %>
+          Did you track events with your test API key?
+          <%= link_to "Toggle test mode!", build_test_toggle_url(true, params) %>
+        <% end %>
       </p>
-    <% end %>
+    </div>
   <% end %>
 <% end %>

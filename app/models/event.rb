@@ -19,10 +19,14 @@
 #
 #  fk_rails_...  (api_key_id => api_keys.id)
 #
+
+# rubocop: disable Metrics/ClassLength
 class Event < ApplicationRecord
   belongs_to :api_key, validate: true
 
   validates :name, presence: true
+
+  validate :user_cannot_be_inactive
 
   before_validation :convert_properties_to_hash
 
@@ -164,4 +168,11 @@ class Event < ApplicationRecord
   def sanitize_prop_values
     properties.map { |k, v| properties[k] = CGI.escapeHTML(v.to_s) }
   end
+
+  def user_cannot_be_inactive
+    return unless !api_key.test && api_key.project.user.inactive?
+
+    errors.add(:base, "You need an active subscription to capture events with your live API key")
+  end
 end
+# rubocop: enable Metrics/ClassLength

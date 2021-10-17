@@ -2,21 +2,21 @@
   <h1 class="text-xl mb-4 font-medium mb-8">Project settings</h1>
   <%= render "partials/narrow_box" do %>
     <h2>Project name</h2>
-    <p class="mb-2">
+    <p>
       <%= @project.name %>
     </p>
-    <p class="mb-4">
+    <h2>API keys</h2>
+    <div>
+      <div class="font-medium mb-2">Test API key</div> <code><%= @project.api_key_test.key_value %></code>
+      <div class="font-medium mb-2 mt-4">Live API key</div> <code><%=  @project.api_key_live.key_value %></code>
+    </div>
+    <div class="mt-6 mb-4">
       <%= button_to "Delete project",
           destroy_project_path(@project.name),
           method: :delete,
           class: "bg-transparent underline font-medium hover:text-green-500 cursor-pointer",
           onclick: "return confirm('This will delete this project and all its events forever. Are you sure?');"
       %>
-    </p>
-    <h2>API keys</h2>
-    <div>
-      <div class="font-medium mb-2">Test API key</div> <code><%= @project.api_key_test.key_value %></code>
-      <div class="font-medium mb-2 mt-4">Live API key</div> <code><%=  @project.api_key_live.key_value %></code>
     </div>
   <% end %>
   <%= link_to "Back to #{@project.name}", project_path(@project.name) %>

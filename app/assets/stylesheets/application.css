@@ -51,12 +51,17 @@ code {
   width: 32rem;
 }
 
-.flash-notice {
+.flash-notice, .flash-info {
   background-color: rgb(147, 197, 253);
   border-color: rgb(96, 165, 250);
 }
 
 .flash-alert {
+  background-color: rgb(252, 211, 77);
+  border-color: rgb(251, 191, 36);
+}
+
+.flash-error {
   background-color: rgb(252, 165, 165);
   border-color: rgb(248, 113, 113);
 }
