@@ -11,7 +11,7 @@ class SettingsControllerTest < ActionDispatch::IntegrationTest
 
   class GetShowInactiveUser < SettingsControllerTest
     setup do
-      @user = FactoryBot.create(:user)
+      @user = FactoryBot.create(:user, status: "inactive")
       setup
     end
 

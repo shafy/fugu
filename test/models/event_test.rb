@@ -33,5 +33,15 @@ class EventTest < ActiveSupport::TestCase
 
     should_not allow_value("Non JSON String").for(:properties)
     should_not allow_value("{invalid_json: \"12\"}").for(:properties)
+
+    should_not allow_value("a-", "a$", "a_").for(:name)
+
+    should validate_length_of(:name).is_at_most(25)
+    should validate_exclusion_of(:name)
+      .in_array(%w[all])
+      .with_message("'all' is a reversed event name by Fugu and can't be used")
+      should validate_exclusion_of(:name)
+      .in_array(%w[All])
+      .with_message("'All' is a reversed event name by Fugu and can't be used")
   end
 end
