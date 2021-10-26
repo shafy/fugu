@@ -2,6 +2,8 @@
 
 module Users
   class SettingsController < ApplicationController
+    before_action :show_not_active_flash, only: %i[show]
+
     def show
       return unless current_user.canceled? && current_user.stripe_customer_id.present?
 

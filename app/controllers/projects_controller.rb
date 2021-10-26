@@ -12,6 +12,7 @@ class ProjectsController < ApplicationController
   before_action :set_property_values, only: %i[show]
   before_action :set_aggregation, only: %i[show]
   before_action :show_test_alert, only: %i[show]
+  before_action :show_not_active_flash, only: %i[index show new settings]
 
   def index
     @projects = Project.where(user: current_user)

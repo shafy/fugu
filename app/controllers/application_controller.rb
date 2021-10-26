@@ -2,7 +2,6 @@
 
 class ApplicationController < ActionController::Base
   before_action :authenticate_user!
-  before_action :show_not_active_flash
 
   private
 
