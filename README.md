@@ -29,11 +29,11 @@ Replace the domain with your own if you're self-hosting.
 
 ## Self-hosting
 
-Fugu is and will always be free to host in your own server/cloud. Check out the [self-hosting guide](/blob/main/SELFHOSTING.md) to learn more.
+Fugu is and will always be free to host in your own server/cloud. Check out the [self-hosting guide](/SELFHOSTING.md) to learn more.
 
 ## Contributing
 
-We welcome contributions to Fugu. These can be bug fixes, UI improvements, new features, code quality improvements etc. Check out the [contribution guide](/blob/main/CONTRIBUTING.md) to get started.
+We welcome contributions to Fugu. These can be bug fixes, UI improvements, new features, code quality improvements etc. Check out the [contribution guide](/CONTRIBUTING.md) to get started.
 
 ## License
 
