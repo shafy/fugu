@@ -193,7 +193,7 @@ class Event < ApplicationRecord
   end
 
   def sanitize_prop_values
-    properties.map { |k, v| properties[k] = CGI.escapeHTML(v.to_s) }
+    properties&.map { |k, v| properties[k] = CGI.escapeHTML(v.to_s) }
   end
 
   def remove_whitespaces_from_name
