@@ -135,6 +135,7 @@ GEM
     listen (3.7.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
+    logstop (0.2.7)
     loofah (2.12.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -309,6 +310,7 @@ DEPENDENCIES
   importmap-rails (~> 0.7.3)
   jbuilder (~> 2.7)
   listen (~> 3.3)
+  logstop
   pg
   puma (~> 5.0)
   rails (~> 6.1.3, >= 6.1.3.2)
