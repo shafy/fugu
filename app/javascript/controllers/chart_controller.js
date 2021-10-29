@@ -87,7 +87,7 @@ export default class extends Controller {
       borderCapStyle: "round",
       borderWidth: 4.5,
       tension: 0.15,
-      pointRadius: 0,
+      pointRadius: this.datesValue.length == 1 ? 1 : 0,
       pointHitRadius: 5,
       hoverBorderWidth: 4,
       data: data["data"],

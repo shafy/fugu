@@ -36,6 +36,13 @@ def create_event(name, properties, created_at, project)
   event.update(created_at: created_at)
 end
 
+# Event: Single Event
+create_event(
+  "Single Event",
+  nil,
+  1.hour.ago,
+  project
+)
 
 # Event: Visited Landing Page
 50.times do
