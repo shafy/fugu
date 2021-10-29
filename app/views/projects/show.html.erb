@@ -24,7 +24,7 @@
         <%= select_tag "properties",
             raw(property_select_options(@properties, params)),
             data: { action: "change->event#navigateToSelectUrl", event_target: "propertySelect"},
-            class: "w-40 text-sm"
+            class: "w-44 text-sm"
         %>
       </div>
       <div class="flex flex-col items-start justify-center">
