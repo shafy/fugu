@@ -17,7 +17,7 @@ Head over to [our website](https://fugu.lol) to sign up and get started super du
 
 Visit the [Fugu Docs](https://docs.fugu.lol).
 
-## Self-hosting
+## Self-hosting
 
 Fugu is and will always be free to host in your own server/cloud. Check out the [self-hosting guide](/SELFHOSTING.md) to learn more.
 
