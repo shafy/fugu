@@ -15,17 +15,7 @@ Head over to [our website](https://fugu.lol) to sign up and get started super du
 
 ## Docs
 
-Send a `POST` request to `https://app.fugu.lol/api/v1/events` with the following body:
-
-```
-{
-  api_key: <string>, // Check your Project view (required)
-  name: <string>, // Name of your event (required)
-  properties: <JSON> // arbitrary JSON containing custom data (optional)
-}
-```
-
-Replace the domain with your own if you're self-hosting.
+Visit the [Fugu Docs](https://docs.fugu.lol).
 
 ## Self-hosting
 
