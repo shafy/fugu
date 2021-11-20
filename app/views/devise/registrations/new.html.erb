@@ -3,6 +3,14 @@
   <h2>Sign up</h2>
 
   <div class="flex flex-col justify-center items-center w-80">
+    <div class="my-4">
+      <p>
+        Welcome to Fugu! To get started, create an account.
+      </p>
+      <p>
+        You can start tracking test events for free, but will need to subscribe for live mode.
+      </p>
+    </div>
 
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
       <%= render "devise/shared/error_messages", resource: resource %>
