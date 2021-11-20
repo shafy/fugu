@@ -28,5 +28,11 @@
       Contact me if you have questions or need help: canolcer@hey.com or
       <a href="https://twitter.com/canolcer" targt="_blank">@canolcer</a>.
     </p>
+
+    <%= button_to "Log out",
+      destroy_user_session_path,
+      method: :delete,
+      class: "bg-transparent underline font-medium hover:text-green-500 cursor-pointer"
+    %>
   <% end %>
 <% end %>
