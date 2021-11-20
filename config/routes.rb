@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  devise_for :users
   root to: "projects#index"
 
-  resources :projects, only: [:index, :new, :create]
+  resources :projects, only: %i[index new create]
 
   scope "projects/" do
     get "/:slug", to: "projects#show", as: :project
@@ -22,6 +21,14 @@ Rails.application.routes.draw do
     get "/customer_portal/", to: "stripe#customer_portal", as: "stripe_customer_portal"
     post "/webhooks/", to: "stripe#webhooks", as: "stripe_webhooks"
   end
+
+  devise_for \
+    :users,
+    controllers: {
+      sessions: "users/sessions",
+      registrations: "users/registrations",
+      passwords: "users/passwords"
+    }
 
   namespace :api do
     namespace :v1 do

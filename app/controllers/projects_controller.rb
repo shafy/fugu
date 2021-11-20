@@ -12,7 +12,8 @@ class ProjectsController < ApplicationController
   before_action :set_property_values, only: %i[show]
   before_action :set_aggregation, only: %i[show]
   before_action :show_test_alert, only: %i[show]
-  before_action :show_not_active_flash, only: %i[index show new settings]
+  before_action :show_not_active_flash, only: %i[show settings]
+  after_action :track_event, only: %i[show]
 
   def index
     @projects = Project.where(user: current_user)
@@ -132,5 +133,9 @@ class ProjectsController < ApplicationController
            @event_names.first
          end
     @selected_event = CGI.escapeHTML(ev) if ev
+  end
+
+  def track_event
+    FuguService.track("Viewed Project")
   end
 end

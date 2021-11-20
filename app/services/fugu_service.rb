@@ -8,8 +8,6 @@ class FuguService
       properties: properties
     }
 
-    puts body.to_json
-
     Faraday.post(ENV["FUGU_URL"]) do |req|
       req.headers["Content-Type"] = "application/json"
       req.body = body.to_json
