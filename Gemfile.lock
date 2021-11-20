@@ -307,6 +307,7 @@ DEPENDENCIES
   devise (~> 4.8.0)
   dotenv-rails
   factory_bot_rails (~> 6.2.0)
+  faraday (~> 1.8.0)
   importmap-rails (~> 0.7.3)
   jbuilder (~> 2.7)
   listen (~> 3.3)

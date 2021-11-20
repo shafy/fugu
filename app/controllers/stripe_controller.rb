@@ -19,6 +19,8 @@ class StripeController < ApplicationController
     customer = Stripe::Customer.retrieve(session.customer)
     current_user.update(status: "active", stripe_customer_id: customer.id)
 
+    FuguService.track("New Subscription")
+
     flash[:notice] = success_message
     redirect_to users_settings_url
   rescue StandardError => e
@@ -58,7 +60,7 @@ class StripeController < ApplicationController
 
   def verify_webhook
     Stripe::Webhook.construct_event(
-      request.raw_post, request.env['HTTP_STRIPE_SIGNATURE'], ENV['STRIPE_ENDPOINT_SECRET']
+      request.raw_post, request.env["HTTP_STRIPE_SIGNATURE"], ENV["STRIPE_ENDPOINT_SECRET"]
     )
   rescue StandardError => e
     Sentry.capture_exception(e)

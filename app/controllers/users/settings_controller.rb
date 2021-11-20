@@ -5,6 +5,8 @@ module Users
     before_action :show_not_active_flash, only: %i[show]
 
     def show
+      FuguService.track("yolo", { fun: "nope!" })
+
       return unless current_user.canceled? && current_user.stripe_customer_id.present?
 
       customer = retrieve_stripe_customer
@@ -19,7 +21,7 @@ module Users
     def retrieve_stripe_customer
       Stripe::Customer.retrieve(
         id: current_user.stripe_customer_id,
-        expand: ['subscriptions']
+        expand: ["subscriptions"]
       )
     end
 

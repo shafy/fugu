@@ -88,7 +88,7 @@ class Event < ApplicationRecord
   def self.distinct_property_values(name, api_key_id, property)
     ActiveRecord::Base.connection.execute(
       distinct_property_values_sql_query(name, api_key_id, property)
-    ).map { |row| row["property"] }
+    ).filter_map { |row| row["property"] }
   end
 
   def self.prop_breakdown?(prop_name, prop_values)
