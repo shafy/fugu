@@ -6,7 +6,6 @@ class ApplicationController < ActionController::Base
   private
 
   def show_not_active_flash
-    flash.now[:not_active] = user_inactive_flash
     flash.now[:not_active] = user_canceled_flash if current_user.canceled?
     flash.now[:not_active] = user_inactive_flash if current_user.inactive?
   end
