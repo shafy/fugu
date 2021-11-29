@@ -9,15 +9,15 @@ export default class extends Controller {
   ]
 
   static values = {
-    events: Array,
-    eventName: String,
+    dayNotAllowed: Boolean
   }
 
   connect() {
-    this.setSelectedOption(this.eventSelectTarget, "event")
-    this.setSelectedOption(this.aggSelectTarget, "agg"),
-    this.setSelectedOption(this.propertySelectTarget, "prop")
-    this.setSelectedOption(this.dateSelectTarget, "date")
+    this.correctAggValue();
+    this.setSelectedOption(this.eventSelectTarget, "event");
+    this.setSelectedOption(this.aggSelectTarget, "agg");
+    this.setSelectedOption(this.propertySelectTarget, "prop");
+    this.setSelectedOption(this.dateSelectTarget, "date");
   }
 
   navigateToSelectUrl(event) {
@@ -25,6 +25,7 @@ export default class extends Controller {
   }
 
   setSelectedOption(selectElement, param) {
+    console.log(window.location.search)
     let paramValue = new URLSearchParams(window.location.search).get(param)
 
     if (!paramValue) {
@@ -38,6 +39,17 @@ export default class extends Controller {
         selectElement.selectedIndex = i
         break
       }
+    }
+  }
+
+  correctAggValue() {
+    // replace agg=d with agg=w if dayNotAllowedValue == true
+    if (!this.dayNotAllowedValue) return;
+
+    if (new URLSearchParams(window.location.search).get("agg") == "d") {
+      const url = new URL(window.location.href);
+      url.searchParams.set("agg", "w");
+      history.replaceState(null, "", url);
     }
   }
 }

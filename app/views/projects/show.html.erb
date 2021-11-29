@@ -34,9 +34,9 @@
     </div>
     <div class="flex flex-row items-center justify-end w-full my-4">
       <% if params[:test] == "true" %>
-        <%= link_to "Toggle LIVE mode", build_test_toggle_url(false, params) %>
+        <%= link_to "Toggle LIVE mode", build_test_toggle_url(false, params, @day_not_allowed) %>
       <% else %>
-        <%= link_to "Toggle TEST mode", build_test_toggle_url(true, params) %>
+        <%= link_to "Toggle TEST mode", build_test_toggle_url(true, params, @day_not_allowed) %>
       <% end %>
     </div>
   </div>
@@ -51,10 +51,10 @@
         <%= link_to "project settings", project_settings_path  %>.<br><br>
         <% if params[:test] == "true" %>
           Did you track events with your test API key?
-          <%= link_to "Toggle live mode!", build_test_toggle_url(false, params) %>
+          <%= link_to "Toggle live mode!", build_test_toggle_url(false, params, @day_not_allowed) %>
         <% else %>
           Did you track events with your test API key?
-          <%= link_to "Toggle test mode!", build_test_toggle_url(true, params) %>
+          <%= link_to "Toggle test mode!", build_test_toggle_url(true, params, @day_not_allowed) %>
         <% end %>
       </p>
     </div>

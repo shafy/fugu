@@ -101,8 +101,12 @@ class ProjectsController < ApplicationController
 
   def set_aggregation
     a = Event::AGGREGATIONS.key?(params[:agg]) ? Event::AGGREGATIONS[params[:agg]] : "day"
+    puts a
     @day_not_allowed = time_period > 6
     a = "week" if a == "day" && @day_not_allowed
+
+    puts "yolo"
+    puts a
     @aggregation = CGI.escapeHTML(a)
   end
 
