@@ -3,27 +3,31 @@
 module ProjectHelper
   def event_select_options(event_names, url_params, day_not_allowed)
     event_names.map do |e|
-      "<option data-url='#{build_event_url(e, url_params.permit(*Project::PROJECT_PARAMS), day_not_allowed)}' data-name='#{e.parameterize}'>#{e}</option>"
+      selected = "selected" if e.parameterize == url_params[:event]
+      "<option data-url='#{build_event_url(e, url_params.permit(*Project::PROJECT_PARAMS), day_not_allowed)}' data-name='#{e.parameterize}' #{selected}>#{e}</option>"
     end
   end
 
   def agg_select_options(url_params, day_not_allowed)
     Event::AGGREGATIONS.map do |k, v|
       disabled = "disabled" if k == "d" && day_not_allowed
-      "<option data-url='#{build_agg_url(k, url_params.permit(*Project::PROJECT_PARAMS), day_not_allowed)}' data-name='#{k}' #{disabled}>#{v.capitalize}</option>"
+      selected = "selected" if k == url_params[:agg] && !disabled
+      "<option data-url='#{build_agg_url(k, url_params.permit(*Project::PROJECT_PARAMS), day_not_allowed)}' data-name='#{k}' #{disabled} #{selected}>#{v.capitalize}</option>"
     end
   end
 
   def property_select_options(props, url_params, day_not_allowed)
     props.unshift("All")
     props.map do |p|
-      "<option data-url='#{build_property_url(p, url_params.permit(*Project::PROJECT_PARAMS), day_not_allowed)}' data-name='#{p.parameterize}'>#{p}</option>"
+      selected = "selected" if p == url_params[:prop]
+      "<option data-url='#{build_property_url(p, url_params.permit(*Project::PROJECT_PARAMS), day_not_allowed)}' data-name='#{p.parameterize}' #{selected}>#{p}</option>"
     end
   end
 
   def date_select_options(url_params, day_not_allowed)
     Event::DATE_OPTIONS.map do |k, v|
-      "<option data-url='#{build_date_url(k, url_params.permit(*Project::PROJECT_PARAMS), day_not_allowed)}' data-name='#{k}'>#{v}</option>"
+      selected = "selected" if k == url_params[:date]
+      "<option data-url='#{build_date_url(k, url_params.permit(*Project::PROJECT_PARAMS), day_not_allowed)}' data-name='#{k}' #{selected}>#{v}</option>"
     end
   end
 
@@ -66,6 +70,6 @@ module ProjectHelper
   end
 
   def agg_clamp(agg, day_not_allowed)
-    { agg: day_not_allowed ? "w" : agg }
+    { agg: day_not_allowed && agg == "d" ? "w" : agg }
   end
 end

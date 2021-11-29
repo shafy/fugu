@@ -8,7 +8,7 @@
       <%= label_tag 'events', 'Events', class: "text-sm font-medium mb-2" %>
       <%= select_tag "events",
           raw(event_select_options(event_names, param_data, day_not_allowed)),
-          data: { action: "change->event#navigateToSelectUrl", event_target: "eventSelect"},
+          data: { action: "change->event#navigateToSelectUrl" },
           class: "w-56 text-sm"
       %>
     </div>
@@ -16,7 +16,7 @@
       <%= label_tag 'properties', 'Properties', class: "text-sm font-medium mb-2" %>
       <%= select_tag "properties",
           raw(property_select_options(properties, param_data, day_not_allowed)),
-          data: { action: "change->event#navigateToSelectUrl", event_target: "propertySelect"},
+          data: { action: "change->event#navigateToSelectUrl" },
           class: "w-44 text-sm"
       %>
     </div>
@@ -24,7 +24,7 @@
       <%= label_tag 'aggregation', 'Aggregation', class: "text-sm font-medium mb-2" %>
       <%= select_tag "aggregation",
           raw(agg_select_options(param_data, day_not_allowed)),
-          data: { action: "change->event#navigateToSelectUrl", event_target: "aggSelect"},
+          data: { action: "change->event#navigateToSelectUrl" },
           class: "text-sm"
       %>
     </div>
@@ -34,7 +34,7 @@
       <%= label_tag 'date_range', 'Date Range', class: "text-sm font-medium mb-2" %>
       <%= select_tag "date_range",
           raw(date_select_options(param_data, day_not_allowed)),
-          data: { action: "change->event#navigateToSelectUrl", event_target: "dateSelect"},
+          data: { action: "change->event#navigateToSelectUrl" },
           class: "text-sm"
       %>
     </div>
