@@ -19,7 +19,7 @@
     <div class="flex flex-col items-start justify-center">
       <%= label_tag 'aggregation', 'Aggregation', class: "text-sm font-medium mb-2" %>
       <%= select_tag "aggregation",
-          raw(agg_select_options(param_data)),
+          raw(agg_select_options(param_data, day_not_allowed)),
           data: { action: "change->event#navigateToSelectUrl", event_target: "aggSelect"},
           class: "text-sm"
       %>

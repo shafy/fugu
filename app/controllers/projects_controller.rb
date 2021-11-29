@@ -101,6 +101,8 @@ class ProjectsController < ApplicationController
 
   def set_aggregation
     a = Event::AGGREGATIONS.key?(params[:agg]) ? Event::AGGREGATIONS[params[:agg]] : "day"
+    @day_not_allowed = time_period > 6
+    a = "week" if a == "day" && @day_not_allowed
     @aggregation = CGI.escapeHTML(a)
   end
 
@@ -115,6 +117,10 @@ class ProjectsController < ApplicationController
 
     @property_values = Event.distinct_property_values(@selected_event, @api_key.id, @property)
     @property_values.map! { |p| p&.gsub(",", "\\,") }
+  end
+
+  def time_period
+    (@end_date - @start_date) / 60 / 60 / 24 / 30
   end
 
   def project_params

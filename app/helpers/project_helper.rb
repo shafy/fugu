@@ -7,9 +7,10 @@ module ProjectHelper
     end
   end
 
-  def agg_select_options(url_params)
+  def agg_select_options(url_params, day_not_allowed)
     Event::AGGREGATIONS.map do |k, v|
-      "<option data-url='#{build_agg_url(k, url_params.permit(*Project::PROJECT_PARAMS))}' data-name='#{k}'>#{v.capitalize}</option>"
+      disabled = "disabled" if k == "d" && day_not_allowed
+      "<option data-url='#{build_agg_url(k, url_params.permit(*Project::PROJECT_PARAMS))}' data-name='#{k}' #{disabled}>#{v.capitalize}</option>"
     end
   end
 
