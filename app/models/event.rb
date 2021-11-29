@@ -46,14 +46,20 @@ class Event < ApplicationRecord
   before_create :titleize_name
   before_create :sanitize_prop_values
 
-  def self.aggregations
-    {
-      "d" => "day",
-      "w" => "week",
-      "m" => "month",
-      "y" => "year"
-    }
-  end
+  DATE_OPTIONS = {
+    "7d" => "Last 7 days",
+    "30d" => "Last 30 days",
+    "this_m" => "This month",
+    "6m" => "Last 6 months",
+    "12m" => "Last 12 months"
+  }.freeze
+
+  AGGREGATIONS = {
+    "d" => "day",
+    "w" => "week",
+    "m" => "month",
+    "y" => "year"
+  }.freeze
 
   def self.format_for_chart(events_array)
     events_grouped = events_array.group_by { |e| e["property_value"] }

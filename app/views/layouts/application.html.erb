@@ -12,6 +12,8 @@
     <%= javascript_importmap_tags %>
     <%= stylesheet_link_tag "tailwind" %>
     <%= stylesheet_link_tag "application", media: "all" %>
+
+    <%= yield :head %>
   </head>
 
   <body class="font-system min-h-screen flex flex-col">

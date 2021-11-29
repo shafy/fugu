@@ -44,6 +44,8 @@ class Project < ApplicationRecord
   before_validation :downcase_name
   before_validation :strip_name
 
+  PROJECT_PARAMS = %i[slug test event prop agg date].freeze
+
   def downcase_name
     self.name = name.downcase if name
   end

@@ -4,7 +4,8 @@ export default class extends Controller {
   static targets = [
     "eventSelect",
     "aggSelect",
-    "propertySelect"
+    "propertySelect",
+    "dateSelect"
   ]
 
   static values = {
@@ -16,6 +17,7 @@ export default class extends Controller {
     this.setSelectedOption(this.eventSelectTarget, "event")
     this.setSelectedOption(this.aggSelectTarget, "agg"),
     this.setSelectedOption(this.propertySelectTarget, "prop")
+    this.setSelectedOption(this.dateSelectTarget, "date")
   }
 
   navigateToSelectUrl(event) {
