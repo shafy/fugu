@@ -56,16 +56,40 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
       assert_match(@project.name, @response.body)
     end
 
-    test "contains event name" do
-      assert_match(@event.name, @response.body)
-    end
-
     test "contain correct event names in dropdown" do
-      assert_match("data-name='test-event-2'>#{@event2.name}</option>", @response.body)
+      assert_match("data-name='test-event'", @response.body)
+      assert_match("data-name='test-event-2'", @response.body)
     end
 
-    test "contain correct property values in dropdown" do
+    test "selects correct event from dropdown" do
+      get project_path(@project.name, params: { event: "test-event-2" })
+      assert_match("data-name='test-event-2' selected", @response.body)
+    end
+
+    test "selects correct propery value from dropdown" do
+      get project_path(@project.name, params: { prop: "color" })
+      assert_match("data-name='color' selected", @response.body)
+    end
+
+    test "selects correct date from dropdown" do
+      get project_path(@project.name, params: { date: "30d" })
+      assert_match("data-name='30d' selected", @response.body)
+    end
+
+    test "selects correct aggregation from dropdown" do
+      get project_path(@project.name, params: { agg: "m" })
+      assert_match("data-name='m'  selected", @response.body)
+    end
+
+    test "contains correct property values in dropdown" do
       assert_match("data-name='color'>color</option>", @response.body)
+    end
+
+    test "contains correct url in event dropdown" do
+      get project_path(@project.name, params: { agg: "m", prop: "color", date: "6m" })
+      path = project_path(@project.name, params: { agg: "m", date: "6m", event: @event2.name.parameterize })
+      puts path
+      assert_match("data-url='#{path}'", @response.body)
     end
 
     test "is successful for property breakdown" do

@@ -15,7 +15,7 @@ Layout/LineLength:
   Max: 100
 
 Metrics/ClassLength:
-  Max: 120
+  Max: 150
 
 Metrics/MethodLength:
   Max: 15

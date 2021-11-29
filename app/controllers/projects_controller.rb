@@ -20,8 +20,6 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    # TODO
-    # redirect_to dashboard unless project
     return unless @selected_event
 
     events_array = Event.with_aggregation(
@@ -34,7 +32,7 @@ class ProjectsController < ApplicationController
       end_date: @end_date
     )
 
-    @dates = events_array.uniq { |e| e["date"]}.map { |d| d["date"] }
+    @dates = events_array.uniq { |e| e["date"] }.map { |d| d["date"] }
     @events = Event.format_for_chart(events_array)
   end
 
@@ -63,8 +61,7 @@ class ProjectsController < ApplicationController
     end
   end
 
-  def settings
-  end
+  def settings; end
 
   private
 
@@ -83,8 +80,19 @@ class ProjectsController < ApplicationController
   end
 
   def set_dates
-    @start_date = Event.where(name: @selected_event, api_key: @api_key).minimum("created_at")
-    @end_date = Event.where(name: @selected_event, api_key: @api_key).maximum("created_at")
+    @start_date = case params[:date]
+                  when "30d"
+                    29.days.ago
+                  when "this_m"
+                    Time.zone.now.beginning_of_month
+                  when "6m"
+                    6.months.ago
+                  when "12m"
+                    12.months.ago
+                  else
+                    6.days.ago
+                  end
+    @end_date = Time.zone.now
   end
 
   def set_properties
@@ -92,7 +100,9 @@ class ProjectsController < ApplicationController
   end
 
   def set_aggregation
-    a = Event.aggregations.key?(params[:agg]) ? Event.aggregations[params[:agg]] : "day"
+    a = Event::AGGREGATIONS.key?(params[:agg]) ? Event::AGGREGATIONS[params[:agg]] : "day"
+    @day_not_allowed = time_period > 6
+    a = "week" if a == "day" && @day_not_allowed
     @aggregation = CGI.escapeHTML(a)
   end
 
@@ -107,6 +117,10 @@ class ProjectsController < ApplicationController
 
     @property_values = Event.distinct_property_values(@selected_event, @api_key.id, @property)
     @property_values.map! { |p| p&.gsub(",", "\\,") }
+  end
+
+  def time_period
+    (@end_date - @start_date) / 60 / 60 / 24 / 30
   end
 
   def project_params
@@ -127,7 +141,7 @@ class ProjectsController < ApplicationController
 
   def set_selected_event
     ev = if params[:event]
-           e = params[:event].tr('-', ' ').titleize
+           e = params[:event].tr("-", " ").titleize
            Event.exists?(name: e, api_key: @api_key) ? e : @event_names.first
          else
            @event_names.first
