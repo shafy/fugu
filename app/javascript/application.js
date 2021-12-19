@@ -2,3 +2,4 @@
 import "@hotwired/stimulus-importmap-autoloader"
 import "chart.js"
 import "controllers"
+import "@hotwired/turbo-rails"

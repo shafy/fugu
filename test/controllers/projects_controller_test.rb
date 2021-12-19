@@ -82,7 +82,7 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
     end
 
     test "contains correct property values in dropdown" do
-      assert_match("data-name='color'>color</option>", @response.body)
+      assert_match("data-name='color' >color</option>", @response.body)
     end
 
     test "contains correct url in event dropdown" do

@@ -9,7 +9,9 @@ Bundler.require(*Rails.groups)
 module Eventtracker
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.1
+    config.load_defaults 7.0
+
+    config.active_support.cache_format_version = 6.1
 
     # Configuration for the application, engines, and railties goes here.
     #

@@ -10,9 +10,9 @@
     <%= favicon_link_tag asset_path('fugu_favicon.png') %>
 
     <%= javascript_importmap_tags %>
-    <%= stylesheet_link_tag "tailwind" %>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", media: "all" %>
-
+    
     <%= yield :head %>
   </head>
 
@@ -23,9 +23,9 @@
           value,
           class: "flex flex-row text-center justify-center border-2 p-4 shadow-sm flash-#{key}" unless value.blank? %>
     <% end %>
-    <div class="w-full max-w-5xl p-4 flex flex-col justify-center items-center mx-auto">
-      <%= yield :main %>
-    </div>
+    <main class="w-full max-w-5xl p-4 flex flex-col justify-center items-center mx-auto">
+          <%= yield :main %>
+    </main>
     <%= render "partials/footer" %>
   </body>
 </html>
