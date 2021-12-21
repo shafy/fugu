@@ -7,7 +7,7 @@ class StripeController < ApplicationController
 
   def checkout_session
     session = Stripe::Checkout::Session.create(checkout_session_args)
-    redirect_to session.url
+    redirect_to session.url, allow_other_host: true
   rescue StandardError => e
     Sentry.capture_exception(e)
     flash[:alert] = error_message
@@ -36,7 +36,7 @@ class StripeController < ApplicationController
         return_url: users_settings_url
       }
     )
-    redirect_to customer_portal_session.url
+    redirect_to customer_portal_session.url, allow_other_host: true
   rescue StandardError
     flash[:alert] = error_message
     redirect_to users_settings_url
