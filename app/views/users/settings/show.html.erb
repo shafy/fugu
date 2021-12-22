@@ -9,16 +9,25 @@
     <p class="mb-4"> 
       <% if current_user.active? %>
         Your Fugu subscription is active and renews monthly.<br>
-        <a href="<%= stripe_customer_portal_url %>">Cancel subscription or update payment method</a>
+        <%= link_to "Cancel subscription or update payment method", stripe_customer_portal_url,
+          data: { turbo: false }
+        %>
       <% elsif current_user.canceled? %>
          Your Fugu subscription is canceled, but will remain active until <%= @cancel_at %>.<br>
-        <a href="<%= stripe_customer_portal_url %>">Renew subscription</a>
+        <%= link_to "Renew subscription", stripe_customer_portal_url,
+          data: { turbo: false }
+        %>
       <% else %>
         You don't have an active subscription.<br>
         Fugu costs $9/month and includes 1 million events/month.<br>
-        <a href="<%= stripe_checkout_session_url %>">Start your subscription now</a>.
+        <%= link_to "Start your subscription now", stripe_checkout_session_url,
+          data: { turbo: false }
+        %>
         <% if current_user.stripe_customer_id.present? %>
-          <br><a href="<%= stripe_customer_portal_url %>">View past invoices</a>
+          <br>
+          <%= link_to "View past invoices", stripe_customer_portal_url,
+            data: { turbo: false }
+          %>
         <% end %>
       <% end %>
     </p>
