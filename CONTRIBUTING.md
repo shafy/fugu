@@ -8,11 +8,13 @@ If you want to contribute, fork this repo and create a pull request with your ch
 
 ## Development
 
-## Gitpod
+### Setup
+
+### Gitpod
 
 We recommend developing with the excellent cloud-based development environment provided by [Gitpod](gitpod.io/). To start your ready-to-code development enviroment just add `gitpod.io/#` in front of the GitHub URL for any branch, or [click here](https://gitpod.io/#https://github.com/shafy/fugu) to get started with the main branch.
 
-## Docker
+### Docker
 
 We haven't set up Docker for this project yet, but feel free to send a PR with a working setup if you do get to it.
 
@@ -20,7 +22,7 @@ We haven't set up Docker for this project yet, but feel free to send a PR with a
 
 Dependencies:
 - ruby ~3.0.0
-- rails ~6.1.3
+- rails ~7.0.0
 - postgres ^13.2
 
 Install the dependencies on your machine & set up an user in Postgres. Then:
@@ -30,7 +32,7 @@ cp .env.example .env
 
 # Create and migrate the database
 rails db:create db:migrate
-
-# Finally, run the app locally
-rails s
 ```
+
+## Starting the server
+To start the server, run `./bin/dev` or run `rails s` and `rails tailwindcss:watch` as separate processes (the first command does basically the same with `foreman`). This is necessary because we need the [Tailwind](https://github.com/rails/tailwindcss-rails) watch process during development.
