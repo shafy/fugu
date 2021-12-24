@@ -34,7 +34,7 @@ class Event < ApplicationRecord
               },
             exclusion:
               {
-                in: %w(all All),
+                in: %w[all All],
                 message: "'%{value}' is a reversed event name by Fugu and can't be used"
               }
 
