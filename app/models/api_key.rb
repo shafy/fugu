@@ -29,6 +29,6 @@ class ApiKey < ApplicationRecord
   before_validation :generate_key
 
   def generate_key
-    self.key_value = SecureRandom.hex
+    self.key_value ||= SecureRandom.hex
   end
 end
