@@ -5,6 +5,24 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def show_test_alert
+    return unless params[:test] == "true"
+
+    flash.now[:info] = "Heads up: You are currently viewing test data. Test data is deleted after 14 days."
+  end
+
+  def set_project
+    @project = Project.find_by(name: params[:project_slug]&.downcase, user: current_user)
+  end
+
+  def authorize_project_user
+    return redirect_to projects_path unless current_user
+
+    return redirect_to projects_path unless @project
+
+    return redirect_to projects_path unless current_user == @project.user
+  end
+
   def show_not_active_flash
     flash.now[:not_active] = user_canceled_flash if current_user.canceled?
     flash.now[:not_active] = user_inactive_flash if current_user.inactive?

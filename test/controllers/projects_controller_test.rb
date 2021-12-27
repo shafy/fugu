@@ -45,7 +45,7 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
       @event = FactoryBot.create(:event, api_key: api_key_live)
       @event2 = FactoryBot.create(:event, name: "Test Event 2", api_key: api_key_live)
       sign_in user
-      get project_path(@project.name)
+      get project_events_path(@project.name)
     end
 
     test "be successful" do
@@ -62,67 +62,67 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
     end
 
     test "selects correct event from dropdown" do
-      get project_path(@project.name, params: { event: "test-event-2" })
+      get project_events_path(@project.name, params: { event: "test-event-2" })
       assert_match("data-name='test-event-2' selected", @response.body)
     end
 
     test "selects correct propery value from dropdown" do
-      get project_path(@project.name, params: { prop: "color" })
+      get project_events_path(@project.name, params: { prop: "color" })
       assert_match("data-name='color' selected", @response.body)
     end
 
     test "selects correct date from dropdown" do
-      get project_path(@project.name, params: { date: "30d" })
+      get project_events_path(@project.name, params: { date: "30d" })
       assert_match("data-name='30d' selected", @response.body)
     end
 
     test "selects correct aggregation from dropdown for day" do
-      get project_path(@project.name, params: { agg: "d", date: "7d" })
+      get project_events_path(@project.name, params: { agg: "d", date: "7d" })
       assert_match("data-name='d'  selected", @response.body)
     end
 
     test "selects correct possible aggregation for 7d for month" do
-      get project_path(@project.name, params: { agg: "m", date: "7d" })
+      get project_events_path(@project.name, params: { agg: "m", date: "7d" })
       assert_match("data-name='d'  selected", @response.body)
     end
 
     test "selects correct possible aggregation for 7d for year" do
-      get project_path(@project.name, params: { agg: "y", date: "7d" })
+      get project_events_path(@project.name, params: { agg: "y", date: "7d" })
       assert_match("data-name='d'  selected", @response.body)
     end
 
     test "selects correct possible aggregation for 30d for week" do
-      get project_path(@project.name, params: { agg: "w", date: "30d" })
+      get project_events_path(@project.name, params: { agg: "w", date: "30d" })
       assert_match("data-name='w'  selected", @response.body)
     end
 
     test "selects correct possible aggregation for 30d for month" do
-      get project_path(@project.name, params: { agg: "m", date: "30d" })
+      get project_events_path(@project.name, params: { agg: "m", date: "30d" })
       assert_match("data-name='w'  selected", @response.body)
     end
 
     test "selects correct possible aggregation for 6m for month" do
-      get project_path(@project.name, params: { agg: "m", date: "6m" })
+      get project_events_path(@project.name, params: { agg: "m", date: "6m" })
       assert_match("data-name='m'  selected", @response.body)
     end
 
     test "selects correct possible aggregation for 6m for year" do
-      get project_path(@project.name, params: { agg: "y", date: "6m" })
+      get project_events_path(@project.name, params: { agg: "y", date: "6m" })
       assert_match("data-name='y'  selected", @response.body)
     end
 
     test "selects correct possible aggregation for 6m for day" do
-      get project_path(@project.name, params: { agg: "d", date: "6m" })
+      get project_events_path(@project.name, params: { agg: "d", date: "6m" })
       assert_match("data-name='w'  selected", @response.body)
     end
 
     test "selects correct possible aggregation for 12m for week" do
-      get project_path(@project.name, params: { agg: "w", date: "12m" })
+      get project_events_path(@project.name, params: { agg: "w", date: "12m" })
       assert_match("data-name='w'  selected", @response.body)
     end
 
     test "selects correct possible aggregation for 12m for day" do
-      get project_path(@project.name, params: { agg: "d", date: "12m" })
+      get project_events_path(@project.name, params: { agg: "d", date: "12m" })
       assert_match("data-name='w'  selected", @response.body)
     end
 
@@ -131,14 +131,14 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
     end
 
     test "contains correct url in event dropdown" do
-      get project_path(@project.name, params: { agg: "m", prop: "color", date: "6m" })
-      path = project_path(@project.name, params: { agg: "m", date: "6m", event: @event2.name.parameterize })
+      get project_events_path(@project.name, params: { agg: "m", prop: "color", date: "6m" })
+      path = project_events_path(@project.name, params: { agg: "m", date: "6m", event: @event2.name.parameterize })
       puts path
       assert_match("data-url='#{path}'", @response.body)
     end
 
     test "is successful for property breakdown" do
-      get project_path(@project.name, p: "color")
+      get project_events_path(@project.name, p: "color")
       assert_response :success
     end
   end
@@ -152,7 +152,7 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
     end
 
     test "be successful" do
-      assert_redirected_to project_path(@new_project.name)
+      assert_redirected_to project_events_path(@new_project.name)
     end
 
     test "create the correct project" do

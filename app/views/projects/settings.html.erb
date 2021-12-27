@@ -13,12 +13,12 @@
     </div>
     <div class="mt-6 mb-4">
       <%= button_to "Delete project",
-          destroy_project_path(@project.name),
+          project_path(@project.name),
           method: :delete,
           class: "bg-transparent underline font-medium hover:text-green-500 cursor-pointer",
           onclick: "return confirm('This will delete this project and all its events forever. Are you sure?');"
       %>
     </div>
   <% end %>
-  <%= link_to "Back to #{@project.name}", project_path(@project.name) %>
+  <%= link_to "Back to #{@project.name}", project_events_path(@project.name) %>
 <% end %>

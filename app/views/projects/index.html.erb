@@ -4,7 +4,7 @@
     <% if @projects.any? %>
       <% @projects.each do |project| %>
         <div class="mb-2">
-          <%= link_to project.name, project_path(project.name), class: "no-underline text-lg" %>
+          <%= link_to project.name, project_events_path(project.name), class: "no-underline text-lg" %>
         </div>
       <% end %>
     <% else %>

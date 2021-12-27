@@ -31,32 +31,32 @@ module ProjectHelper
     end
   end
 
-  def build_event_url(url_params, aggregation, event_name)
-    project_path(
-      url_params[:slug],
-      url_params.except(:prop, :slug)
+  def build_event_url(event_name, url_params, day_not_allowed)
+    project_events_path(
+      url_params[:project_slug],
+      url_params.except(:prop, :project_slug)
         .merge({ event: event_name.parameterize })
         .merge({ agg: aggregation })
     )
   end
 
   def build_agg_url(url_params, agg)
-    project_path(
-      url_params[:slug],
+    project_events_path(
+      url_params[:project_slug],
       url_params.except(:slug).merge({ agg: agg })
     )
   end
 
   def build_property_url(url_params, aggregation, prop)
-    project_path(
-      url_params[:slug],
+    project_events_path(
+      url_params[:project_slug],
       url_params.except(:slug).merge({ prop: prop }).merge({ agg: aggregation })
     )
   end
 
   def build_date_url(url_params, aggregation, date)
-    project_path(
-      url_params[:slug],
+    project_events_path(
+      url_params[:project_slug],
       url_params.except(:slug).merge({ date: date }).merge({ agg: aggregation })
     )
   end
@@ -64,7 +64,7 @@ module ProjectHelper
   def build_test_toggle_url(url_params, aggregation, test)
     url_params = url_params.permit(*Project::PROJECT_PARAMS)
     project_path(
-      url_params[:slug],
+      project_events_path[:project_slug],
       url_params.except(:slug).merge({ test: test }).merge({ agg: aggregation })
     )
   end
