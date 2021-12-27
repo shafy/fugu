@@ -4,8 +4,8 @@ Rails.application.routes.draw do
   root to: "projects#index"
 
   resources :projects, only: %i[index new create destroy], param: :slug do
-    resources :events, only: %i[index]
-    reosourcdes :funnels, only: %i[index] 
+    resources :events, only: %i[index show], param: :slug
+    resources :funnels, param: :slug
     get "settings", to: "projects#settings"
   end
 

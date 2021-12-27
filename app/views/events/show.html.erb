@@ -11,7 +11,7 @@
       <%= link_to "Project settings", project_settings_path, class: "font-normal" %>
     </div>
   </div>
-  <% unless @event_names.empty? %>
+  <% unless @selected_event.empty? %>
     <div class="w-full mb-2 p-4 rounded-md shadow-md bg-yellow-50">
       <%= render partial: "selections",
           locals: {

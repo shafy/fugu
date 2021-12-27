@@ -83,11 +83,11 @@ module Analyzable
 
   def set_selected_event
     ev = if params[:event]
-          e = params[:event].tr("-", " ").titleize
-          Event.exists?(name: e, api_key: @api_key) ? e : @event_names.first
-        else
-          @event_names.first
-        end
+           e = params[:event].tr("-", " ").titleize
+           Event.exists?(name: e, api_key: @api_key) ? e : @event_names.first
+         else
+           @event_names.first
+         end
     @selected_event = CGI.escapeHTML(ev) if ev
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_16_133119) do
+ActiveRecord::Schema.define(version: 2021_12_27_171015) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,23 @@ ActiveRecord::Schema.define(version: 2021_10_16_133119) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "api_key_id", null: false
     t.index ["api_key_id"], name: "index_events_on_api_key_id"
+  end
+
+  create_table "funnel_steps", force: :cascade do |t|
+    t.string "event_name", null: false
+    t.bigint "funnel_id", null: false
+    t.integer "order"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["funnel_id"], name: "index_funnel_steps_on_funnel_id"
+  end
+
+  create_table "funnels", force: :cascade do |t|
+    t.string "name", null: false
+    t.bigint "api_key_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["api_key_id"], name: "index_funnels_on_api_key_id"
   end
 
   create_table "projects", force: :cascade do |t|
@@ -63,5 +80,7 @@ ActiveRecord::Schema.define(version: 2021_10_16_133119) do
 
   add_foreign_key "api_keys", "projects"
   add_foreign_key "events", "api_keys"
+  add_foreign_key "funnel_steps", "funnels"
+  add_foreign_key "funnels", "api_keys"
   add_foreign_key "projects", "users"
 end

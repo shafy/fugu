@@ -1,23 +1,19 @@
 # frozen_string_literal: true
-
 # == Schema Information
 #
 # Table name: projects
 #
-#  id         :bigint           not null, primary key
+#  id         :integer          not null, primary key
 #  name       :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  user_id    :bigint           not null
+#  user_id    :integer          not null
 #
 # Indexes
 #
 #  index_projects_on_user_id  (user_id)
 #
-# Foreign Keys
-#
-#  fk_rails_...  (user_id => users.id)
-#
+
 class Project < ApplicationRecord
   has_many :api_keys, dependent: :destroy
   belongs_to :user
@@ -32,7 +28,7 @@ class Project < ApplicationRecord
             format:
               {
                 with: /\A[a-zA-Z0-9-]*\z/,
-                message: "can only contain numbers, letters and hypens allowed"
+                message: "can only contain numbers, letters and hyphens"
               },
             exclusion:
               {
@@ -43,8 +39,6 @@ class Project < ApplicationRecord
 
   before_validation :downcase_name
   before_validation :strip_name
-
-  PROJECT_PARAMS = %i[project_slug test event prop agg date].freeze
 
   def downcase_name
     self.name = name.downcase if name
