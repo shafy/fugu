@@ -20,38 +20,9 @@ export default class extends Controller {
   }
 
   showChart() {
-    var datesModify
-    if(this.aggValue === "day") {
-      datesModify = this.datesValue.map(function(e) { 
-        var d = new Date(e);
-        const options = { weekday: 'short', year: '2-digit', month: 'short', day: '2-digit' };
-        d = d.toLocaleDateString('en-GB', options);
-        return d;
-      })
-    } else if(this.aggValue === "week") {
-      datesModify = this.datesValue.map(function(e) { 
-        var d = new Date(e);
-        const options = { year: 'numeric', month: 'short', day: '2-digit' };
-        d = d.toLocaleDateString('en-GB', options);
-        return d;
-      })
-    } else if(this.aggValue === "month") {
-      datesModify = this.datesValue.map(function(e) { 
-        var d = new Date(e);
-        const options = { year: 'numeric', month: 'short' };
-        d = d.toLocaleDateString('en-GB', options);
-        return d;
-      })
-    } else if(this.aggValue === "year") {
-      datesModify = this.datesValue.map(function(e) {
-        var d = new Date(e);
-        const options = { year: 'numeric'};
-        d = d.toLocaleDateString('en-GB', options);
-        return d;
-      })
-    };
+    
     const data = {
-      labels: datesModify,
+      labels: this.modifyDates(),
       datasets: Object.keys(this.eventsValue).map((e, i) => this.createDataSet(e, this.eventsValue[e], i))
     };
 
@@ -139,6 +110,30 @@ export default class extends Controller {
       "rgb(243, 114, 44)",
       "rgb(249, 65, 68)"
     ]
+  }
+
+  modifyDates() {
+    let dateOption
+    switch(this.aggValue) {
+      case "day":
+        dateOption = { weekday: "short", year: "2-digit", month: "short", day: "2-digit" };
+        break;
+      case "week":
+        dateOption = { year: "numeric", month: "short", day: "2-digit" };
+        break;
+      case "month":
+        dateOption = { year: "numeric", month: "short" };
+        break;
+      case "year":
+        dateOption = { year: "numeric"};
+        break;
+    }
+    const datesModify = this.datesValue.map((e) => { 
+      let d = new Date(e);
+      d = d.toLocaleDateString("en-US", dateOption);
+      return d;
+    });
+    return datesModify;
   }
 
   htmlDecode(input) {
