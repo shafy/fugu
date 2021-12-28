@@ -15,14 +15,13 @@ export default class extends Controller {
   }
 
   connect() {
-    this.initColorPalette()
+    this.initColorPalette();
     this.showChart();
   }
 
   showChart() {
-    
     const data = {
-      labels: this.modifyDates(),
+      labels: this.formatDates(),
       datasets: Object.keys(this.eventsValue).map((e, i) => this.createDataSet(e, this.eventsValue[e], i))
     };
 
@@ -112,8 +111,8 @@ export default class extends Controller {
     ]
   }
 
-  modifyDates() {
-    let dateOption
+  formatDates() {
+    let dateOption;
     switch(this.aggValue) {
       case "day":
         dateOption = { weekday: "short", year: "2-digit", month: "short", day: "2-digit" };
@@ -128,12 +127,10 @@ export default class extends Controller {
         dateOption = { year: "numeric"};
         break;
     }
-    const datesModify = this.datesValue.map((e) => { 
+    return this.datesValue.map((e) => { 
       let d = new Date(e);
-      d = d.toLocaleDateString("en-US", dateOption);
-      return d;
+      return d.toLocaleDateString("en-US", dateOption);
     });
-    return datesModify;
   }
 
   htmlDecode(input) {
