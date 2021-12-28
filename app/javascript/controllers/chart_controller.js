@@ -10,6 +10,7 @@ export default class extends Controller {
   static values = {
     dates: Array,
     events: Object,
+    agg: String,
     eventName: String,
   }
 
@@ -19,8 +20,38 @@ export default class extends Controller {
   }
 
   showChart() {
+    var datesModify
+    if(this.aggValue === "day") {
+      datesModify = this.datesValue.map(function(e) { 
+        var d = new Date(e);
+        const options = { weekday: 'short', year: '2-digit', month: 'short', day: '2-digit' };
+        d = d.toLocaleDateString('en-GB', options);
+        return d;
+      })
+    } else if(this.aggValue === "week") {
+      datesModify = this.datesValue.map(function(e) { 
+        var d = new Date(e);
+        const options = { year: 'numeric', month: 'short', day: '2-digit' };
+        d = d.toLocaleDateString('en-GB', options);
+        return d;
+      })
+    } else if(this.aggValue === "month") {
+      datesModify = this.datesValue.map(function(e) { 
+        var d = new Date(e);
+        const options = { year: 'numeric', month: 'short' };
+        d = d.toLocaleDateString('en-GB', options);
+        return d;
+      })
+    } else if(this.aggValue === "year") {
+      datesModify = this.datesValue.map(function(e) {
+        var d = new Date(e);
+        const options = { year: 'numeric'};
+        d = d.toLocaleDateString('en-GB', options);
+        return d;
+      })
+    };
     const data = {
-      labels: this.datesValue,
+      labels: datesModify,
       datasets: Object.keys(this.eventsValue).map((e, i) => this.createDataSet(e, this.eventsValue[e], i))
     };
 
