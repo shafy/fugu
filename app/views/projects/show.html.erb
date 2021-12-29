@@ -25,6 +25,7 @@
     <div class="flex flex-row w-full">
       <div data-controller="chart"
             data-chart-dates-value="<%= @dates.to_json %>"
+            data-chart-agg-value="<%= @aggregation %>"
             data-chart-events-value="<%= @events.to_json %>"
             data-chart-event-name-value="<%= @selected_event.titleize %>"
             class="p-4 w-full rounded-md shadow-md bg-yellow-50 h-28rem"

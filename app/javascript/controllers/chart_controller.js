@@ -10,17 +10,18 @@ export default class extends Controller {
   static values = {
     dates: Array,
     events: Object,
+    agg: String,
     eventName: String,
   }
 
   connect() {
-    this.initColorPalette()
+    this.initColorPalette();
     this.showChart();
   }
 
   showChart() {
     const data = {
-      labels: this.datesValue,
+      labels: this.formatDates(),
       datasets: Object.keys(this.eventsValue).map((e, i) => this.createDataSet(e, this.eventsValue[e], i))
     };
 
@@ -108,6 +109,28 @@ export default class extends Controller {
       "rgb(243, 114, 44)",
       "rgb(249, 65, 68)"
     ]
+  }
+
+  formatDates() {
+    let dateOption;
+    switch(this.aggValue) {
+      case "day":
+        dateOption = { weekday: "short", year: "2-digit", month: "short", day: "2-digit" };
+        break;
+      case "week":
+        dateOption = { year: "numeric", month: "short", day: "2-digit" };
+        break;
+      case "month":
+        dateOption = { year: "numeric", month: "short" };
+        break;
+      case "year":
+        dateOption = { year: "numeric"};
+        break;
+    }
+    return this.datesValue.map((e) => { 
+      let d = new Date(e);
+      return d.toLocaleDateString("en-US", dateOption);
+    });
   }
 
   htmlDecode(input) {
