@@ -1,13 +1,13 @@
 <div
   class="flex flex-row w-full items-center justify-between"
   data-controller="event"
-  data-event-day-not-allowed-value="<%= day_not_allowed %>"
+  data-event-possible-aggregation-value="<%= possible_aggregation %>"
 >
   <div class="flex flex-row gap-x-5 items-center justify-start">
     <div class="flex flex-col items-start justify-center">
       <%= label_tag 'events', 'Events', class: "text-sm font-medium mb-2" %>
       <%= select_tag "events",
-          raw(event_select_options(event_names, param_data, day_not_allowed)),
+          raw(event_select_options(event_names, param_data, possible_aggregation)),
           data: { action: "change->event#navigateToSelectUrl" },
           class: "w-56 text-sm"
       %>
@@ -15,7 +15,7 @@
     <div class="flex flex-col items-start justify-center">
       <%= label_tag 'properties', 'Properties', class: "text-sm font-medium mb-2" %>
       <%= select_tag "properties",
-          raw(property_select_options(properties, param_data, day_not_allowed)),
+          raw(property_select_options(properties, param_data, possible_aggregation)),
           data: { action: "change->event#navigateToSelectUrl" },
           class: "w-44 text-sm"
       %>
@@ -23,7 +23,7 @@
     <div class="flex flex-col items-start justify-center">
       <%= label_tag 'aggregation', 'Aggregation', class: "text-sm font-medium mb-2" %>
       <%= select_tag "aggregation",
-          raw(agg_select_options(param_data, day_not_allowed)),
+          raw(agg_select_options(@aggregation, param_data, possible_aggregation)),
           data: { action: "change->event#navigateToSelectUrl" },
           class: "text-sm"
       %>
@@ -33,7 +33,7 @@
     <div class="flex flex-col items-start justify-center">
       <%= label_tag 'date_range', 'Date Range', class: "text-sm font-medium mb-2" %>
       <%= select_tag "date_range",
-          raw(date_select_options(param_data, day_not_allowed)),
+          raw(date_select_options(param_data, possible_aggregation)),
           data: { action: "change->event#navigateToSelectUrl" },
           class: "text-sm"
       %>

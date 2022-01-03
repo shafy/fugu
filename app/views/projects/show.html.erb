@@ -18,7 +18,7 @@
             param_data: params,
             event_names: @event_names,
             properties: @properties, 
-            day_not_allowed: @day_not_allowed
+            possible_aggregation: @possible_aggregation
           }
       %>
     </div>
@@ -34,9 +34,9 @@
     </div>
     <div class="flex flex-row items-center justify-end w-full my-4">
       <% if params[:test] == "true" %>
-        <%= link_to "Toggle LIVE mode", build_test_toggle_url(false, params, @day_not_allowed) %>
+        <%= link_to "Toggle LIVE mode", build_test_toggle_url(false, params, @possible_aggregation) %>
       <% else %>
-        <%= link_to "Toggle TEST mode", build_test_toggle_url(true, params, @day_not_allowed) %>
+        <%= link_to "Toggle TEST mode", build_test_toggle_url(true, params, @possible_aggregation) %>
       <% end %>
     </div>
   </div>
@@ -51,10 +51,10 @@
         <%= link_to "project settings", project_settings_path  %>.<br><br>
         <% if params[:test] == "true" %>
           Did you track events with your test API key?
-          <%= link_to "Toggle live mode!", build_test_toggle_url(false, params, @day_not_allowed) %>
+          <%= link_to "Toggle live mode!", build_test_toggle_url(false, params, @possible_aggregation) %>
         <% else %>
           Did you track events with your test API key?
-          <%= link_to "Toggle test mode!", build_test_toggle_url(true, params, @day_not_allowed) %>
+          <%= link_to "Toggle test mode!", build_test_toggle_url(true, params, @possible_aggregation) %>
         <% end %>
       </p>
     </div>

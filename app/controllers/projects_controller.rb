@@ -31,7 +31,6 @@ class ProjectsController < ApplicationController
       start_date: @start_date,
       end_date: @end_date
     )
-
     @dates = events_array.uniq { |e| e["date"] }.map { |d| d["date"] }
     @events = Event.format_for_chart(events_array)
   end
@@ -101,8 +100,24 @@ class ProjectsController < ApplicationController
 
   def set_aggregation
     a = Event::AGGREGATIONS.key?(params[:agg]) ? Event::AGGREGATIONS[params[:agg]] : "day"
-    @day_not_allowed = time_period > 6
-    a = "week" if a == "day" && @day_not_allowed
+    @possible_aggregation = case params[:date]
+                            when "30d"
+                              ["d", "w", "m"] 
+                            when "this_m"
+                              ["d", "w", "m"] 
+                            when "6m"
+                              ["w", "m", "y"] 
+                            when "12m"
+                              ["w", "m", "y"] 
+                            when "7d"
+                              ["d", "w"]
+                            else
+                              ["d", "w", "m", "y"]
+                            end
+    a = "week" if a == "day" && !@possible_aggregation.include?("d")
+    a = "week" if a == "month" && !@possible_aggregation.include?("m")
+    a = "week" if a == "year" && !@possible_aggregation.include?("m") && !@possible_aggregation.include?("y")
+    a = "month" if a == "year" && !@possible_aggregation.include?("y")
     @aggregation = CGI.escapeHTML(a)
   end
 

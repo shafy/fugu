@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static values = {
-    dayNotAllowed: Boolean
+    possibleAggregation: Array
   }
 
   connect() {
@@ -14,13 +14,25 @@ export default class extends Controller {
   }
 
   correctAggValue() {
-    // replace agg=d with agg=w if dayNotAllowedValue == true
-    if (!this.dayNotAllowedValue) return;
-
-    if (new URLSearchParams(window.location.search).get("agg") == "d") {
+    if (new URLSearchParams(window.location.search).get("agg") == "d" && !this.possibleAggregationValue.includes("d")) {
       const url = new URL(window.location.href);
       url.searchParams.set("agg", "w");
       history.replaceState(null, "", url);
-    }
+     } else if(new URLSearchParams(window.location.search).get("agg") == "m" && !this.possibleAggregationValue.includes("m")) {
+      const url = new URL(window.location.href);
+      url.searchParams.set("agg", "w");
+      history.replaceState(null, "", url);
+     } else if(new URLSearchParams(window.location.search).get("agg") == "y" && !this.possibleAggregationValue.includes("m") && !this.possibleAggregationValue.includes("y")) {
+      const url = new URL(window.location.href);
+      url.searchParams.set("agg", "w");
+      history.replaceState(null, "", url);
+     } else if(new URLSearchParams(window.location.search).get("agg") == "y" && !this.possibleAggregationValue.includes("y")) {
+      const url = new URL(window.location.href);
+      url.searchParams.set("agg", "m");
+      history.replaceState(null, "", url);
+     } else {
+       return;
+     }
+    
   }
 }
