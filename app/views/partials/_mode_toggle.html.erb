@@ -1,0 +1,5 @@
+<% if test_mode %>
+  <%= link_to "Toggle LIVE mode", build_test_toggle_url(false, params, @day_not_allowed) %>
+<% else %>
+  <%= link_to "Toggle TEST mode", build_test_toggle_url(true, params, @day_not_allowed) %>
+<% end %>

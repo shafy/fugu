@@ -19,6 +19,8 @@ class EventsController < ApplicationController
   after_action :track_event, only: %i[show]
 
   def index
+    return render layout: "data_view" unless @event_names&.first
+
     redirect_to project_event_path(@project.name, @event_names&.first&.parameterize)
   end
 
@@ -37,6 +39,8 @@ class EventsController < ApplicationController
 
     @dates = events_array.uniq { |e| e["date"] }.map { |d| d["date"] }
     @events = Event.format_for_chart(events_array)
+
+    render layout: "data_view"
   end
 
   private

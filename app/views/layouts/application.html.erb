@@ -24,7 +24,8 @@
           class: "flex flex-row text-center justify-center border-2 p-4 shadow-sm flash-#{key}" unless value.blank? %>
     <% end %>
     <main class="w-full max-w-5xl p-4 flex flex-col justify-center items-center mx-auto">
-          <%= yield :main %>
+        
+        <%= content_for?(:data_view) ? yield(:data_view) : yield(:main) %>
     </main>
     <%= render "partials/footer" %>
   </body>

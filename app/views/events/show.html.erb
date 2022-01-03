@@ -1,19 +1,9 @@
-<% content_for :head do %>
-  <meta name="turbo-cache-control" content="no-cache">
+<% content_for :project_header do %>
+  <%= render partial: "partials/project_header", locals: { project_name: @project.name } %>
 <% end %>
 
-<% content_for :main do %>
-  <div class="flex flex-row items-center justify-between w-full">
-    <div class="w-full text-left">
-      <h1 class="text-lg font-medium mb-2"><%= @project.name %></h1>
-    </div>
-    <div class="w-40 text-right">
-      <%= link_to "Project settings", project_settings_path, class: "font-normal" %>
-    </div>
-  </div>
-  <% unless @selected_event.empty? %>
-    <div class="w-full mb-2 p-4 rounded-md shadow-md bg-yellow-50">
-      <%= render partial: "selections",
+<% content_for :data_controls do %>
+  <%= render partial: "selections",
           locals: {
             param_data: params,
             event_names: @event_names,
@@ -22,43 +12,14 @@
             aggregation: @aggregation # ??? do we need this?, also in _selections.html.erb, or better @aggregation there?
           }
       %>
-    </div>
-    <div class="flex flex-row w-full">
-      <div data-controller="chart"
-            data-chart-dates-value="<%= @dates.to_json %>"
-            data-chart-agg-value="<%= @aggregation %>"
-            data-chart-events-value="<%= @events.to_json %>"
-            data-chart-event-name-value="<%= @selected_event.titleize %>"
-            class="p-4 w-full rounded-md shadow-md bg-yellow-50 h-28rem"
-      >
-        <canvas data-chart-target="chart" class="h-full pt-4"></canvas>
-      </div>
-    </div>
-    <div class="flex flex-row items-center justify-end w-full my-4">
-      <% if params[:test] == "true" %>
-        <%= link_to "Toggle LIVE mode", build_test_toggle_url(params, @aggregation, false) %>
-      <% else %>
-        <%= link_to "Toggle TEST mode", build_test_toggle_url(params, @aggregation, true) %>
-      <% end %>
-    </div>
-  </div>
-  <% else %>
-    <div class="flex flex-row w-full mb-4 p-4 rounded-md shadow-md bg-yellow-50 gap-x-5">
-      <p>
-        You haven't tracked any events for this project yet.
-        To get started, call the Fugu API from your mobile or web app.
-        Check out the
-        <a href="https://docs.fugu.lol" target="_blank">docs</a> to learn more.<br><br>
-        Tip: You'll find your API keys in your
-        <%= link_to "project settings", project_settings_path  %>.<br><br>
-        <% if params[:test] == "true" %>
-          Did you track events with your test API key?
-          <%= link_to "Toggle live mode!", build_test_toggle_url(params, @aggregation, false) %>
-        <% else %>
-          Did you track events with your test API key?
-          <%= link_to "Toggle test mode!", build_test_toggle_url(params, @aggregation, true) %>
-        <% end %>
-      </p>
-    </div>
-  <% end %>
+<% end%>
+
+<% content_for :chart_view do %>
+  <%= render partial: "partials/chart",
+    locals: {
+      dates: @dates,
+      events: @events,
+      selected_event: @selected_event
+    }
+  %>
 <% end %>
