@@ -12,7 +12,7 @@ module ProjectHelper
     Event::AGGREGATIONS.map do |k, v|
       disabled = "disabled" if possible_aggregations.exclude?(k)
       selected = "selected" if k == aggregation
-      "<option data-url='#{build_agg_url(k, url_params.permit(*Project::PROJECT_PARAMS), aggregation)}' data-name='#{k}' #{disabled} #{selected}>#{v.capitalize}</option>"
+      "<option data-url='#{build_agg_url(k, url_params.permit(*Project::PROJECT_PARAMS))}' data-name='#{k}' #{disabled} #{selected}>#{v.capitalize}</option>"
     end
   end
 
@@ -40,7 +40,7 @@ module ProjectHelper
     )
   end
 
-  def build_agg_url(agg, url_params, aggregation)
+  def build_agg_url(agg, url_params)
     project_path(
       url_params[:slug],
       url_params.except(:slug).merge({ agg: agg })
