@@ -25,7 +25,7 @@ class ProjectsController < ApplicationController
     events_array = Event.with_aggregation(
       event_name: @selected_event,
       api_key_id: @api_key.id,
-      agg: @aggregation,
+      agg: Event::AGGREGATIONS[@aggregation],
       prop_name: @property,
       prop_values: @property_values,
       start_date: @start_date,
@@ -99,26 +99,20 @@ class ProjectsController < ApplicationController
   end
 
   def set_aggregation
-    a = Event::AGGREGATIONS.key?(params[:agg]) ? Event::AGGREGATIONS[params[:agg]] : "day"
-    @possible_aggregation = case params[:date]
-                            when "30d"
-                              ["d", "w", "m"] 
-                            when "this_m"
-                              ["d", "w", "m"] 
-                            when "6m"
-                              ["w", "m", "y"] 
-                            when "12m"
-                              ["w", "m", "y"] 
-                            when "7d"
-                              ["d", "w"]
-                            else
-                              ["d", "w", "m", "y"]
+    # order array such that .first gives default value
+   @possible_aggregations = case time_period
+                            when 366...5000
+                              %w[m y]
+                            when 32...366
+                              %w[w m y]
+                            when 8...32
+                              %w[m w d]
+                            when 0...8
+                              %w[w d]
                             end
-    a = "week" if a == "day" && !@possible_aggregation.include?("d")
-    a = "week" if a == "month" && !@possible_aggregation.include?("m")
-    a = "week" if a == "year" && !@possible_aggregation.include?("m") && !@possible_aggregation.include?("y")
-    a = "month" if a == "year" && !@possible_aggregation.include?("y")
-    @aggregation = CGI.escapeHTML(a)
+
+    @aggregation = params[:agg] ? CGI.escapeHTML(params[:agg]) : "d"
+    @aggregation = @possible_aggregations.first if @possible_aggregations.exclude?(@aggregation)
   end
 
   def set_property
@@ -135,7 +129,8 @@ class ProjectsController < ApplicationController
   end
 
   def time_period
-    (@end_date - @start_date) / 60 / 60 / 24 / 30
+    # returns time period in days
+    (@end_date - @start_date) / 60 / 60 / 24
   end
 
   def project_params
