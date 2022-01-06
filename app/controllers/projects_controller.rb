@@ -10,6 +10,7 @@ class ProjectsController < ApplicationController
   before_action :set_property, only: %i[show]
   before_action :set_properties, only: %i[show]
   before_action :set_property_values, only: %i[show]
+  before_action :set_possible_aggregations, only: %i[show]
   before_action :set_aggregation, only: %i[show]
   before_action :show_test_alert, only: %i[show]
   before_action :show_not_active_flash, only: %i[show settings]
@@ -25,13 +26,12 @@ class ProjectsController < ApplicationController
     events_array = Event.with_aggregation(
       event_name: @selected_event,
       api_key_id: @api_key.id,
-      agg: @aggregation,
+      agg: Event::AGGREGATIONS[@aggregation],
       prop_name: @property,
       prop_values: @property_values,
       start_date: @start_date,
       end_date: @end_date
     )
-
     @dates = events_array.uniq { |e| e["date"] }.map { |d| d["date"] }
     @events = Event.format_for_chart(events_array)
   end
@@ -68,7 +68,8 @@ class ProjectsController < ApplicationController
   def show_test_alert
     return unless params[:test] == "true"
 
-    flash.now[:info] = "Heads up: You are currently viewing test data. Test data is deleted after 14 days."
+    flash.now[:info] = "Heads up: You are currently viewing test data."\
+                       " Test data is deleted after 14 days."
   end
 
   def set_api_key
@@ -100,10 +101,22 @@ class ProjectsController < ApplicationController
   end
 
   def set_aggregation
-    a = Event::AGGREGATIONS.key?(params[:agg]) ? Event::AGGREGATIONS[params[:agg]] : "day"
-    @day_not_allowed = time_period > 6
-    a = "week" if a == "day" && @day_not_allowed
-    @aggregation = CGI.escapeHTML(a)
+    @aggregation = params[:agg] ? CGI.escapeHTML(params[:agg]) : "d"
+    @aggregation = @possible_aggregations.first if @possible_aggregations.exclude?(@aggregation)
+  end
+
+  def set_possible_aggregations
+    # order array such that .first gives default value
+    @possible_aggregations = case selected_time_period_days
+                             when 366..Float::INFINITY
+                               %w[m y]
+                             when 32...366
+                               %w[w m y]
+                             when 8...32
+                               %w[w d]
+                             when 0...8
+                               %w[d]
+                             end
   end
 
   def set_property
@@ -119,8 +132,8 @@ class ProjectsController < ApplicationController
     @property_values.map! { |p| p&.gsub(",", "\\,") }
   end
 
-  def time_period
-    (@end_date - @start_date) / 60 / 60 / 24 / 30
+  def selected_time_period_days
+    (@end_date - @start_date) / 60 / 60 / 24
   end
 
   def project_params
