@@ -76,9 +76,54 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
       assert_match("data-name='30d' selected", @response.body)
     end
 
-    test "selects correct aggregation from dropdown" do
-      get project_path(@project.name, params: { agg: "m" })
+    test "selects correct aggregation from dropdown for day" do
+      get project_path(@project.name, params: { agg: "d", date: "7d" })
+      assert_match("data-name='d'  selected", @response.body)
+    end
+
+    test "selects correct possible aggregation for 7d for month" do
+      get project_path(@project.name, params: { agg: "m", date: "7d" })
+      assert_match("data-name='d'  selected", @response.body)
+    end
+
+    test "selects correct possible aggregation for 7d for year" do
+      get project_path(@project.name, params: { agg: "y", date: "7d" })
+      assert_match("data-name='d'  selected", @response.body)
+    end
+
+    test "selects correct possible aggregation for 30d for week" do
+      get project_path(@project.name, params: { agg: "w", date: "30d" })
+      assert_match("data-name='w'  selected", @response.body)
+    end
+
+    test "selects correct possible aggregation for 30d for month" do
+      get project_path(@project.name, params: { agg: "m", date: "30d" })
+      assert_match("data-name='w'  selected", @response.body)
+    end
+
+    test "selects correct possible aggregation for 6m for month" do
+      get project_path(@project.name, params: { agg: "m", date: "6m" })
       assert_match("data-name='m'  selected", @response.body)
+    end
+
+    test "selects correct possible aggregation for 6m for year" do
+      get project_path(@project.name, params: { agg: "y", date: "6m" })
+      assert_match("data-name='y'  selected", @response.body)
+    end
+
+    test "selects correct possible aggregation for 6m for day" do
+      get project_path(@project.name, params: { agg: "d", date: "6m" })
+      assert_match("data-name='w'  selected", @response.body)
+    end
+
+    test "selects correct possible aggregation for 12m for week" do
+      get project_path(@project.name, params: { agg: "w", date: "12m" })
+      assert_match("data-name='w'  selected", @response.body)
+    end
+
+    test "selects correct possible aggregation for 12m for day" do
+      get project_path(@project.name, params: { agg: "d", date: "12m" })
+      assert_match("data-name='w'  selected", @response.body)
     end
 
     test "contains correct property values in dropdown" do

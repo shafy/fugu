@@ -48,8 +48,8 @@ class Event < ApplicationRecord
 
   DATE_OPTIONS = {
     "7d" => "Last 7 days",
-    "30d" => "Last 30 days",
     "this_m" => "This month",
+    "30d" => "Last 30 days",
     "6m" => "Last 6 months",
     "12m" => "Last 12 months"
   }.freeze
@@ -74,7 +74,15 @@ class Event < ApplicationRecord
     events_grouped.sort_by { |k, v| [-v[:total_count], k] }.to_h
   end
 
-  def self.with_aggregation(event_name:, api_key_id:, agg:, prop_name:, prop_values:, start_date:, end_date:)
+  # rubocop:disable Metrics/ParameterLists
+  def self.with_aggregation(
+    event_name:,
+    api_key_id:,
+    agg:, prop_name:,
+    prop_values:,
+    start_date:,
+    end_date:
+  )
     ActiveRecord::Base.connection.execute(
       with_agg_sql_query(
         event_name: event_name, api_key_id: api_key_id, agg: agg,
@@ -84,6 +92,7 @@ class Event < ApplicationRecord
       )
     ).to_a
   end
+  # rubocop:enable Metrics/ParameterLists
 
   def self.distinct_properties(name, api_key_id)
     ActiveRecord::Base.connection.execute(
@@ -121,7 +130,17 @@ class Event < ApplicationRecord
     )
   end
 
-  def self.with_agg_sql_query(event_name:, api_key_id:, agg:, prop_name:, prop_values:, start_date:, end_date:, prop_breakdown:)
+  # rubocop:disable Metrics/ParameterLists
+  def self.with_agg_sql_query(
+    event_name:,
+    api_key_id:,
+    agg:,
+    prop_name:,
+    prop_values:,
+    start_date:,
+    end_date:,
+    prop_breakdown:
+  )
     %(
       WITH
 
@@ -138,10 +157,11 @@ class Event < ApplicationRecord
         CASE WHEN interval_counts.count is NULL THEN 0 ELSE interval_counts.count END AS count
       FROM interval_and_prop_range
       LEFT OUTER JOIN interval_counts ON interval_and_prop_range.date = interval_counts.date
-      #{" AND interval_and_prop_range.property_value = interval_counts.property_value" if prop_breakdown} 
+      #{" AND interval_and_prop_range.property_value = interval_counts.property_value" if prop_breakdown}
       ORDER BY interval_and_prop_range.date ASC;
     )
   end
+  # rubocop:enable Metrics/ParameterLists
 
   def self.interval_counts_sql(prop_name, agg, event_name, api_key_id, prop_breakdown)
     %(
@@ -161,7 +181,7 @@ class Event < ApplicationRecord
           SELECT property_val_arr[n_property_val] AS property_value
           FROM
           (
-            SELECT E'{#{prop_values.map(&:inspect).join(',')}}'::text[] AS property_val_arr
+            SELECT E'{#{prop_values.map(&:inspect).join(",")}}'::text[] AS property_val_arr
           ) property_values
         ),
         #{generate_series_dates_sql(start_date, end_date, agg)}
