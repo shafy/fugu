@@ -114,16 +114,16 @@ export default class extends Controller {
   formatDates() {
     let dateOption;
     switch(this.aggValue) {
-      case "day":
+      case "d":
         dateOption = { weekday: "short", year: "2-digit", month: "short", day: "2-digit" };
         break;
-      case "week":
+      case "w":
         dateOption = { year: "numeric", month: "short", day: "2-digit" };
         break;
-      case "month":
+      case "m":
         dateOption = { year: "numeric", month: "short" };
         break;
-      case "year":
+      case "y":
         dateOption = { year: "numeric"};
         break;
     }
