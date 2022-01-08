@@ -1,9 +1,17 @@
-<div data-controller="chart"
-      data-chart-dates-value="<%= dates.to_json %>"
-      data-chart-events-value="<%= events.to_json %>"
-      data-chart-event-name-value="<%= selected_event.titleize %>"
-      data-chart-agg-value="<%= @aggregation %>"
-      class="p-4 w-full rounded-md shadow-md bg-yellow-50 h-28rem"
->
-  <canvas data-chart-target="chart" class="h-full pt-4"></canvas>
+<div class="flex flex-col w-full p-4 rounded-md shadow-md bg-yellow-50">
+  <div class="text-sm font-medium mb-2>">
+    Total events
+    <div class="text-2xl">
+      <%= @total_count %>
+    </div>
+  </div>
+  <div data-controller="chart"
+        data-chart-dates-value="<%= dates.to_json %>"
+        data-chart-events-value="<%= events.to_json %>"
+        data-chart-event-name-value="<%= selected_event.titleize %>"
+        data-chart-agg-value="<%= @aggregation %>"
+        class="h-[28rem]"
+  >
+    <canvas data-chart-target="chart" class="h-full pt-4"></canvas>
+  </div>
 </div>
