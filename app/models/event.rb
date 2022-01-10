@@ -65,15 +65,16 @@ class Event < ApplicationRecord
 
   def self.format_for_chart(events_array)
     events_grouped = events_array.group_by { |e| e["property_value"] }
+    total_count = 0
     events_grouped.each do |k, v|
       data = v.map { |vv| vv["count"] }
       events_grouped[k] = {
         data: data,
         total_count: data.sum
       }
+      total_count += events_grouped[k][:total_count]
     end
-
-    events_grouped.sort_by { |k, v| [-v[:total_count], k] }.to_h
+    [events_grouped.sort_by { |k, v| [-v[:total_count], k] }.to_h, total_count]
   end
 
   # rubocop:disable Metrics/ParameterLists

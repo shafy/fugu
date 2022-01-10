@@ -55,10 +55,6 @@ code {
   width: 32rem;
 }
 
-.h-28rem {
-  height: 28rem;
-}
-
 .flash-notice, .flash-info {
   background-color: rgb(147, 197, 253);
   border-color: rgb(96, 165, 250);
