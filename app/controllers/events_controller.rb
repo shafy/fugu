@@ -12,6 +12,7 @@ class EventsController < ApplicationController
   before_action :set_property, only: %i[show]
   before_action :set_properties, only: %i[show]
   before_action :set_property_values, only: %i[show]
+  before_action :set_possible_aggregations, only: %i[show]
   before_action :set_aggregation, only: %i[show]
   before_action :show_test_alert, only: %i[show]
   before_action :show_not_active_flash, only: %i[show]
@@ -77,14 +78,26 @@ class EventsController < ApplicationController
   end
 
   def set_aggregation
-    a = Event::AGGREGATIONS.key?(params[:agg]) ? Event::AGGREGATIONS[params[:agg]] : "day"
-    @day_not_allowed = time_period > 6
-    a = "week" if a == "day" && @day_not_allowed
-    @aggregation = CGI.escapeHTML(a)
+    @aggregation = params[:agg] ? CGI.escapeHTML(params[:agg]) : "d"
+    @aggregation = @possible_aggregations.first if @possible_aggregations.exclude?(@aggregation)
   end
 
-  def time_period
-    (@end_date - @start_date) / 60 / 60 / 24 / 30
+  def set_possible_aggregations
+    # order array such that .first gives default value
+    @possible_aggregations = case selected_time_period_days
+                             when 366..Float::INFINITY
+                               %w[m y]
+                             when 32...366
+                               %w[w m y]
+                             when 8...32
+                               %w[w d]
+                             when 0...8
+                               %w[d]
+                             end
+  end
+
+  def selected_time_period_days
+    (@end_date - @start_date) / 60 / 60 / 24
   end
 
   def track_event

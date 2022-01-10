@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module EventHelper
-  def event_select_options(event_names, url_params, day_not_allowed)
+  def event_select_options(url_params, aggregation, event_names)
     event_names.map do |e|
-      selected = "selected" if e.parameterize == url_params[:slug]
+      selected = "selected" if e.parameterize == url_params[:event]
       "<option data-url='#{build_event_url(url_params.permit(*Event::EVENT_PARAMS), aggregation, e)}' data-name='#{e.parameterize}' #{selected}>#{e}</option>"
     end
   end
@@ -31,41 +31,45 @@ module EventHelper
     end
   end
 
-  def build_event_url(event_name, url_params, day_not_allowed)
+  def build_event_url(url_params, aggregation, event_name)
     project_event_path(
       url_params[:project_slug],
-      url_params.except(:prop, :project_slug)
-        .merge({ event: event_name.parameterize })
+      event_name.parameterize,
+      url_params.except(:prop, :project_slug, :slug)
         .merge({ agg: aggregation })
     )
   end
 
   def build_agg_url(url_params, agg)
-    project_events_path(
+    project_event_path(
       url_params[:project_slug],
-      url_params.except(:slug).merge({ agg: agg })
+      url_params[:slug],
+      url_params.except(:project_slug, :slug).merge({ agg: agg })
     )
   end
 
   def build_property_url(url_params, aggregation, prop)
-    project_events_path(
+    project_event_path(
       url_params[:project_slug],
-      url_params.except(:slug).merge({ prop: prop }).merge({ agg: aggregation })
+      url_params[:slug],
+      url_params.except(:project_slug, :slug).merge({ prop: prop }).merge({ agg: aggregation })
     )
   end
 
   def build_date_url(url_params, aggregation, date)
-    project_events_path(
+    project_event_path(
       url_params[:project_slug],
-      url_params.except(:slug).merge({ date: date }).merge({ agg: aggregation })
+      url_params[:slug],
+      url_params.except(:project_slug, :slug).merge({ date: date }).merge({ agg: aggregation })
     )
   end
 
   def build_test_toggle_url(url_params, aggregation, test)
-    url_params = url_params.permit(*Project::PROJECT_PARAMS)
-    project_path(
-      project_events_path[:project_slug],
-      url_params.except(:slug).merge({ test: test }).merge({ agg: aggregation })
+    url_params = url_params.permit(*Event::EVENT_PARAMS)
+    project_event_path(
+      url_params[:project_slug],
+      url_params[:slug],
+      url_params.except(:project_slug, :slug).merge({ test: test }).merge({ agg: aggregation })
     )
   end
 end
