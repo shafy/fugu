@@ -39,7 +39,7 @@ class EventsController < ApplicationController
     )
 
     @dates = events_array.uniq { |e| e["date"] }.map { |d| d["date"] }
-    @events = Event.format_for_chart(events_array)
+    @events, @total_count = Event.format_for_chart(events_array)
 
     render layout: "data_view"
   end
