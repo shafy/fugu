@@ -1,0 +1,26 @@
+<% content_for :head do %>
+  <meta name="turbo-cache-control" content="no-cache">
+<% end %>
+
+<% content_for :data_view do %>
+  <%= yield :project_header %>
+
+  <% unless content_for?(:no_data) %>
+    <div class="w-full mb-2 p-4 rounded-md shadow-md bg-yellow-50">
+      <%= yield :data_controls %>
+    </div>
+    <div class="flex flex-row w-full">
+      <%= yield :chart_view %>
+    </div>
+    <div class="flex flex-row items-center justify-end w-full my-4">
+      <%= render partial: "partials/mode_toggle", locals: { test_mode: params[:test] == "true" } %>
+    </div>
+  </div>
+  <% else %>
+    <div class="flex flex-row w-full mb-4 p-4 rounded-md shadow-md bg-yellow-50 gap-x-5">
+      <%= yield :no_data %>
+    </div>
+  <% end %>
+<% end %>
+
+<%= render template: "layouts/application" %>

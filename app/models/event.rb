@@ -1,23 +1,18 @@
 # frozen_string_literal: true
-
 # == Schema Information
 #
 # Table name: events
 #
-#  id         :bigint           not null, primary key
+#  id         :integer          not null, primary key
 #  name       :string           not null
 #  properties :jsonb
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  api_key_id :bigint           not null
+#  api_key_id :integer          not null
 #
 # Indexes
 #
 #  index_events_on_api_key_id  (api_key_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (api_key_id => api_keys.id)
 #
 
 # rubocop: disable Metrics/ClassLength
@@ -60,6 +55,13 @@ class Event < ApplicationRecord
     "m" => "month",
     "y" => "year"
   }.freeze
+
+  EVENT_PARAMS = %i[project_slug slug test event prop agg date].freeze
+
+
+  def self.distinct_events_names(api_key)
+    Event.where(api_key: api_key).order(name: :asc).distinct.pluck(:name)
+  end
 
   def self.format_for_chart(events_array)
     events_grouped = events_array.group_by { |e| e["property_value"] }

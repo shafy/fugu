@@ -3,12 +3,10 @@
 Rails.application.routes.draw do
   root to: "projects#index"
 
-  resources :projects, only: %i[index new create]
-
-  scope "projects/" do
-    get "/:slug", to: "projects#show", as: :project
-    get "/:slug/settings", to: "projects#settings", as: :project_settings
-    delete "/:slug", to: "projects#destroy", as: :destroy_project
+  resources :projects, only: %i[index new create destroy], param: :slug do
+    resources :events, only: %i[index show], param: :slug
+    resources :funnels, param: :slug
+    get "settings", to: "projects#settings"
   end
 
   scope module: "users" do
@@ -32,7 +30,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :events, only: [:create]
+      resources :events, only: %i[create]
     end
   end
 end
