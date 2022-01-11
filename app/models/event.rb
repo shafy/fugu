@@ -30,11 +30,11 @@ class Event < ApplicationRecord
             exclusion:
               {
                 in: %w[all All],
-                message: "'%{value}' is a reserved event name for Fugu and can't be used"
+                message: "'%{value}' is a reserved event name by Fugu and can't be used"
               }
 
   validate :user_cannot_be_inactive
-  validate :property_cannot_be_all
+  validate :property_name_cannot_be_excluded
 
   before_validation :convert_properties_to_hash
   before_validation :remove_whitespaces_from_name
@@ -242,10 +242,11 @@ class Event < ApplicationRecord
     errors.add(:base, "You need an active subscription to capture events with your live API key")
   end
 
-  def property_cannot_be_all
-    return unless properties.keys.include?("All") || properties.keys.include?("all") 
-
-    errors.add(:properties, "'All' and 'all' are reserved property names for Fugu and can't be used")
+  def property_name_cannot_be_excluded
+    excluded_values = %w(All all)
+    return unless (properties.keys & excluded_values).any?
+    
+    errors.add(:properties, "You've used a property name that's reserved by Fugu (such as 'all'). Learn more about property constraints in the Fugu docs: https://docs.fugu.lol")
   end
 end
 # rubocop: enable Metrics/ClassLength
