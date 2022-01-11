@@ -22,4 +22,5 @@ class Api::V1::EventsController < Api::ApiController
 
     raise ArgumentError, "'name' can't be nil" if params[:name].nil?
   end
+
 end
