@@ -34,7 +34,7 @@ class Event < ApplicationRecord
               }
 
   validate :user_cannot_be_inactive
-  validate :property_name_cannot_be_excluded
+  validate :excluded_property_names
 
   before_validation :convert_properties_to_hash
   before_validation :remove_whitespaces_from_name
@@ -242,8 +242,11 @@ class Event < ApplicationRecord
     errors.add(:base, "You need an active subscription to capture events with your live API key")
   end
 
-  def property_name_cannot_be_excluded
-    excluded_values = %w(All all)
+  def excluded_property_names
+    excluded_values = %w[all All]
+
+    return unless properties&.keys
+
     return unless (properties.keys & excluded_values).any?
     
     errors.add(:properties, "You've used a property name that's reserved by Fugu (such as 'all'). Learn more about property constraints in the Fugu docs: https://docs.fugu.lol")
