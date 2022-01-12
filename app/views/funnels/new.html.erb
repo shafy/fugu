@@ -1,0 +1,20 @@
+<% content_for :project_header do %>
+  <%= render partial: "partials/project_header", locals: { project_name: @project.name } %>
+<% end %>
+
+<% content_for :no_data do %>
+  <h1>Create a new funnel</h1>
+  <%= form_with model: @funnel do |funnel_form| %>
+    Steps:
+      <%= funnel_form.fields_for :funnel_steps do |funnel_steps_form| %>
+        <%= funnel_steps_form.label :event_name %>
+        <%= funnel_steps_form.text_field :event_name %>
+      <% end %>
+      <%= funnel_form.fields_for :funnel_steps do |funnel_steps_form| %>
+        <%= funnel_steps_form.label :event_name %>
+        <%= funnel_steps_form.text_field :event_name %>
+      <% end %>
+      <%= funnel_form.submit "Create funnel" %>
+  <% end %>
+
+<% end %>

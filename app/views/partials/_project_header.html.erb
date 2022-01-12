@@ -1,6 +1,8 @@
-<div class="flex flex-row items-center justify-between w-full">
-  <div class="w-full text-left">
-    <h1 class="text-lg font-medium mb-2"><%= project_name %></h1>
+<div class="flex flex-row items-center justify-between w-full mb-2">
+  <div class="flex flex-row items-center justify-start w-full text-left">
+    <div class="text-lg font-medium mr-6"><%= project_name %></div>
+    <%= link_to "Events", project_events_path(@project.name) %>
+    <%= link_to "Funnels", project_funnels_path(@project.name), class: "ml-4" %>
   </div>
   <div class="w-40 text-right">
     <%= link_to "Project settings", project_settings_path, class: "font-normal" %>

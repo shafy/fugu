@@ -19,7 +19,8 @@ class Funnel < ApplicationRecord
   belongs_to :api_key
 
   has_many :funnel_steps, dependent: :destroy
-
+  accepts_nested_attributes_for :funnel_steps
+  
   validates :name,
             presence: true,
             uniqueness: {
