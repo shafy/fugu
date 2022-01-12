@@ -30,10 +30,11 @@ class Event < ApplicationRecord
             exclusion:
               {
                 in: %w[all All],
-                message: "'%{value}' is a reversed event name by Fugu and can't be used"
+                message: "'%{value}' is a reserved event name by Fugu and can't be used"
               }
 
   validate :user_cannot_be_inactive
+  validate :excluded_property_names
 
   before_validation :convert_properties_to_hash
   before_validation :remove_whitespaces_from_name
@@ -57,7 +58,6 @@ class Event < ApplicationRecord
   }.freeze
 
   EVENT_PARAMS = %i[project_slug slug test event prop agg date].freeze
-
 
   def self.distinct_events_names(api_key)
     Event.where(api_key: api_key).order(name: :asc).distinct.pluck(:name)
@@ -239,6 +239,17 @@ class Event < ApplicationRecord
     return unless !api_key.test && api_key.project.user.inactive?
 
     errors.add(:base, "You need an active subscription to capture events with your live API key")
+  end
+
+  def excluded_property_names
+    excluded_values = %w[all]
+    return unless properties.is_a?(Hash)
+
+    return unless properties&.keys
+
+    return unless (properties.keys.map(&:downcase) & excluded_values).any?
+    
+    errors.add(:properties, "You've used a property name that's reserved by Fugu (such as 'all'). Learn more about property constraints in the Fugu docs: https://docs.fugu.lol")
   end
 end
 # rubocop: enable Metrics/ClassLength
