@@ -59,7 +59,6 @@ class Event < ApplicationRecord
 
   EVENT_PARAMS = %i[project_slug slug test event prop agg date].freeze
 
-
   def self.distinct_events_names(api_key)
     Event.where(api_key: api_key).order(name: :asc).distinct.pluck(:name)
   end
@@ -243,11 +242,12 @@ class Event < ApplicationRecord
   end
 
   def excluded_property_names
-    excluded_values = %w[all All]
+    excluded_values = %w[all]
+    return unless properties.is_a?(Hash)
 
     return unless properties&.keys
 
-    return unless (properties.keys & excluded_values).any?
+    return unless (properties.keys.map(&:downcase) & excluded_values).any?
     
     errors.add(:properties, "You've used a property name that's reserved by Fugu (such as 'all'). Learn more about property constraints in the Fugu docs: https://docs.fugu.lol")
   end

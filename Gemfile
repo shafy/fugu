@@ -80,7 +80,9 @@ group :test do
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'webdrivers'
 
-  gem 'shoulda', '~> 4.0'
+  #gem 'shoulda', '~> 4.0'
+  gem 'shoulda-matchers', '~> 5.1.0'
+  gem 'shoulda-context', '~> 2.0.0'
 
   gem 'database_cleaner-active_record', '~> 2.0.1'
 
