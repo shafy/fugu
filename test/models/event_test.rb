@@ -36,6 +36,9 @@ class EventTest < ActiveSupport::TestCase
     should_not allow_value("{\"All\": \"test\"}")
       .for(:properties)
       .with_message("You've used a property name that's reserved by Fugu (such as 'all'). Learn more about property constraints in the Fugu docs: https://docs.fugu.lol")
+    should_not allow_value("{\"this_propertyname_is_too_long\": \"test\"}")
+      .for(:properties)
+      .with_message("You've used a property name that's too long (> 15 characters). Please choose a shorter name.")
 
     should_not allow_value("a-", "a$", "a_").for(:name)
 
