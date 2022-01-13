@@ -35,6 +35,7 @@ class Event < ApplicationRecord
 
   validate :user_cannot_be_inactive
   validate :excluded_property_names
+  validate :limit_property_name_length
 
   before_validation :convert_properties_to_hash
   before_validation :remove_whitespaces_from_name
@@ -248,8 +249,17 @@ class Event < ApplicationRecord
     return unless properties&.keys
 
     return unless (properties.keys.map(&:downcase) & excluded_values).any?
-    
+
     errors.add(:properties, "You've used a property name that's reserved by Fugu (such as 'all'). Learn more about property constraints in the Fugu docs: https://docs.fugu.lol")
+  end
+
+  def limit_property_name_length
+    return unless properties.is_a?(Hash)
+
+    return unless properties&.keys
+
+    return unless properties.keys.map(&:length).any? { |l| l > 15 }
+    errors.add(:properties, "You've used a property name that's too long (> 15 characters). Please choose a shorter name.")
   end
 end
 # rubocop: enable Metrics/ClassLength
