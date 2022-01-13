@@ -3,7 +3,7 @@
 module EventHelper
   def event_select_options(url_params, aggregation, event_names)
     event_names.map do |e|
-      selected = "selected" if e.parameterize == url_params[:event]
+      selected = "selected" if e.parameterize == url_params[:slug]
       "<option data-url='#{build_event_url(url_params.permit(*Event::EVENT_PARAMS), aggregation, e)}' data-name='#{e.parameterize}' #{selected}>#{e}</option>"
     end
   end
