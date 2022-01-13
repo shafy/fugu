@@ -30,6 +30,8 @@ class ProjectTest < ActiveSupport::TestCase
       .with_message("You already have a project with this name")
       .case_insensitive
 
+    should validate_length_of(:name).is_at_most(40)
+
     should belong_to(:user)
 
     should_not allow_value("Test Project").for(:name)
