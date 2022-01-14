@@ -12,6 +12,7 @@ class FunnelsController < ApplicationController
   before_action :set_api_key, only: %i[show new create]
   before_action :set_dates, only: %i[show]
   before_action :set_event_names, only: %i[new]
+  before_action :set_funnel_names, only: %i[show]
 
   after_action :track_event, only: %i[index]
 
@@ -22,6 +23,7 @@ class FunnelsController < ApplicationController
   end
   
   def show
+    return render layout: "data_view"
   end
 
   def new
@@ -47,5 +49,9 @@ class FunnelsController < ApplicationController
 
   def track_event
     FuguService.track("Viewed Funnels")
+  end
+
+  def set_funnel_names
+    @funnel_names = Funnel.where(api_key: @api_key).pluck(:name)
   end
 end

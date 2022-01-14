@@ -8,20 +8,17 @@ Chart.register(...registerables);
 export default class extends Controller {
   static targets = [ "chart"]
   static values = {
-    dates: Array,
-    events: Object,
-    agg: String,
-    eventName: String,
+    funnelNames: Array,
   }
 
   connect() {
-    this.initColorPalette();
+    //this.initColorPalette();
     this.showChart();
   }
 
   showChart() {
     const data = {
-      labels: this.formatDates(),
+      labels: this.funnelNamesValue,
       datasets: Object.keys(this.eventsValue).map((e, i) => this.createDataSet(e, this.eventsValue[e], i))
     };
 
@@ -92,42 +89,42 @@ export default class extends Controller {
     }
   }
 
-  initColorPalette() {
-    this.colorPalette = [
-      "rgb(39, 125, 161)",
-      "rgb(87, 117, 144)",
-      "rgb(77, 144, 142)",
-      "rgb(67, 170, 139)",
-      "rgb(144, 190, 109)",
-      "rgb(249, 199, 79)",
-      "rgb(249, 132, 74)",
-      "rgb(248, 150, 30)",
-      "rgb(243, 114, 44)",
-      "rgb(249, 65, 68)"
-    ]
-  }
+  // initColorPalette() {
+  //   this.colorPalette = [
+  //     "rgb(39, 125, 161)",
+  //     "rgb(87, 117, 144)",
+  //     "rgb(77, 144, 142)",
+  //     "rgb(67, 170, 139)",
+  //     "rgb(144, 190, 109)",
+  //     "rgb(249, 199, 79)",
+  //     "rgb(249, 132, 74)",
+  //     "rgb(248, 150, 30)",
+  //     "rgb(243, 114, 44)",
+  //     "rgb(249, 65, 68)"
+  //   ]
+  // }
 
-  formatDates() {
-    let dateOption;
-    switch(this.aggValue) {
-      case "d":
-        dateOption = { weekday: "short", year: "2-digit", month: "short", day: "2-digit" };
-        break;
-      case "w":
-        dateOption = { year: "numeric", month: "short", day: "2-digit" };
-        break;
-      case "m":
-        dateOption = { year: "numeric", month: "short" };
-        break;
-      case "y":
-        dateOption = { year: "numeric"};
-        break;
-    }
-    return this.datesValue.map((e) => { 
-      let d = new Date(e);
-      return d.toLocaleDateString("en-US", dateOption);
-    });
-  }
+  // formatDates() {
+  //   let dateOption;
+  //   switch(this.aggValue) {
+  //     case "d":
+  //       dateOption = { weekday: "short", year: "2-digit", month: "short", day: "2-digit" };
+  //       break;
+  //     case "w":
+  //       dateOption = { year: "numeric", month: "short", day: "2-digit" };
+  //       break;
+  //     case "m":
+  //       dateOption = { year: "numeric", month: "short" };
+  //       break;
+  //     case "y":
+  //       dateOption = { year: "numeric"};
+  //       break;
+  //   }
+  //   return this.datesValue.map((e) => { 
+  //     let d = new Date(e);
+  //     return d.toLocaleDateString("en-US", dateOption);
+  //   });
+  // }
 
   htmlDecode(input) {
     var doc = new DOMParser().parseFromString(input, "text/html");

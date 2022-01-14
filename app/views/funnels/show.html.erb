@@ -1,0 +1,23 @@
+<% content_for :project_header do %>
+  <%= render partial: "partials/project_header", locals: { project_name: @project.name } %>
+<% end %>
+
+<% content_for :data_controls do %>
+  <%= render partial: "selections",
+          locals: {
+            param_data: params,
+            funnels_names: @funnel_names,
+            properties: @properties
+          }
+      %>
+<% end%>
+
+<% content_for :chart_view do %>
+  <%= render partial: "partials/chart",
+    locals: {
+      dates: @dates,
+      events: @events,
+      selected_event: @selected_event
+    }
+  %>
+<% end %>

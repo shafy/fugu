@@ -1,0 +1,10 @@
+<div class="flex flex-col w-full p-4 rounded-md shadow-md bg-yellow-50">
+  <div data-controller="funnel_chart"
+        data-chart-funnel-names-value="<%= funnel_names.to_json %>"
+        data-chart-event-name-value="<%= selected_event.titleize %>"
+        data-chart-agg-value="<%= @aggregation %>"
+        class="h-[28rem]"
+  >
+    <canvas data-chart-target="chart" class="h-full pt-4"></canvas>
+  </div>
+</div>
