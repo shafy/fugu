@@ -30,7 +30,7 @@ class Funnel < ApplicationRecord
             },
             format:
               {
-                with: /\A[a-zA-Z0-9-]*\z/,
-                message: "can only contain numbers, letters and hyphens"
+                with: /\A[a-zA-Z0-9\s]*\z/,
+                message: "can only contain numbers, letters and spaces"
               }
 end

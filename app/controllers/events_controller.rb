@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
 class EventsController < ApplicationController
-  before_action :set_project, only: %i[index show]
-  before_action :authorize_project_user, only: %i[index show]
-
   include ApiKeyable
   include Dateable
+  include EventNameable
 
+  before_action :set_project, only: %i[index show]
+  before_action :authorize_project_user, only: %i[index show]
+  before_action :set_api_key, only: %i[index show]
+  before_action :set_dates, only: %i[show]
   before_action :set_event_names, only: %i[index show]
   before_action :set_selected_event, only: %i[show]
   before_action :set_property, only: %i[show]
@@ -45,10 +47,6 @@ class EventsController < ApplicationController
   end
 
   private
-
-  def set_event_names
-    @event_names = Event.distinct_events_names(@api_key)
-  end
 
   def set_selected_event
     ev = if params[:slug]

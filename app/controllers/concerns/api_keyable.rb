@@ -3,10 +3,6 @@
 module ApiKeyable
   extend ActiveSupport::Concern
 
-  included do
-    before_action :set_api_key, only: %i[index show]
-  end
-
   private
 
   def set_api_key

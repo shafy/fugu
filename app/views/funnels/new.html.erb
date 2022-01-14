@@ -1,20 +1,33 @@
-<% content_for :project_header do %>
-  <%= render partial: "partials/project_header", locals: { project_name: @project.name } %>
-<% end %>
-
-<% content_for :no_data do %>
-  <h1>Create a new funnel</h1>
-  <%= form_with model: @funnel do |funnel_form| %>
-    Steps:
-      <%= funnel_form.fields_for :funnel_steps do |funnel_steps_form| %>
-        <%= funnel_steps_form.label :event_name %>
-        <%= funnel_steps_form.text_field :event_name %>
-      <% end %>
-      <%= funnel_form.fields_for :funnel_steps do |funnel_steps_form| %>
-        <%= funnel_steps_form.label :event_name %>
-        <%= funnel_steps_form.text_field :event_name %>
-      <% end %>
-      <%= funnel_form.submit "Create funnel" %>
+<% content_for :main do %>
+  <h1 class="text-xl mb-4 font-medium mb-8">Create new funnel</h1>
+  <%= render "partials/narrow_box" do %>
+    <%= form_with model: @funnel, url: project_funnels_path do |funnel_form| %>
+      <p>Give your funnel a name:</p>
+      <div class="flex flex-row items-center justify-start w-full mt-6 mb-8">
+        <div class="w-20">
+          <%= funnel_form.label :name, "Name" %>
+        </div>
+        <%= funnel_form.text_field :name, required: true, placeholder: "E.g., Sign up to subscription", class: "w-64 rounded border-2 border-gray-600" %>
+      </div>
+      <p>Select an event for each funnel step:</p>
+      <div class="flex flex-col items-center justify-start w-full gap-y-4 my-6">
+        <%= funnel_form.fields_for :funnel_steps do |funnel_steps_form| %>
+          <div class="flex flex-row items-center justify-start w-full">
+            <div class="w-20">
+              <%= funnel_steps_form.label :event_name, "Step #{funnel_steps_form.index + 1}" %>
+            </div>
+            <%= 
+              funnel_steps_form.select :event_name,
+              options_for_select(@event_names, "Select event"),
+              {include_blank: "Select event"},
+              required: funnel_steps_form.index == 0,
+              class: "w-64"
+            %>
+          </div>
+        <% end %>
+      </div>
+      <%= funnel_form.submit "Create funnel", class: "main-button" %>
+    <% end %>
   <% end %>
-
+  <%= link_to "Cancel and go back to #{@project.name}", project_events_path(@project.name) %>
 <% end %>
