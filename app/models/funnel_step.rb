@@ -18,4 +18,6 @@
 
 class FunnelStep < ApplicationRecord
   belongs_to :funnel
+
+  validates :event_name, presence: true
 end

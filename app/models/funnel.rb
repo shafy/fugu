@@ -19,8 +19,9 @@ class Funnel < ApplicationRecord
   belongs_to :api_key
 
   has_many :funnel_steps, dependent: :destroy
-  accepts_nested_attributes_for :funnel_steps
-  
+  accepts_nested_attributes_for :funnel_steps,
+                                reject_if: ->(attr) { attr[:event_name].blank? }
+
   validates :name,
             presence: true,
             uniqueness: {
@@ -33,4 +34,14 @@ class Funnel < ApplicationRecord
                 with: /\A[a-zA-Z0-9\s]*\z/,
                 message: "can only contain numbers, letters and spaces"
               }
+
+  validate :must_have_funnel_step
+
+  private
+
+  def must_have_funnel_step
+    return if funnel_steps.any?
+
+    errors.add(:base, "Add at least one funnel step")
+  end
 end

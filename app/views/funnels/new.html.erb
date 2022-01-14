@@ -20,7 +20,7 @@
               funnel_steps_form.select :event_name,
               options_for_select(@event_names, "Select event"),
               {include_blank: "Select event"},
-              required: funnel_steps_form.index == 0,
+              required: false, #funnel_steps_form.index == 0,
               class: "w-64"
             %>
           </div>
