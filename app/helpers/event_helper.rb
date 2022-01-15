@@ -8,6 +8,13 @@ module EventHelper
     end
   end
 
+  def funnel_select_options(url_params, funnel_names)
+    funnel_names.map do |f|
+      selected = "selected" if f.parameterize == url_params[:slug]
+      "<option data-url='#{build_funnel_url(url_params.permit(*Funnel::FUNNEL_PARAMS), f)}' data-name='#{f.parameterize}' #{selected}>#{f}</option>"
+    end
+  end
+
   def agg_select_options(url_params, aggregation, possible_aggregations)
     Event::AGGREGATIONS.map do |k, v|
       disabled = "disabled" if possible_aggregations.exclude?(k)
@@ -24,10 +31,10 @@ module EventHelper
     end
   end
 
-  def date_select_options(url_params, aggregation)
+  def date_select_options(url_params, aggregation, chart_type)
     Event::DATE_OPTIONS.map do |k, v|
       selected = "selected" if k == url_params[:date]
-      "<option data-url='#{build_date_url(url_params.permit(*Event::EVENT_PARAMS), aggregation, k)}' data-name='#{k}' #{selected}>#{v}</option>"
+      "<option data-url='#{build_date_url(url_params.permit(*Event::EVENT_PARAMS), aggregation, k, chart_type)}' data-name='#{k}' #{selected}>#{v}</option>"
     end
   end
 
@@ -37,6 +44,14 @@ module EventHelper
       event_name.parameterize,
       url_params.except(:prop, :project_slug, :slug)
         .merge({ agg: aggregation })
+    )
+  end
+
+  def build_funnel_url(url_params, funnel_name)
+    project_funnel_path(
+      url_params[:project_slug],
+      funnel_name.parameterize,
+      url_params.except(:prop, :project_slug, :slug)
     )
   end
 
@@ -56,20 +71,41 @@ module EventHelper
     )
   end
 
-  def build_date_url(url_params, aggregation, date)
-    project_event_path(
-      url_params[:project_slug],
-      url_params[:slug],
-      url_params.except(:project_slug, :slug).merge({ date: date }).merge({ agg: aggregation })
-    )
+  def build_date_url(url_params, aggregation, date, chart_type)
+    case chart_type
+    when "event"
+      project_event_path(
+        url_params[:project_slug],
+        url_params[:slug],
+        url_params.except(:project_slug, :slug).merge({ date: date }).merge({ agg: aggregation })
+      )
+    when "funnel"
+      project_funnel_path(
+        url_params[:project_slug],
+        url_params[:slug],
+        url_params.except(:project_slug, :slug).merge({ date: date })
+      )
+    end
   end
 
-  def build_test_toggle_url(url_params, aggregation, test)
-    url_params = url_params.permit(*Event::EVENT_PARAMS)
-    project_event_path(
-      url_params[:project_slug],
-      url_params[:slug],
-      url_params.except(:project_slug, :slug).merge({ test: test }).merge({ agg: aggregation })
-    )
+  # rubocop:disable Metrics/MethodLength(RuboCop)
+  def build_test_toggle_url(url_params, aggregation, test, chart_type)
+    case chart_type
+    when "event"
+      url_params = url_params.permit(*Event::EVENT_PARAMS)
+      project_event_path(
+        url_params[:project_slug],
+        url_params[:slug],
+        url_params.except(:project_slug, :slug).merge({ test: test }).merge({ agg: aggregation })
+      )
+    when "funnel"
+      url_params = url_params.permit(*Funnel::FUNNEL_PARAMS)
+      project_funnel_path(
+        url_params[:project_slug],
+        url_params[:slug],
+        url_params.except(:project_slug, :slug).merge({ test: test })
+      )
+    end
   end
+  # rubocop:enable Metrics/MethodLength(RuboCop)
 end

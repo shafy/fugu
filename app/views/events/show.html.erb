@@ -23,3 +23,17 @@
     }
   %>
 <% end %>
+
+<% content_for :project_footer do %>
+  <div class="flex flex-row items-center justify-end w-full my-4 gap-x-4">
+    <%= link_to "Project settings", project_settings_path, class: "font-normal" %>
+    <%= render partial: "partials/mode_toggle",
+      locals: {
+        project_name: @project.name,
+        test_mode: params[:test] == "true",
+        aggregation: @aggregation,
+        chart_type: "event"
+      }
+    %>
+  </div>
+<% end %>

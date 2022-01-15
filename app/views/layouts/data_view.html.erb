@@ -12,15 +12,14 @@
     <div class="flex flex-row w-full">
       <%= yield :chart_view %>
     </div>
-    <div class="flex flex-row items-center justify-end w-full my-4">
-      <%= render partial: "partials/mode_toggle", locals: { test_mode: params[:test] == "true" } %>
-    </div>
   </div>
   <% else %>
     <div class="w-full mb-2 p-4 rounded-md shadow-md bg-yellow-50">
       <%= yield :no_data %>
     </div>
   <% end %>
+
+  <%= yield :project_footer %>
 <% end %>
 
 <%= render template: "layouts/application" %>

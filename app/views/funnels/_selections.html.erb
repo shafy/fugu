@@ -3,13 +3,21 @@
   data-controller="selection"
 >
   <div class="flex flex-row gap-x-5 items-center justify-start">
+    <div class="flex flex-col items-start justify-center">
+      <%= label_tag 'funnels', 'Funnels', class: "text-sm font-medium mb-2" %>
+      <%= select_tag "funnels",
+          raw(funnel_select_options(param_data, funnel_names)),
+          data: { action: "change->selection#navigateToSelectUrl" },
+          class: "w-56 text-sm"
+      %>
+    </div>
   </div>
   <div class="flex flex-row gap-x-5 items-center justify-start">
     <div class="flex flex-col items-start justify-center">
       <%= label_tag 'date_range', 'Date Range', class: "text-sm font-medium mb-2" %>
       <%= select_tag "date_range",
-          raw(date_select_options(param_data, nil)),
-          data: { action: "change->event#navigateToSelectUrl" },
+          raw(date_select_options(param_data, nil, "funnel")),
+          data: { action: "change->selection#navigateToSelectUrl" },
           class: "text-sm"
       %>
     </div>

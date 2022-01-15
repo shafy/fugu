@@ -24,7 +24,7 @@ class EventsController < ApplicationController
   def index
     return render layout: "data_view" unless @event_names&.first
 
-    redirect_to project_event_path(@project.name, @event_names&.first&.parameterize)
+    redirect_to project_event_path(@project.name, @event_names.first.parameterize)
   end
 
   def show

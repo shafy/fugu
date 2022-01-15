@@ -6,18 +6,32 @@
   <%= render partial: "selections",
           locals: {
             param_data: params,
-            funnels_names: @funnel_names,
+            funnel_names: @funnel_names,
             properties: @properties
           }
       %>
 <% end%>
 
 <% content_for :chart_view do %>
-  <%= render partial: "partials/chart",
+  <%= render partial: "chart",
     locals: {
-      dates: @dates,
-      events: @events,
-      selected_event: @selected_event
+      funnel_event_names: @funnel_event_names,
+      funnel_data: @funnel_data,
     }
   %>
+<% end %>
+
+<% content_for :project_footer do %>
+  <div class="flex flex-row items-center justify-end w-full my-4 gap-x-4">
+    <%= link_to "Create new funnel", new_project_funnel_path(@project.name), class: "font-normal" %>
+    <%= link_to "Project settings", project_settings_path, class: "font-normal" %>
+    <%= render partial: "partials/mode_toggle",
+      locals: {
+        project_name: @project.name,
+        test_mode: params[:test] == "true",
+        aggregation: nil,
+        chart_type: "funnel"
+      }
+    %>
+  </div>
 <% end %>
