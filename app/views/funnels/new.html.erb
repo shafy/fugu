@@ -26,8 +26,14 @@
           </div>
         <% end %>
       </div>
+      <%= hidden_field_tag "test", params[:test] %>
       <%= funnel_form.submit "Create funnel", class: "main-button" %>
     <% end %>
   <% end %>
   <%= link_to "Cancel and go back to #{@project.name}", project_events_path(@project.name) %>
+  <% if params[:test] == "true" %>
+    <%= link_to "Toggle LIVE mode", new_project_funnel_path(@project.name, params: { test: false }), class: "font-normal mt-2" %>
+  <% else %>
+    <%= link_to "Toggle TEST mode", new_project_funnel_path(@project.name, params: { test: true }), class: "font-normal mt-2" %>
+  <% end %>
 <% end %>

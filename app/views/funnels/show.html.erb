@@ -23,7 +23,7 @@
 
 <% content_for :project_footer do %>
   <div class="flex flex-row items-center justify-end w-full my-4 gap-x-4">
-    <%= link_to "Create new funnel", new_project_funnel_path(@project.name), class: "font-normal" %>
+    <%= link_to "Create new funnel", new_project_funnel_path(@project.name, params: { test: params[:test] }), class: "font-normal" %>
     <%= link_to "Project settings", project_settings_path, class: "font-normal" %>
     <%= render partial: "partials/mode_toggle",
       locals: {

@@ -37,16 +37,11 @@ class Funnel < ApplicationRecord
 
   validate :must_have_funnel_step
 
-  before_validation :downcase_name
   before_validation :strip_name
 
   FUNNEL_PARAMS = %i[project_slug slug test event prop date].freeze
 
   private
-
-  def downcase_name
-    self.name = name.downcase if name
-  end
 
   def strip_name
     self.name = name.strip if name
