@@ -15,7 +15,7 @@
 
 FactoryBot.define do
   factory :funnel do
-    name { "MyString" }
-    api_key { nil }
+    name { "My Funnel" }
+    api_key
   end
 end

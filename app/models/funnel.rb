@@ -25,7 +25,7 @@ class Funnel < ApplicationRecord
   validates :name,
             presence: true,
             uniqueness: {
-              scope: :api_key,
+              scope: :api_key_id,
               message: "You already have a funnel with this name",
               case_insensitive: true
             },
@@ -35,21 +35,20 @@ class Funnel < ApplicationRecord
                 message: "can only contain numbers, letters and spaces"
               }
 
-  validate :must_have_funnel_step
+  validates :funnel_steps, presence: { message: "- Add at least one funnel step" }
 
+  before_validation :titleize_name
   before_validation :strip_name
 
   FUNNEL_PARAMS = %i[project_slug slug test event prop date].freeze
 
   private
 
-  def strip_name
-    self.name = name.strip if name
+  def titleize_name
+    self.name = name.downcase.titleize if name
   end
 
-  def must_have_funnel_step
-    return if funnel_steps.any?
-
-    errors.add(:base, "Add at least one funnel step")
+  def strip_name
+    self.name = name.strip if name
   end
 end

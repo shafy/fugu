@@ -16,6 +16,7 @@ class FunnelsController < ApplicationController
   before_action :set_funnel, only: %i[show]
   before_action :set_funnel_names, only: %i[index show]
   before_action :set_funnel_event_names, only: %i[show]
+  before_action :build_funnel, only: %i[create]
 
   after_action :track_event, only: %i[index]
 
@@ -42,7 +43,6 @@ class FunnelsController < ApplicationController
   end
 
   def create
-    @funnel = Funnel.new(funnel_params.merge(api_key: @api_key))
     if @funnel.save
       redirect_to project_funnel_path(
         @project.name,
@@ -51,7 +51,10 @@ class FunnelsController < ApplicationController
       )
     else
       flash[:error] = "We couldn't create your funnel: #{@funnel.errors.full_messages.first}"
-      redirect_to new_project_funnel_path(@project.name), status: :unprocessable_entity
+      redirect_to new_project_funnel_path(
+        @project.name,
+        params: { test: params[:test] }
+      ), status: :unprocessable_entity
     end
   end
 
@@ -63,6 +66,10 @@ class FunnelsController < ApplicationController
 
   def track_event
     FuguService.track("Viewed Funnels")
+  end
+
+  def build_funnel
+    @funnel = Funnel.new(funnel_params.merge(api_key: @api_key))
   end
 
   def set_funnel

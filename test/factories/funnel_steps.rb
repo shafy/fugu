@@ -16,8 +16,10 @@
 
 FactoryBot.define do
   factory :funnel_step do
-    event_name { "MyString" }
-    funnel { nil }
-    order { 1 }
+    event_name { "Event 1" }
+    funnel
+    sequence :order do |n|
+      n
+    end
   end
 end

@@ -16,7 +16,26 @@
 require "test_helper"
 
 class FunnelTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test "has a valid factory" do
+    assert build(:funnel)
+  end
+
+  context "validations" do
+    subject { build(:funnel) }
+
+    should validate_presence_of(:name)
+
+    should validate_uniqueness_of(:name)
+      .scoped_to(:api_key_id)
+      .with_message("You already have a funnel with this name")
+      .case_insensitive
+
+    should belong_to(:api_key)
+
+    should_not allow_value("My $$$").for(:name)
+
+    should accept_nested_attributes_for(:funnel_steps)
+
+    should have_many(:funnel_steps)
+  end
 end
