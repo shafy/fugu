@@ -16,10 +16,14 @@
 
 FactoryBot.define do
   factory :funnel_step do
-    event_name { "Event 1" }
-    funnel
+    sequence :event_name do |n|
+      "Test Event #{n}"
+    end
+
     sequence :order do |n|
       n
     end
+
+    funnel
   end
 end

@@ -3,21 +3,47 @@
 require "test_helper"
 
 class FunnelsControllerTest < ActionDispatch::IntegrationTest
-  # class GetIndex < EventsControllerTest
-  #   setup do
-  #     user = FactoryBot.create(:user)
-  #     @project = FactoryBot.create(:project, user: user)
-  #     FactoryBot.create(:api_key, project: @project, test: true)
-  #     api_key_live = FactoryBot.create(:api_key, project: @project, test: false)
-  #     @event = FactoryBot.create(:event, api_key: api_key_live)
-  #     sign_in user
-  #     get project_events_path(@project.name)
-  #   end
+  def basic_setup
+    user = FactoryBot.create(:user)
+    @project = FactoryBot.create(:project, user: user)
+    FactoryBot.create(:api_key, project: @project, test: true)
+    @api_key_live = FactoryBot.create(:api_key, project: @project, test: false)
+    @event1 = FactoryBot.create(:event, api_key: @api_key_live)
+    @event2 = FactoryBot.create(:event, api_key: @api_key_live)
+    @event3 = FactoryBot.create(:event, api_key: @api_key_live)
+    sign_in user
+  end
 
-  #   test "to redirect correctly" do
-  #     assert_redirected_to project_event_path(@project.name, @event.name.parameterize)
-  #   end
-  # end
+  class GetIndex < FunnelsControllerTest
+    setup do
+      basic_setup
+      get project_funnels_path(@project.name)
+    end
+
+    test "is succesful" do
+      assert_response :success
+    end
+
+    test "contains correct body" do
+      assert_match("You haven't created any funnels", @response.body)
+    end
+  end
+
+  class GetShow < FunnelsControllerTest
+    setup do
+      basic_setup
+      @funnel = FactoryBot.create(:funnel, api_key: @api_key_live)
+      get project_funnel_path(@project.name, @funnel.name.parameterize)
+    end
+
+    test "is succesful" do
+      assert_response :success
+    end
+
+    test "contains correct body" do
+      assert_match("data-name='#{@funnel.name.parameterize}'", @response.body)
+    end
+  end
 
   # class GetShow < EventsControllerTest
   #   setup do

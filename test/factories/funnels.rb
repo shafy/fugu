@@ -15,7 +15,13 @@
 
 FactoryBot.define do
   factory :funnel do
-    name { "My Funnel" }
+    sequence :name do |n|
+      "My Funnel #{n}"
+    end
     api_key
+
+    before(:create) do |funnel|
+      funnel.funnel_steps = build_list(:funnel_step, 5, funnel: funnel)
+    end
   end
 end
