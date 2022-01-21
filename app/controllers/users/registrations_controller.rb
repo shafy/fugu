@@ -13,6 +13,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def create
     super do |resource|
       FuguService.track("New User") if resource.persisted?
+
+      if resource.errors.present?
+        flash.now[:alert] =
+          resource.errors.full_messages.join(", ")
+      end
     end
   end
 

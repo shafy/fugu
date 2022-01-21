@@ -12,9 +12,7 @@
       </p>
     </div>
 
-    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-      <%= render "devise/shared/error_messages", resource: resource %>
-
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), data: { turbo: false }) do |f| %>
       <div class="mb-4 w-80">
         <%= f.label :email %><br />
         <%= f.email_field :email, autocomplete: "email", class: "mt-2 rounded-lg w-full" %>

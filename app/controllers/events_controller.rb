@@ -17,7 +17,7 @@ class EventsController < ApplicationController
   before_action :set_possible_aggregations, only: %i[show]
   before_action :set_aggregation, only: %i[show]
   before_action :show_test_alert, only: %i[show]
-  before_action :show_not_active_flash, only: %i[show]
+  before_action :show_not_active_flash, only: %i[index show]
 
   after_action :track_event, only: %i[show]
 

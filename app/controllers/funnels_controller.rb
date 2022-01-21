@@ -23,7 +23,7 @@ class FunnelsController < ApplicationController
   def index
     return render layout: "data_view" unless @funnel_names&.first
 
-    redirect_to project_funnel_path(@project.name, @funnel_names.first.parameterize)
+    redirect_to project_funnel_path(@project.name, @funnel_names.first.parameterize, params: { test: params[:test] })
   end
 
   def show
@@ -40,6 +40,8 @@ class FunnelsController < ApplicationController
   def new
     @funnel = Funnel.new
     5.times { @funnel.funnel_steps.build }
+
+    show_no_events_alert if @event_names.empty?
   end
 
   def create
@@ -90,5 +92,10 @@ class FunnelsController < ApplicationController
     flash.now[:info] = "You are creating a funnel in test mode. "\
                        "This means that you can only select events tracked in test mode. "\
                        "Unlike test events, test funnels are not deleted after 14 days."
+  end
+
+  def show_no_events_alert
+    flash.now[:alert] = "You haven't tracked any events in the current mode. "\
+                        "Make sure to track events before creating a funnel."
   end
 end
