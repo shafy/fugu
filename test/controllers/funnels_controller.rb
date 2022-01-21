@@ -3,15 +3,19 @@
 require "test_helper"
 
 class FunnelsControllerTest < ActionDispatch::IntegrationTest
-  def basic_setup
+  def project_setup
     user = FactoryBot.create(:user)
     @project = FactoryBot.create(:project, user: user)
     FactoryBot.create(:api_key, project: @project, test: true)
     @api_key_live = FactoryBot.create(:api_key, project: @project, test: false)
+    sign_in user
+  end
+
+  def basic_setup
+    project_setup
     @event1 = FactoryBot.create(:event, api_key: @api_key_live)
     @event2 = FactoryBot.create(:event, api_key: @api_key_live)
     @event3 = FactoryBot.create(:event, api_key: @api_key_live)
-    sign_in user
   end
 
   class GetIndex < FunnelsControllerTest
@@ -40,114 +44,71 @@ class FunnelsControllerTest < ActionDispatch::IntegrationTest
       assert_response :success
     end
 
-    test "contains correct body" do
+    test "contains correct funnel name in dropdown" do
       assert_match("data-name='#{@funnel.name.parameterize}'", @response.body)
     end
   end
 
-  # class GetShow < EventsControllerTest
-  #   setup do
-  #     user = FactoryBot.create(:user)
-  #     @project = FactoryBot.create(:project, user: user)
-  #     FactoryBot.create(:api_key, project: @project, test: true)
-  #     api_key_live = FactoryBot.create(:api_key, project: @project, test: false)
-  #     @event = FactoryBot.create(:event, api_key: api_key_live)
-  #     @event2 = FactoryBot.create(:event, name: "Test Event 2", api_key: api_key_live)
-  #     sign_in user
-  #     get project_event_path(@project.name, @event.name.parameterize)
-  #   end
+  class GetNew < FunnelsControllerTest
+    setup do
+      project_setup
+      get new_project_funnel_path(@project.name)
+    end
 
-  #   test "be successful" do
-  #     assert_response :success
-  #   end
+    test "is successful" do
+      assert_response :success
+    end
 
-  #   test "display correct project name" do
-  #     assert_match(@project.name, @response.body)
-  #   end
+    test "contains correct title" do
+      assert_match("Create new funnel", @response.body)
+    end
+  end
 
-  #   test "contain correct event names in dropdown" do
-  #     assert_match("data-name='test-event'", @response.body)
-  #     assert_match("data-name='test-event-2'", @response.body)
-  #   end
+  class PostCreate < FunnelsControllerTest
+    setup do
+      basic_setup
+      @funnel_attributes = {
+        name: "My Funnel",
+        funnel_steps_attributes: attributes_for_list(:funnel_step, 5)
+      }
+    end
 
-  #   test "selects correct event from dropdown" do
-  #     get project_event_path(@project.name, "test-event-2")
-  #     assert_match("data-name='test-event-2' selected", @response.body)
-  #   end
+    test "is successful" do
+      post project_funnels_path(@project.name, params: { funnel: @funnel_attributes })
+      assert_redirected_to project_funnel_path(@project.name, @funnel_attributes[:name].parameterize)
+    end
 
-  #   test "selects correct propery value from dropdown" do
-  #     get project_event_path(@project.name, @event.name.parameterize, params: { prop: "color" })
-  #     assert_match("data-name='color' selected", @response.body)
-  #   end
+    test "created new funnel with correct name" do
+      post project_funnels_path(@project.name, params: { funnel: @funnel_attributes })
+      assert_not_empty(Funnel.where(name: @funnel_attributes[:name]))
+    end
 
-  #   test "selects correct date from dropdown" do
-  #     get project_event_path(@project.name, @event.name.parameterize, params: { date: "30d" })
-  #     assert_match("data-name='30d' selected", @response.body)
-  #   end
+    test "created correct number of funnel steps" do
+      post project_funnels_path(@project.name, params: { funnel: @funnel_attributes })
+      assert_equal(
+        Funnel.find_by(name: @funnel_attributes[:name]).funnel_steps.count,
+        @funnel_attributes[:funnel_steps_attributes].length
+      )
+    end
 
-  #   test "selects correct aggregation from dropdown for day" do
-  #     get project_events_path(@project.name, @event.name.parameterize, params: { agg: "d", date: "7d" })
-  #     assert_match("data-name='d'  selected", @response.body)
-  #   end
+    test "redirects to form" do
+      @funnel_attributes[:funnel_steps_attributes] = []
+      post project_funnels_path(@project.name, params: { funnel: @funnel_attributes })
+      assert_redirected_to new_project_funnel_path(@project.name)
+    end
 
-  #   test "selects correct possible aggregation for 7d for month" do
-  #     get project_events_path(@project.name, @event.name.parameterize, params: { agg: "m", date: "7d" })
-  #     assert_match("data-name='d'  selected", @response.body)
-  #   end
+    test "show error message in flash" do
+      @funnel_attributes[:funnel_steps_attributes] = []
+      post project_funnels_path(@project.name, params: { funnel: @funnel_attributes })
+      follow_redirect!
+      assert_match("We couldn&#39;t create your funnel:", @response.body)
+    end
 
-  #   test "selects correct possible aggregation for 7d for year" do
-  #     get project_events_path(@project.name, @event.name.parameterize, params: { agg: "y", date: "7d" })
-  #     assert_match("data-name='d'  selected", @response.body)
-  #   end
-
-  #   test "selects correct possible aggregation for 30d for week" do
-  #     get project_events_path(@project.name, @event.name.parameterize, params: { agg: "w", date: "30d" })
-  #     assert_match("data-name='w'  selected", @response.body)
-  #   end
-
-  #   test "selects correct possible aggregation for 30d for month" do
-  #     get project_events_path(@project.name, @event.name.parameterize, params: { agg: "m", date: "30d" })
-  #     assert_match("data-name='w'  selected", @response.body)
-  #   end
-
-  #   test "selects correct possible aggregation for 6m for month" do
-  #     get project_events_path(@project.name, @event.name.parameterize, params: { agg: "m", date: "6m" })
-  #     assert_match("data-name='m'  selected", @response.body)
-  #   end
-
-  #   test "selects correct possible aggregation for 6m for year" do
-  #     get project_events_path(@project.name, @event.name.parameterize, params: { agg: "y", date: "6m" })
-  #     assert_match("data-name='y'  selected", @response.body)
-  #   end
-
-  #   test "selects correct possible aggregation for 6m for day" do
-  #     get project_events_path(@project.name, @event.name.parameterize, params: { agg: "d", date: "6m" })
-  #     assert_match("data-name='w'  selected", @response.body)
-  #   end
-
-  #   test "selects correct possible aggregation for 12m for week" do
-  #     get project_events_path(@project.name, @event.name.parameterize, params: { agg: "w", date: "12m" })
-  #     assert_match("data-name='w'  selected", @response.body)
-  #   end
-
-  #   test "selects correct possible aggregation for 12m for day" do
-  #     get project_events_path(@project.name, @event.name.parameterize, params: { agg: "d", date: "12m" })
-  #     assert_match("data-name='w'  selected", @response.body)
-  #   end
-
-  #   test "contains correct property values in dropdown" do
-  #     assert_match("data-name='color' >color</option>", @response.body)
-  #   end
-
-  #   test "contains correct url in event dropdown" do
-  #     get project_events_path(@project.name, @event2.name.parameterize, params: { agg: "m", prop: "color", date: "6m" })
-  #     path = project_event_path(@project.name, @event2.name.parameterize, params: { agg: "m", date: "6m" })
-  #     assert_match("data-url='#{path}'", @response.body)
-  #   end
-
-  #   test "is successful for property breakdown" do
-  #     get project_event_path(@project.name, @event2.name.parameterize, params: { p: "color" })
-  #     assert_response :success
-  #   end
-  # end
+    test "doesn't create funnel in database" do
+      @funnel_attributes[:funnel_steps_attributes] = []
+      assert_no_difference -> { Funnel.count } do
+        post project_funnels_path(@project.name, params: { funnel: @funnel_attributes })
+      end
+    end
+  end
 end

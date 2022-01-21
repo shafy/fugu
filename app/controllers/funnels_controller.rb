@@ -54,7 +54,7 @@ class FunnelsController < ApplicationController
       redirect_to new_project_funnel_path(
         @project.name,
         params: { test: params[:test] }
-      ), status: :unprocessable_entity
+      )
     end
   end
 
