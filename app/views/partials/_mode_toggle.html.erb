@@ -1,5 +1,5 @@
 <% if test_mode %>
-  <%= link_to "Toggle LIVE mode", build_test_toggle_url(params, @aggregation, false) %>
+  <%= link_to "Toggle LIVE mode", build_test_toggle_url(params, aggregation, false, chart_type), class: "font-normal" %>
 <% else %>
-  <%= link_to "Toggle TEST mode", build_test_toggle_url(params, @aggregation, true) %>
+  <%= link_to "Toggle TEST mode", build_test_toggle_url(params, aggregation, true, chart_type), class: "font-normal" %>
 <% end %>

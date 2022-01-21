@@ -3,15 +3,11 @@ import { Controller } from "@hotwired/stimulus"
 import { Chart, registerables } from "chart.js";
 Chart.register(...registerables);
 
-// import "chartjs-plugin-colorschemes";
-
 export default class extends Controller {
-  static targets = [ "chart"]
+  static targets = ["chart"]
   static values = {
-    dates: Array,
-    events: Object,
-    agg: String,
-    eventName: String,
+    funnelEventNames: Array,
+    funnelData: Array,
   }
 
   connect() {
@@ -21,12 +17,13 @@ export default class extends Controller {
 
   showChart() {
     const data = {
-      labels: this.formatDates(),
-      datasets: Object.keys(this.eventsValue).map((e, i) => this.createDataSet(e, this.eventsValue[e], i))
+      labels: this.funnelEventNamesValue,
+      //datasets: Object.keys(this.funnelDataValue).map((f) => this.createDataSet(f, this.funnelDataValue[e]))
+      datasets: this.createDataSet(this.funnelDataValue)
     };
 
     const config = {
-      type: "line",
+      type: "bar",
       data,
       options: {
         layout: {
@@ -54,7 +51,7 @@ export default class extends Controller {
             }
           }
         },
-        spanGaps: true,
+        //spanGaps: true,
         plugins: {
           legend: {
              display: this.displayLegend(),
@@ -71,25 +68,24 @@ export default class extends Controller {
   }
 
   displayLegend() {
-    let objKeys = Object.keys(this.eventsValue)
-    return objKeys.length != 1 || (objKeys.length === 1 && objKeys[0] !== "")
+    return false;
+    // let objKeys = Object.keys(this.eventsValue)
+    // return objKeys.length != 1 || (objKeys.length === 1 && objKeys[0] !== "")
   }
 
-  createDataSet(label, data, index) {
-    return {
-      label: this.htmlDecode(label),
-      backgroundColor: this.colorPalette[index % this.colorPalette.length],
-      borderColor: this.colorPalette[index % this.colorPalette.length],
-      borderJointStyle: "round",
-      borderCapStyle: "round",
-      borderWidth: 4.5,
-      tension: 0.15,
-      pointRadius: this.datesValue.length == 1 ? 1 : 0,
-      pointHitRadius: 5,
+  createDataSet(data) {
+    return [{
+      //label: this.htmlDecode(label),
+      backgroundColor: this.colorPalette[0],
+      borderColor: this.colorPalette[0],
+      borderWidth: 0,
+      borderRadius: 4,
       hoverBorderWidth: 4,
-      data: data["data"],
-      hidden: index > 5
-    }
+      hoverBorderColor: "rgb(35, 112, 144)",
+      maxBarThickness: 100,
+      data: data,
+      //hidden: index > 5
+    }]
   }
 
   initColorPalette() {
@@ -107,27 +103,27 @@ export default class extends Controller {
     ]
   }
 
-  formatDates() {
-    let dateOption;
-    switch(this.aggValue) {
-      case "d":
-        dateOption = { weekday: "short", year: "2-digit", month: "short", day: "2-digit" };
-        break;
-      case "w":
-        dateOption = { year: "numeric", month: "short", day: "2-digit" };
-        break;
-      case "m":
-        dateOption = { year: "numeric", month: "short" };
-        break;
-      case "y":
-        dateOption = { year: "numeric"};
-        break;
-    }
-    return this.datesValue.map((e) => { 
-      let d = new Date(e);
-      return d.toLocaleDateString("en-US", dateOption);
-    });
-  }
+  // formatDates() {
+  //   let dateOption;
+  //   switch(this.aggValue) {
+  //     case "d":
+  //       dateOption = { weekday: "short", year: "2-digit", month: "short", day: "2-digit" };
+  //       break;
+  //     case "w":
+  //       dateOption = { year: "numeric", month: "short", day: "2-digit" };
+  //       break;
+  //     case "m":
+  //       dateOption = { year: "numeric", month: "short" };
+  //       break;
+  //     case "y":
+  //       dateOption = { year: "numeric"};
+  //       break;
+  //   }
+  //   return this.datesValue.map((e) => { 
+  //     let d = new Date(e);
+  //     return d.toLocaleDateString("en-US", dateOption);
+  //   });
+  // }
 
   htmlDecode(input) {
     var doc = new DOMParser().parseFromString(input, "text/html");

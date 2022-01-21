@@ -3,10 +3,6 @@
 module Dateable
   extend ActiveSupport::Concern
 
-  included do
-    before_action :set_dates, only: %i[show]
-  end
-
   private
 
   def set_dates

@@ -8,15 +8,16 @@
 }
 
 select {
-  border-radius: 0.25rem;
-  border-width: 2px;
-  border-color: rgb(75, 85, 99);
-  background-color: rgb(255, 251, 235);
+  @apply rounded border-2 border-gray-600 bg-amber-50;
 }
 
 select:focus {
   box-shadow: none;
   border-color: rgb(16, 185, 129);
+}
+
+input {
+  @apply rounded border-2 border-gray-600;
 }
 
 a {
@@ -49,6 +50,11 @@ code {
   background-color: rgb(229, 231, 235);
   padding: 0.5rem;
   border-radius: 0.25rem;
+}
+
+.main-button {
+  @apply py-2 px-4 bg-green-500 text-white font-semibold rounded-lg shadow-md
+         focus:outline-none hover:bg-green-300 cursor-pointer w-full border-0;
 }
 
 .w-32rem {

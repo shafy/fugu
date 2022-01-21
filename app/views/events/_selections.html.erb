@@ -1,6 +1,6 @@
 <div
   class="flex flex-row w-full items-center justify-between"
-  data-controller="event"
+  data-controller="event selection"
   data-event-aggregation-value="<%= aggregation %>"
 >
   <div class="flex flex-row gap-x-5 items-center justify-start">
@@ -8,7 +8,7 @@
       <%= label_tag 'events', 'Events', class: "text-sm font-medium mb-2" %>
       <%= select_tag "events",
           raw(event_select_options(param_data, aggregation, event_names)),
-          data: { action: "change->event#navigateToSelectUrl" },
+          data: { action: "change->selection#navigateToSelectUrl" },
           class: "w-56 text-sm"
       %>
     </div>
@@ -16,7 +16,7 @@
       <%= label_tag 'properties', 'Properties', class: "text-sm font-medium mb-2" %>
       <%= select_tag "properties",
           raw(property_select_options(param_data, aggregation, properties)),
-          data: { action: "change->event#navigateToSelectUrl" },
+          data: { action: "change->selection#navigateToSelectUrl" },
           class: "w-44 text-sm"
       %>
     </div>
@@ -24,7 +24,7 @@
       <%= label_tag 'aggregation', 'Aggregation', class: "text-sm font-medium mb-2" %>
       <%= select_tag "aggregation",
           raw(agg_select_options(param_data, aggregation, possible_aggregations)),
-          data: { action: "change->event#navigateToSelectUrl" },
+          data: { action: "change->selection#navigateToSelectUrl" },
           class: "text-sm"
       %>
     </div>
@@ -33,8 +33,8 @@
     <div class="flex flex-col items-start justify-center">
       <%= label_tag 'date_range', 'Date Range', class: "text-sm font-medium mb-2" %>
       <%= select_tag "date_range",
-          raw(date_select_options(param_data, aggregation)),
-          data: { action: "change->event#navigateToSelectUrl" },
+          raw(date_select_options(param_data, aggregation, "event")),
+          data: { action: "change->selection#navigateToSelectUrl" },
           class: "text-sm"
       %>
     </div>

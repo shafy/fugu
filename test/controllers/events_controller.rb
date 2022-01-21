@@ -26,7 +26,7 @@ class EventsControllerTest < ActionDispatch::IntegrationTest
       FactoryBot.create(:api_key, project: @project, test: true)
       api_key_live = FactoryBot.create(:api_key, project: @project, test: false)
       @event = FactoryBot.create(:event, api_key: api_key_live)
-      @event2 = FactoryBot.create(:event, name: "Test Event 2", api_key: api_key_live)
+      @event2 = FactoryBot.create(:event, api_key: api_key_live)
       sign_in user
       get project_event_path(@project.name, @event.name.parameterize)
     end
@@ -40,7 +40,7 @@ class EventsControllerTest < ActionDispatch::IntegrationTest
     end
 
     test "contain correct event names in dropdown" do
-      assert_match("data-name='test-event'", @response.body)
+      assert_match("data-name='test-event-1'", @response.body)
       assert_match("data-name='test-event-2'", @response.body)
     end
 

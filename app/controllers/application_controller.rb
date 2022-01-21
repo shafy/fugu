@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   def show_test_alert
     return unless params[:test] == "true"
 
-    flash.now[:info] = "Heads up: You are currently viewing test data. Test data is deleted after 14 days."
+    flash.now[:info] = "Heads up: You are currently viewing test events. Test events are deleted after 14 days."
   end
 
   def set_project

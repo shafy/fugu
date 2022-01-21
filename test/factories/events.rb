@@ -17,7 +17,9 @@
 
 FactoryBot.define do
   factory :event do
-    name { "Test Event" }
+    sequence :name do |n|
+      "Test Event #{n}"
+    end
 
     properties do
       %({

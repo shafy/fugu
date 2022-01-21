@@ -18,6 +18,10 @@
 
 FactoryBot.define do
   factory :api_key do
+    sequence :key_value do |n|
+      "12345678kjdhfdsa-#{n}"
+    end
+
     project
   end
 end

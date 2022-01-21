@@ -9,10 +9,6 @@ export default class extends Controller {
     this.correctAggValue();
   }
 
-  navigateToSelectUrl(event) {
-    window.location.href = event.currentTarget.selectedOptions[0].dataset.url;
-  }
-
   correctAggValue() {
     if(new URLSearchParams(window.location.search).get("agg") != null) {
       const url = new URL(window.location.href);

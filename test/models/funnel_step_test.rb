@@ -17,7 +17,15 @@
 require "test_helper"
 
 class FunnelStepTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test "has a valid factory" do
+    assert build(:funnel_step)
+  end
+
+  context "validations" do
+    subject { build(:funnel_step) }
+
+    should validate_presence_of(:event_name)
+
+    should belong_to(:funnel)
+  end
 end

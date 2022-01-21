@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
 class EventsController < ApplicationController
-  before_action :set_project, only: %i[index show]
-  before_action :authorize_project_user, only: %i[index show]
-
   include ApiKeyable
   include Dateable
+  include EventNameable
 
+  before_action :set_project, only: %i[index show]
+  before_action :authorize_project_user, only: %i[index show]
+  before_action :set_api_key, only: %i[index show]
+  before_action :set_dates, only: %i[show]
   before_action :set_event_names, only: %i[index show]
   before_action :set_selected_event, only: %i[show]
   before_action :set_property, only: %i[show]
@@ -15,14 +17,14 @@ class EventsController < ApplicationController
   before_action :set_possible_aggregations, only: %i[show]
   before_action :set_aggregation, only: %i[show]
   before_action :show_test_alert, only: %i[show]
-  before_action :show_not_active_flash, only: %i[show]
+  before_action :show_not_active_flash, only: %i[index show]
 
   after_action :track_event, only: %i[show]
 
   def index
     return render layout: "data_view" unless @event_names&.first
 
-    redirect_to project_event_path(@project.name, @event_names&.first&.parameterize)
+    redirect_to project_event_path(@project.name, @event_names.first.parameterize)
   end
 
   def show
@@ -45,10 +47,6 @@ class EventsController < ApplicationController
   end
 
   private
-
-  def set_event_names
-    @event_names = Event.distinct_events_names(@api_key)
-  end
 
   def set_selected_event
     ev = if params[:slug]

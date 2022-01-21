@@ -235,7 +235,7 @@ class Event < ApplicationRecord
   end
 
   def titleize_name
-    self.name = name.titleize
+    self.name = name.downcase.titleize if name
   end
 
   def user_cannot_be_inactive
