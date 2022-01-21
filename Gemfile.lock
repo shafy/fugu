@@ -132,6 +132,7 @@ GEM
     importmap-rails (1.0.1)
       actionpack (>= 6.0.0)
       railties (>= 6.0.0)
+    ipaddr (1.2.2)
     jbuilder (2.11.4)
       activesupport (>= 5.0.0)
     listen (3.7.0)
@@ -302,6 +303,7 @@ DEPENDENCIES
   factory_bot_rails (~> 6.2.0)
   faraday (~> 1.8.0)
   importmap-rails (~> 1.0.0)
+  ipaddr (~> 1.2)
   jbuilder (~> 2.7)
   listen (~> 3.3)
   logstop

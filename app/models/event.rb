@@ -34,6 +34,7 @@ class Event < ApplicationRecord
               }
 
   validate :user_cannot_be_inactive
+  validate :excluded_property_values
   validate :excluded_property_names
   validate :limit_property_name_length
 
@@ -58,6 +59,9 @@ class Event < ApplicationRecord
     "y" => "year"
   }.freeze
 
+  IPV4_REGEX = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/
+  IPV6_REGEX = /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/
+  EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
   EVENT_PARAMS = %i[project_slug slug test event prop agg date].freeze
 
   def self.distinct_events_names(api_key)
@@ -243,14 +247,32 @@ class Event < ApplicationRecord
   end
 
   def excluded_property_names
-    excluded_values = %w[all]
+    excluded_names = %w[all email e-mail e_mail ip ip-address ip_address address phone phone-number phone_number]
     return unless properties.is_a?(Hash)
 
     return unless properties&.keys
 
-    return unless (properties.keys.map(&:downcase) & excluded_values).any?
+    return unless (properties.keys.map(&:downcase) & excluded_names).any?
 
-    errors.add(:properties, "You've used a property name that's reserved by Fugu (such as 'all'). Learn more about property constraints in the Fugu docs: https://docs.fugu.lol")
+    errors.add(:properties, "You've used a property name that's prohibited by Fugu (such as 'all'). Learn more about property constraints in the Fugu docs: https://docs.fugu.lol")
+  end
+
+  def excluded_property_values
+    excluded_values = [IPV4_REGEX, IPV6_REGEX, EMAIL_REGEX]
+
+    return unless properties.is_a?(Hash)
+
+    return unless properties&.values
+
+    contains_excluded_values = false
+    excluded_values.each do |v|
+      contains_excluded_values = properties.values.grep(v).any?
+      break if contains_excluded_values
+    end
+
+    return unless contains_excluded_values
+
+    errors.add(:properties, "You've used a property value that's prohibited by Fugu (such as an email address). Learn more about property constraints in the Fugu docs: https://docs.fugu.lol")
   end
 
   def limit_property_name_length
