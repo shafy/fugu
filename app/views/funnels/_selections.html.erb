@@ -1,8 +1,8 @@
 <div
-  class="flex flex-row w-full items-center justify-between"
+  class="flex flex-col md:flex-row w-full items-left md:items-center justify-between"
   data-controller="selection"
 >
-  <div class="flex flex-row gap-x-5 items-center justify-start">
+  <div class="flex flex-col md:flex-row gap-x-5 items-left md:items-center justify-start">
     <div class="flex flex-col items-start justify-center">
       <%= label_tag 'funnels', 'Funnels', class: "text-sm font-medium mb-2" %>
       <%= select_tag "funnels",
@@ -12,7 +12,7 @@
       %>
     </div>
   </div>
-  <div class="flex flex-row gap-x-5 items-center justify-start">
+  <div class="flex flex-col md:flex-row gap-x-5 items-left md:items-center justify-start">
     <div class="flex flex-col items-start justify-center">
       <%= label_tag 'date_range', 'Date Range', class: "text-sm font-medium mb-2" %>
       <%= select_tag "date_range",

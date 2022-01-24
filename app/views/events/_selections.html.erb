@@ -1,10 +1,10 @@
 <div
-  class="flex flex-row w-full items-center justify-between"
+  class="flex flex-col md:flex-row w-full items-left md:items-center justify-between"
   data-controller="event selection"
   data-event-aggregation-value="<%= aggregation %>"
 >
-  <div class="flex flex-row gap-x-5 items-center justify-start">
-    <div class="flex flex-col items-start justify-center">
+  <div class="flex flex-col md:flex-row  gap-x-5 items-left md:items-center justify-start">
+    <div class="flex flex-col items-start justify-center mb-2 md:mb-0">
       <%= label_tag 'events', 'Events', class: "text-sm font-medium mb-2" %>
       <%= select_tag "events",
           raw(event_select_options(param_data, aggregation, event_names)),
@@ -12,7 +12,7 @@
           class: "w-56 text-sm"
       %>
     </div>
-    <div class="flex flex-col items-start justify-center">
+    <div class="flex flex-col items-start justify-center mb-2 md:mb-0">
       <%= label_tag 'properties', 'Properties', class: "text-sm font-medium mb-2" %>
       <%= select_tag "properties",
           raw(property_select_options(param_data, aggregation, properties)),
@@ -20,7 +20,7 @@
           class: "w-44 text-sm"
       %>
     </div>
-    <div class="flex flex-col items-start justify-center">
+    <div class="flex flex-col items-start justify-center mb-2 md:mb-0">
       <%= label_tag 'aggregation', 'Aggregation', class: "text-sm font-medium mb-2" %>
       <%= select_tag "aggregation",
           raw(agg_select_options(param_data, aggregation, possible_aggregations)),
@@ -29,8 +29,8 @@
       %>
     </div>
   </div>
-  <div class="flex flex-row gap-x-5 items-center justify-start">
-    <div class="flex flex-col items-start justify-center">
+  <div class="flex flex-col md:flex-row  gap-x-5 items-left md:items-center justify-start">
+    <div class="flex flex-col items-start justify-center mb-2 md:mb-0">
       <%= label_tag 'date_range', 'Date Range', class: "text-sm font-medium mb-2" %>
       <%= select_tag "date_range",
           raw(date_select_options(param_data, aggregation, "event")),
