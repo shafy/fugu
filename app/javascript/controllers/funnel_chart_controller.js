@@ -3,6 +3,9 @@ import { Controller } from "@hotwired/stimulus"
 import { Chart, registerables } from "chart.js";
 Chart.register(...registerables);
 
+import ChartDataLabels from "chartjs-plugin-datalabels";
+Chart.register(ChartDataLabels);
+
 export default class extends Controller {
   static targets = ["chart"]
   static values = {
@@ -26,6 +29,7 @@ export default class extends Controller {
       type: "bar",
       data,
       options: {
+        events: [],
         layout: {
           padding: 10,
         },
@@ -37,7 +41,7 @@ export default class extends Controller {
             ticks: {
               format: { style: "decimal" },
               precision: 0,
-              padding: 10,
+              padding: 10
             },
             grid: {
               color: "rgba(254, 243, 199, 0.7)",
@@ -51,11 +55,31 @@ export default class extends Controller {
             }
           }
         },
-        //spanGaps: true,
         plugins: {
           legend: {
              display: this.displayLegend(),
              position: 'bottom'
+          },
+          datalabels: {
+            labels: {
+              title: {
+                color: 'white',
+                font: {
+                  weight: 'bold',
+                  lineHeight: 1.3
+                },
+                textAlign: 'center'
+              }
+            },
+            formatter: (value, context) => {
+              let testValue = this.funnelDataValue.map((x, y, z) => Math.round(x/z[y-1]*100));
+              testValue[0] = '';
+              if (context.dataIndex == 0) {
+                return value
+              } else {
+                return value + '\n' + '(' + testValue[context.dataIndex] + '%)'
+              }
+            }
           }
         }
       }
@@ -69,8 +93,6 @@ export default class extends Controller {
 
   displayLegend() {
     return false;
-    // let objKeys = Object.keys(this.eventsValue)
-    // return objKeys.length != 1 || (objKeys.length === 1 && objKeys[0] !== "")
   }
 
   createDataSet(data) {
@@ -84,7 +106,6 @@ export default class extends Controller {
       hoverBorderColor: "rgb(35, 112, 144)",
       maxBarThickness: 100,
       data: data,
-      //hidden: index > 5
     }]
   }
 
@@ -103,30 +124,9 @@ export default class extends Controller {
     ]
   }
 
-  // formatDates() {
-  //   let dateOption;
-  //   switch(this.aggValue) {
-  //     case "d":
-  //       dateOption = { weekday: "short", year: "2-digit", month: "short", day: "2-digit" };
-  //       break;
-  //     case "w":
-  //       dateOption = { year: "numeric", month: "short", day: "2-digit" };
-  //       break;
-  //     case "m":
-  //       dateOption = { year: "numeric", month: "short" };
-  //       break;
-  //     case "y":
-  //       dateOption = { year: "numeric"};
-  //       break;
-  //   }
-  //   return this.datesValue.map((e) => { 
-  //     let d = new Date(e);
-  //     return d.toLocaleDateString("en-US", dateOption);
-  //   });
-  // }
-
   htmlDecode(input) {
     var doc = new DOMParser().parseFromString(input, "text/html");
     return doc.documentElement.textContent;
   }
 }
+

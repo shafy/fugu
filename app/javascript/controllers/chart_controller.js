@@ -3,7 +3,8 @@ import { Controller } from "@hotwired/stimulus"
 import { Chart, registerables } from "chart.js";
 Chart.register(...registerables);
 
-// import "chartjs-plugin-colorschemes";
+import ChartDataLabels from "chartjs-plugin-datalabels";
+Chart.register(ChartDataLabels);
 
 export default class extends Controller {
   static targets = [ "chart"]
@@ -40,7 +41,7 @@ export default class extends Controller {
             ticks: {
               format: { style: "decimal" },
               precision: 0,
-              padding: 10,
+              padding: 10
             },
             grid: {
               color: "rgba(254, 243, 199, 0.7)",
@@ -59,6 +60,11 @@ export default class extends Controller {
           legend: {
              display: this.displayLegend(),
              position: 'bottom'
+          },
+          datalabels: {
+            labels: {
+              title: null
+            }
           }
         }
       }
