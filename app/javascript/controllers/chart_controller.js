@@ -1,10 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
-
 import { Chart, registerables } from "chart.js";
-Chart.register(...registerables);
 
-import ChartDataLabels from "chartjs-plugin-datalabels";
-Chart.register(ChartDataLabels);
+Chart.register(...registerables);
 
 export default class extends Controller {
   static targets = [ "chart"]
@@ -60,11 +57,6 @@ export default class extends Controller {
           legend: {
              display: this.displayLegend(),
              position: 'bottom'
-          },
-          datalabels: {
-            labels: {
-              title: null
-            }
           }
         }
       }

@@ -1,10 +1,8 @@
 import { Controller } from "@hotwired/stimulus"
-
 import { Chart, registerables } from "chart.js";
-Chart.register(...registerables);
-
 import ChartDataLabels from "chartjs-plugin-datalabels";
-Chart.register(ChartDataLabels);
+
+Chart.register(...registerables);
 
 export default class extends Controller {
   static targets = ["chart"]
@@ -21,13 +19,13 @@ export default class extends Controller {
   showChart() {
     const data = {
       labels: this.funnelEventNamesValue,
-      //datasets: Object.keys(this.funnelDataValue).map((f) => this.createDataSet(f, this.funnelDataValue[e]))
       datasets: this.createDataSet(this.funnelDataValue)
     };
 
     const config = {
       type: "bar",
       data,
+      plugins: [ChartDataLabels],
       options: {
         events: [],
         layout: {
@@ -63,23 +61,17 @@ export default class extends Controller {
           datalabels: {
             labels: {
               title: {
-                color: 'white',
                 font: {
                   weight: 'bold',
                   lineHeight: 1.3
                 },
-                textAlign: 'center'
+                textAlign: 'center',
+                align: 'start',
+                anchor: 'end',
+                offset: -35
               }
             },
-            formatter: (value, context) => {
-              let testValue = this.funnelDataValue.map((x, y, z) => Math.round(x/z[y-1]*100));
-              testValue[0] = '';
-              if (context.dataIndex == 0) {
-                return value
-              } else {
-                return value + '\n' + '(' + testValue[context.dataIndex] + '%)'
-              }
-            }
+            formatter: getPercentage
           }
         }
       }
@@ -128,5 +120,14 @@ export default class extends Controller {
     var doc = new DOMParser().parseFromString(input, "text/html");
     return doc.documentElement.textContent;
   }
+}
+
+const getPercentage = (value, context) => {
+  let percentages = context.chart.data.datasets[0].data.map((element, index, array) => Math.round(element/array[index-1]*100));
+  percentages[0] = '';
+  if (context.dataIndex == 0) {
+    return value;
+  }
+  return value + '\n' + '(' + percentages[context.dataIndex] + '%)';
 }
 
