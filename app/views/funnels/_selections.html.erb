@@ -3,7 +3,7 @@
   data-controller="selection"
 >
   <div class="flex flex-col md:flex-row gap-x-5 items-left md:items-center justify-start">
-    <div class="flex flex-col items-start justify-center">
+    <div class="flex flex-col items-start justify-center mb-2 md:mb-0">
       <%= label_tag 'funnels', 'Funnels', class: "text-sm font-medium mb-2" %>
       <%= select_tag "funnels",
           raw(funnel_select_options(param_data, funnel_names)),
@@ -13,7 +13,7 @@
     </div>
   </div>
   <div class="flex flex-col md:flex-row gap-x-5 items-left md:items-center justify-start">
-    <div class="flex flex-col items-start justify-center">
+    <div class="flex flex-col items-start justify-center mb-2 md:mb-0">
       <%= label_tag 'date_range', 'Date Range', class: "text-sm font-medium mb-2" %>
       <%= select_tag "date_range",
           raw(date_select_options(param_data, nil, "funnel")),

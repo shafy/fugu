@@ -1,6 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
-
 import { Chart, registerables } from "chart.js";
+import ChartDataLabels from "chartjs-plugin-datalabels";
+
 Chart.register(...registerables);
 
 export default class extends Controller {
@@ -18,26 +19,27 @@ export default class extends Controller {
   showChart() {
     const data = {
       labels: this.funnelEventNamesValue,
-      //datasets: Object.keys(this.funnelDataValue).map((f) => this.createDataSet(f, this.funnelDataValue[e]))
       datasets: this.createDataSet(this.funnelDataValue)
     };
 
     const config = {
       type: "bar",
       data,
+      plugins: [ChartDataLabels],
       options: {
+        events: [],
         layout: {
           padding: 10,
         },
         maintainAspectRatio: false,
         scales: {
           y: {
-            grace: '10%',
+            grace: "10%",
             beginAtZero: true,
             ticks: {
               format: { style: "decimal" },
               precision: 0,
-              padding: 10,
+              padding: 10
             },
             grid: {
               color: "rgba(254, 243, 199, 0.7)",
@@ -51,11 +53,25 @@ export default class extends Controller {
             }
           }
         },
-        //spanGaps: true,
         plugins: {
           legend: {
              display: this.displayLegend(),
-             position: 'bottom'
+             position: "bottom"
+          },
+          datalabels: {
+            labels: {
+              title: {
+                font: {
+                  weight: "bold",
+                  lineHeight: 1.3
+                },
+                textAlign: "center",
+                align: "top",
+                anchor: "end",
+                offset: 5
+              }
+            },
+            formatter: calcConversionRates
           }
         }
       }
@@ -69,13 +85,10 @@ export default class extends Controller {
 
   displayLegend() {
     return false;
-    // let objKeys = Object.keys(this.eventsValue)
-    // return objKeys.length != 1 || (objKeys.length === 1 && objKeys[0] !== "")
   }
 
   createDataSet(data) {
     return [{
-      //label: this.htmlDecode(label),
       backgroundColor: this.colorPalette[0],
       borderColor: this.colorPalette[0],
       borderWidth: 0,
@@ -84,7 +97,6 @@ export default class extends Controller {
       hoverBorderColor: "rgb(35, 112, 144)",
       maxBarThickness: 100,
       data: data,
-      //hidden: index > 5
     }]
   }
 
@@ -103,30 +115,17 @@ export default class extends Controller {
     ]
   }
 
-  // formatDates() {
-  //   let dateOption;
-  //   switch(this.aggValue) {
-  //     case "d":
-  //       dateOption = { weekday: "short", year: "2-digit", month: "short", day: "2-digit" };
-  //       break;
-  //     case "w":
-  //       dateOption = { year: "numeric", month: "short", day: "2-digit" };
-  //       break;
-  //     case "m":
-  //       dateOption = { year: "numeric", month: "short" };
-  //       break;
-  //     case "y":
-  //       dateOption = { year: "numeric"};
-  //       break;
-  //   }
-  //   return this.datesValue.map((e) => { 
-  //     let d = new Date(e);
-  //     return d.toLocaleDateString("en-US", dateOption);
-  //   });
-  // }
-
   htmlDecode(input) {
     var doc = new DOMParser().parseFromString(input, "text/html");
     return doc.documentElement.textContent;
   }
+}
+
+const calcConversionRates = (value, context) => {
+  let percentages = context.chart.data.datasets[0].data.map((element, index, array) => Math.round(element/array[index-1]*100));
+  percentages[0] = "";
+  if (context.dataIndex == 0) {
+    return value;
+  }
+  return `${value}\n(${percentages[context.dataIndex]}%)`;
 }
