@@ -33,7 +33,7 @@ export default class extends Controller {
         maintainAspectRatio: false,
         scales: {
           y: {
-            grace: '10%',
+            grace: "10%",
             beginAtZero: true,
             ticks: {
               format: { style: "decimal" },
@@ -56,7 +56,7 @@ export default class extends Controller {
         plugins: {
           legend: {
              display: this.displayLegend(),
-             position: 'bottom'
+             position: "bottom"
           }
         }
       }

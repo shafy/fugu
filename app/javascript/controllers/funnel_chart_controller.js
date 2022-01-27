@@ -34,7 +34,7 @@ export default class extends Controller {
         maintainAspectRatio: false,
         scales: {
           y: {
-            grace: '10%',
+            grace: "10%",
             beginAtZero: true,
             ticks: {
               format: { style: "decimal" },
@@ -56,22 +56,22 @@ export default class extends Controller {
         plugins: {
           legend: {
              display: this.displayLegend(),
-             position: 'bottom'
+             position: "bottom"
           },
           datalabels: {
             labels: {
               title: {
                 font: {
-                  weight: 'bold',
+                  weight: "bold",
                   lineHeight: 1.3
                 },
-                textAlign: 'center',
-                align: 'start',
-                anchor: 'end',
-                offset: -35
+                textAlign: "center",
+                align: "top",
+                anchor: "end",
+                offset: 5
               }
             },
-            formatter: getPercentage
+            formatter: calcConversionRates
           }
         }
       }
@@ -89,7 +89,6 @@ export default class extends Controller {
 
   createDataSet(data) {
     return [{
-      //label: this.htmlDecode(label),
       backgroundColor: this.colorPalette[0],
       borderColor: this.colorPalette[0],
       borderWidth: 0,
@@ -122,12 +121,11 @@ export default class extends Controller {
   }
 }
 
-const getPercentage = (value, context) => {
+const calcConversionRates = (value, context) => {
   let percentages = context.chart.data.datasets[0].data.map((element, index, array) => Math.round(element/array[index-1]*100));
-  percentages[0] = '';
+  percentages[0] = "";
   if (context.dataIndex == 0) {
     return value;
   }
-  return value + '\n' + '(' + percentages[context.dataIndex] + '%)';
+  return `${value}\n(${percentages[context.dataIndex]}%)`;
 }
-
