@@ -24,10 +24,15 @@ class EventsController < ApplicationController
   def index
     return render layout: "data_view" unless @event_names&.first
 
-    redirect_to project_event_path(@project.name, @event_names.first.parameterize)
+    redirect_to project_event_path(
+      @project.name,
+      @event_names.first.parameterize,
+      params: { test: params[:test] }
+    )
   end
 
   def show
+    puts "yoo"
     return unless @selected_event
 
     events_array = Event.with_aggregation(

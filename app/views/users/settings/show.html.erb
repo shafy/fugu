@@ -41,7 +41,8 @@
     <%= button_to "Log out",
       destroy_user_session_path,
       method: :delete,
-      class: "bg-transparent underline font-medium hover:text-green-500 cursor-pointer"
+      class: "bg-transparent underline font-medium hover:text-green-500 cursor-pointer",
+      data: { turbo: false }
     %>
   <% end %>
 <% end %>

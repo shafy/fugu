@@ -23,7 +23,11 @@ class FunnelsController < ApplicationController
   def index
     return render layout: "data_view" unless @funnel_names&.first
 
-    redirect_to project_funnel_path(@project.name, @funnel_names.first.parameterize, params: { test: params[:test] })
+    redirect_to project_funnel_path(
+      @project.name,
+      @funnel_names.first.parameterize,
+      params: { test: params[:test] }
+    )
   end
 
   def show

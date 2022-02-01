@@ -5,17 +5,24 @@ require "test_helper"
 class EventsControllerTest < ActionDispatch::IntegrationTest
   class GetIndex < EventsControllerTest
     setup do
-      user = FactoryBot.create(:user)
+      @user = FactoryBot.create(:user)
       @project = FactoryBot.create(:project, user: user)
-      FactoryBot.create(:api_key, project: @project, test: true)
-      api_key_live = FactoryBot.create(:api_key, project: @project, test: false)
-      @event = FactoryBot.create(:event, api_key: api_key_live)
-      sign_in user
-      get project_events_path(@project.name)
+      @api_key_test = FactoryBot.create(:api_key, project: @project, test: true)
+      @api_key_live = FactoryBot.create(:api_key, project: @project, test: false)
     end
 
-    test "to redirect correctly" do
-      assert_redirected_to project_event_path(@project.name, @event.name.parameterize)
+    test "to redirect to show with live event only" do
+      live_event = FactoryBot.create(:event, api_key: @api_key_live)
+      sign_in user
+      get project_events_path(@project.name)
+      assert_redirected_to project_event_path(@project.name, live_event.name.parameterize)
+    end
+
+    test "to redirect to show with test events only" do
+      test_event = FactoryBot.create(:event, api_key: api_key_test)
+      sign_in user
+      get project_events_path(@project.name)
+      assert_redirected_to project_event_path(@project.name, test_event.name.parameterize)
     end
   end
 
