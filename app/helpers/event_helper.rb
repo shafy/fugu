@@ -33,7 +33,9 @@ module EventHelper
 
   def date_select_options(url_params, aggregation, chart_type)
     Event::DATE_OPTIONS.map do |k, v|
-      selected = "selected" if k == url_params[:date]
+      if (!url_params[:date] && k == "7d") || k == url_params[:date]
+        selected = "selected"
+      end
       "<option data-url='#{build_date_url(url_params.permit(*Event::EVENT_PARAMS), aggregation, k, chart_type)}' data-name='#{k}' #{selected}>#{v}</option>"
     end
   end

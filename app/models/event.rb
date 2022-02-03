@@ -45,9 +45,11 @@ class Event < ApplicationRecord
   before_create :sanitize_prop_values
 
   DATE_OPTIONS = {
+    "1d" => "Today",
     "7d" => "Last 7 days",
     "this_m" => "This month",
     "30d" => "Last 30 days",
+    "3m" => "Last 3 months",
     "6m" => "Last 6 months",
     "12m" => "Last 12 months"
   }.freeze

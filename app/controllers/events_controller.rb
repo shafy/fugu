@@ -100,6 +100,14 @@ class EventsController < ApplicationController
                              end
   end
 
+  def set_date_range
+    puts "Büsi"
+    puts selected_time_period_days
+    puts @start_date
+    puts @end_date
+    puts @dates
+  end
+
   def selected_time_period_days
     (@end_date - @start_date) / 60 / 60 / 24
   end
