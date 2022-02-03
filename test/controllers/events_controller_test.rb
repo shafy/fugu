@@ -112,7 +112,21 @@ class EventsControllerTest < ActionDispatch::IntegrationTest
       assert_match("data-name='30d' selected", @response.body)
     end
 
-    test "selects correct aggregation from dropdown for day" do
+    test "selects correct date range when none is selected" do
+      setup_live_events
+      sign_in @user
+      get project_event_path(@project.name, @event.name.parameterize)
+      assert_match("data-name='7d' selected", @response.body)
+    end
+
+    test "selects correct possible aggregation for 1d for day" do
+      setup_live_events
+      sign_in @user
+      get project_event_path(@project.name, @event.name.parameterize, params: { agg: "d", date: "1d" })
+      assert_match("data-name='d'  selected", @response.body)
+    end
+
+    test "selects correct possible aggregation for 7d for day" do
       setup_live_events
       sign_in @user
       get project_event_path(@project.name, @event.name.parameterize, params: { agg: "d", date: "7d" })
@@ -144,6 +158,27 @@ class EventsControllerTest < ActionDispatch::IntegrationTest
       setup_live_events
       sign_in @user
       get project_event_path(@project.name, @event.name.parameterize, params: { agg: "m", date: "30d" })
+      assert_match("data-name='w'  selected", @response.body)
+    end
+
+    test "selects correct possible aggregation for 3m for month" do
+      setup_live_events
+      sign_in @user
+      get project_event_path(@project.name, @event.name.parameterize, params: { agg: "m", date: "3m" })
+      assert_match("data-name='m'  selected", @response.body)
+    end
+
+    test "selects correct possible aggregation for 3m for year" do
+      setup_live_events
+      sign_in @user
+      get project_event_path(@project.name, @event.name.parameterize, params: { agg: "y", date: "3m" })
+      assert_match("data-name='y'  selected", @response.body)
+    end
+
+    test "selects correct possible aggregation for 3m for day" do
+      setup_live_events
+      sign_in @user
+      get project_event_path(@project.name, @event.name.parameterize, params: { agg: "d", date: "3m" })
       assert_match("data-name='w'  selected", @response.body)
     end
 
