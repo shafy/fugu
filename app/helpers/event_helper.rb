@@ -32,10 +32,9 @@ module EventHelper
   end
 
   def date_select_options(url_params, aggregation, chart_type)
+    default_to_week = Event::DATE_OPTIONS.exclude? url_params[:date]
     Event::DATE_OPTIONS.map do |k, v|
-      if (!url_params[:date] && k == "7d") || k == url_params[:date]
-        selected = "selected"
-      end
+      selected = "selected" if (default_to_week && k == "7d") || k == url_params[:date]
       "<option data-url='#{build_date_url(url_params.permit(*Event::EVENT_PARAMS), aggregation, k, chart_type)}' data-name='#{k}' #{selected}>#{v}</option>"
     end
   end

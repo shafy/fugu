@@ -6,8 +6,9 @@ module Dateable
   private
 
   def set_dates
-    dateRange = params[:date] ? CGI.escapeHTML(params[:date]) : "7d"
-    @start_date = case dateRange
+    @date_range = params[:date] ? CGI.escapeHTML(params[:date]) : "7d"
+    @date_range = "7d" if Event::DATE_OPTIONS.exclude?(params[:date])
+    @start_date = case @date_range
                   when "30d"
                     29.days.ago
                   when "this_m"
