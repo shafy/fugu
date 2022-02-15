@@ -119,6 +119,13 @@ class EventsControllerTest < ActionDispatch::IntegrationTest
       assert_match("data-name='7d' selected", @response.body)
     end
 
+    test "selects correct date range when unvalid param is set in url" do
+      setup_live_events
+      sign_in @user
+      get project_event_path(@project.name, @event.name.parameterize, params: {date: "blabla"})
+      assert_match("data-name='7d' selected", @response.body)
+    end
+
     test "selects correct possible aggregation for 1d for day" do
       setup_live_events
       sign_in @user
