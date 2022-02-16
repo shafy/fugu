@@ -10,7 +10,8 @@
 #
 # Indexes
 #
-#  index_funnels_on_api_key_id  (api_key_id)
+#  index_funnels_on_api_key_id           (api_key_id)
+#  index_funnels_on_name_and_api_key_id  (name,api_key_id) UNIQUE
 #
 
 # frozen_string_literal: true

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: events
@@ -38,26 +40,34 @@ class EventTest < ActiveSupport::TestCase
       .with_message("'All' is a reserved event name by Fugu and can't be used")
   end
 
-  context "property validations" do
+  context "property validations general" do
     should_not allow_value("Non JSON String").for(:properties)
     should_not allow_value("{invalid_json: \"12\"}").for(:properties)
     should_not allow_value("{\"all\": \"test\"}")
       .for(:properties)
-      .with_message("You've used a property name that's prohibited by Fugu (such as 'all'). Learn more about property constraints in the Fugu docs: https://docs.fugu.lol")
+      .with_message("You've used a property name that's prohibited by Fugu (such as 'all')."\
+                    " Learn more about property constraints in the Fugu docs: https://docs.fugu.lol")
     should_not allow_value("{\"All\": \"test\"}")
       .for(:properties)
-      .with_message("You've used a property name that's prohibited by Fugu (such as 'all'). Learn more about property constraints in the Fugu docs: https://docs.fugu.lol")
+      .with_message("You've used a property name that's prohibited by Fugu (such as 'all')."\
+                    " Learn more about property constraints in the Fugu docs: https://docs.fugu.lol")
     should_not allow_value("{\"email\": \"test\"}")
       .for(:properties)
-      .with_message("You've used a property name that's prohibited by Fugu (such as 'all'). Learn more about property constraints in the Fugu docs: https://docs.fugu.lol")
+      .with_message("You've used a property name that's prohibited by Fugu (such as 'all')."\
+                    " Learn more about property constraints in the Fugu docs: https://docs.fugu.lol")
     should_not allow_value("{\"Test\": \"192.128.0.12\"}")
       .for(:properties)
-      .with_message("You've used a property value that's prohibited by Fugu (such as an email address). Learn more about property constraints in the Fugu docs: https://docs.fugu.lol")
+      .with_message("You've used a property value that's prohibited by Fugu"\
+                    " (such as an email address)."\
+                    " Learn more about property constraints in the Fugu docs: https://docs.fugu.lol")
     should_not allow_value("{\"Test\": \"2345:0425:2CA1:0000:0000:0567:5673:23b5\"}")
       .for(:properties)
-      .with_message("You've used a property value that's prohibited by Fugu (such as an email address). Learn more about property constraints in the Fugu docs: https://docs.fugu.lol")
+      .with_message("You've used a property value that's prohibited by Fugu"\
+                    " (such as an email address)."\
+                    " Learn more about property constraints in the Fugu docs: https://docs.fugu.lol")
     should_not allow_value("{\"this_propertyname_is_too_long\": \"test\"}")
       .for(:properties)
-      .with_message("You've used a property name that's too long (> 15 characters). Please choose a shorter name.")
+      .with_message("You've used a property name that's too long (> 15 characters)."\
+                    " Please choose a shorter name.")
   end
 end

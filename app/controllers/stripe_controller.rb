@@ -44,9 +44,11 @@ class StripeController < ApplicationController
 
   def webhooks
     # cases:
-    # - customer cancels subscription for the end of the billing cycle (customer.subscription.updated)
+    # - customer cancels subscription for the end of the billing cycle
+    #   (customer.subscription.updated)
     # - subscription is canceled at the end of billing cycle (customer.subscription.deleted)
-    # - customer re-activates canceled account before end of billing cycle (customer.subscription.updated)
+    # - customer re-activates canceled account before end of billing cycle
+    #   (customer.subscription.updated)
 
     case params[:type]
     when "customer.subscription.updated"

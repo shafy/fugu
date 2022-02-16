@@ -1,0 +1,53 @@
+name: Tests
+
+on:
+  push:
+    branches: [ $default-branch ]
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    env:
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_HOST: localhost
+      RAILS_ENV: test
+
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0.0
+          bundler-cache: true
+
+      - name: Set up PostgreSQL client
+        run: |
+          sudo apt-get -yqq install libpq-dev
+
+      - name: Setup test database
+        run: |
+          bin/rails db:setup
+
+      - name: Build Tailwind
+        run: |
+          bin/rails tailwindcss:build
+
+      - name: Run specs
+        run: |
+          bundle exec rails test
+        env:
+          STRIPE_ENDPOINT_SECRET: ${{ secrets.STRIPE_ENDPOINT_SECRET }}

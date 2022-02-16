@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: projects
@@ -11,7 +12,8 @@
 #
 # Indexes
 #
-#  index_projects_on_user_id  (user_id)
+#  index_projects_on_name_and_user_id  (name,user_id) UNIQUE
+#  index_projects_on_user_id           (user_id)
 #
 
 class Project < ApplicationRecord
@@ -36,7 +38,6 @@ class Project < ApplicationRecord
                 in: %w[project projects],
                 message: "'%{value}' is a reversed event name by Fugu and can't be used"
               }
-  validates :user, presence: true
 
   before_validation :downcase_name
   before_validation :strip_name
