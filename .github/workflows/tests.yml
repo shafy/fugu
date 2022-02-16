@@ -38,9 +38,15 @@ jobs:
       - name: Set up PostgreSQL client
         run: |
           sudo apt-get -yqq install libpq-dev
+
       - name: Setup test database
         run: |
           bin/rails db:setup
+
+      - name: Build Tailwind
+        run: |
+          bin/rails tailwindcss:build
+          
       - name: Run specs
         run: |
           bundle exec rails test
