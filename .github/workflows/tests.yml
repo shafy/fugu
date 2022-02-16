@@ -47,7 +47,7 @@ jobs:
           bin/rails tailwindcss:build
 
       - name: Run specs
-        env:
-          STRIPE_ENDPOINT_SECRET: ${{ STRIPE_ENDPOINT_SECRET.SuperSecret }}
         run: |
           bundle exec rails test
+        env:
+          STRIPE_ENDPOINT_SECRET: ${{ secrets.STRIPE_ENDPOINT_SECRET }}
