@@ -7,8 +7,9 @@ default: &default
 development:
   <<: *default
   database: fugu_dev
-  username: ''
-  password: ''
+  username: <%= ENV["DATABASE_USER"] %>
+  password: <%= ENV["DATABASE_PASSWORD"] %>
+  host: <%= ENV.fetch("DATABASE_HOST") { "localhost" } %>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -16,6 +17,9 @@ development:
 test:
   <<: *default
   database: 'fugu_test'
+  username: <%= ENV["DATABASE_USER"] %>
+  password: <%= ENV["DATABASE_PASSWORD"] %>
+  host: <%= ENV.fetch("DATABASE_HOST") { "localhost" } %>
 
 production:
   <<: *default
