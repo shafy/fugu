@@ -11,7 +11,7 @@ gem "rails", "~> 7.0.0"
 gem "pg"
 
 # Use Puma as the app server
-gem "puma", "~> 5.0"
+gem "puma", "~> 5.6.2"
 gem "sprockets-rails"
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
