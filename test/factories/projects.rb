@@ -12,7 +12,8 @@
 #
 # Indexes
 #
-#  index_projects_on_user_id  (user_id)
+#  index_projects_on_name_and_user_id  (name,user_id) UNIQUE
+#  index_projects_on_user_id           (user_id)
 #
 
 FactoryBot.define do
