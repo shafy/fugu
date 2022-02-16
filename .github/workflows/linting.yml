@@ -1,0 +1,28 @@
+name: Linting
+
+on:
+  push:
+    branches: [ $default-branch ]
+  pull_request:
+
+jobs:
+  linting:
+    runs-on: ubuntu-latest
+
+    env:
+      RAILS_ENV: test
+      NODE_ENV: test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0.0
+          bundler-cache: true
+
+      - name: Run linters
+        run: |
+          bundle exec rubocop
