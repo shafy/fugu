@@ -14,7 +14,6 @@ jobs:
       DATABASE_PASSWORD: postgres
       DATABASE_HOST: localhost
       RAILS_ENV: test
-      NODE_ENV: test
 
     services:
       postgres:
@@ -46,7 +45,9 @@ jobs:
       - name: Build Tailwind
         run: |
           bin/rails tailwindcss:build
-          
+
       - name: Run specs
+        env:
+          STRIPE_ENDPOINT_SECRET: ${{ STRIPE_ENDPOINT_SECRET.SuperSecret }}
         run: |
           bundle exec rails test

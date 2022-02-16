@@ -2,6 +2,8 @@
 
 class FuguService
   def self.track(name, properties = {})
+    return if Rails.env.test?
+
     body = {
       api_key: ENV["FUGU_API_KEY"],
       name: name,
