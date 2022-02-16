@@ -2,8 +2,8 @@
 
 module StripeTestHelper
   def stripe_event_signature(event_json)
-    secret = ENV['STRIPE_ENDPOINT_SECRET']
-    timestamp = Time.now
+    secret = ENV["STRIPE_ENDPOINT_SECRET"]
+    timestamp = Time.zone.now
     signature = Stripe::Webhook::Signature.send(:compute_signature, timestamp, event_json, secret)
     scheme = Stripe::Webhook::Signature::EXPECTED_SCHEME
     "t=#{timestamp.to_i},#{scheme}=#{signature}"
@@ -40,13 +40,13 @@ module StripeTestHelper
 
   def checkout_session_args(price, customer)
     {
-      payment_method_types: ['card'],
+      payment_method_types: ["card"],
       customer: customer,
       line_items: [{
         price: price,
         quantity: 1
       }],
-      mode: 'subscription',
+      mode: "subscription",
       success_url: "/",
       cancel_url: "/"
     }
@@ -62,22 +62,22 @@ module StripeTestHelper
 
   def create_stripe_price(product)
     Stripe::Price.create({
-      unit_amount: 900,
-      currency: 'usd',
-      recurring: { interval: 'month' },
-      product: product
-    })
+                           unit_amount: 900,
+                           currency: "usd",
+                           recurring: { interval: "month" },
+                           product: product
+                         })
   end
 
   def create_stripe_checkout_session(customer, price)
     Stripe::Checkout::Session.create(
-      payment_method_types: ['card'],
+      payment_method_types: ["card"],
       customer: customer,
       line_items: [{
         price: price,
         quantity: 1
       }],
-      mode: 'subscription',
+      mode: "subscription",
       success_url: "/",
       cancel_url: "/"
     )

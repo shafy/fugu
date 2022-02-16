@@ -4,14 +4,16 @@ module EventHelper
   def event_select_options(url_params, aggregation, event_names)
     event_names.map do |e|
       selected = "selected" if e.parameterize == url_params[:slug]
-      "<option data-url='#{build_event_url(url_params.permit(*Event::EVENT_PARAMS), aggregation, e)}' data-name='#{e.parameterize}' #{selected}>#{e}</option>"
+      event_url = build_event_url(url_params.permit(*Event::EVENT_PARAMS), aggregation, e)
+      "<option data-url='#{event_url}' data-name='#{e.parameterize}' #{selected}>#{e}</option>"
     end
   end
 
   def funnel_select_options(url_params, funnel_names)
     funnel_names.map do |f|
       selected = "selected" if f.parameterize == url_params[:slug]
-      "<option data-url='#{build_funnel_url(url_params.permit(*Funnel::FUNNEL_PARAMS), f)}' data-name='#{f.parameterize}' #{selected}>#{f}</option>"
+      funnel_url = build_funnel_url(url_params.permit(*Funnel::FUNNEL_PARAMS), f)
+      "<option data-url='#{funnel_url}' data-name='#{f.parameterize}' #{selected}>#{f}</option>"
     end
   end
 
@@ -19,7 +21,9 @@ module EventHelper
     Event::AGGREGATIONS.map do |k, v|
       disabled = "disabled" if possible_aggregations.exclude?(k)
       selected = "selected" if k == aggregation
-      "<option data-url='#{build_agg_url(url_params.permit(*Event::EVENT_PARAMS), k)}' data-name='#{k}' #{disabled} #{selected}>#{v.capitalize}</option>"
+      agg_url = build_agg_url(url_params.permit(*Event::EVENT_PARAMS), k)
+      "<option data-url='#{agg_url}' data-name='#{k}' #{disabled} #{selected}>#{v.capitalize}"\
+        "</option>"
     end
   end
 
@@ -27,7 +31,8 @@ module EventHelper
     props.unshift("All")
     props.map do |p|
       selected = "selected" if p == url_params[:prop]
-      "<option data-url='#{build_property_url(url_params.permit(*Event::EVENT_PARAMS), aggregation, p)}' data-name='#{p.parameterize}' #{selected}>#{p}</option>"
+      prop_url = build_property_url(url_params.permit(*Event::EVENT_PARAMS), aggregation, p)
+      "<option data-url='#{prop_url}' data-name='#{p.parameterize}' #{selected}>#{p}</option>"
     end
   end
 
@@ -35,7 +40,8 @@ module EventHelper
     default_to_week = Event::DATE_OPTIONS.exclude?(url_params[:date])
     Event::DATE_OPTIONS.map do |k, v|
       selected = "selected" if (default_to_week && k == "7d") || k == url_params[:date]
-      "<option data-url='#{build_date_url(url_params.permit(*Event::EVENT_PARAMS), aggregation, k, chart_type)}' data-name='#{k}' #{selected}>#{v}</option>"
+      date_url = build_date_url(url_params.permit(*Event::EVENT_PARAMS), aggregation, k, chart_type)
+      "<option data-url='#{date_url}' data-name='#{k}' #{selected}>#{v}</option>"
     end
   end
 
@@ -89,7 +95,6 @@ module EventHelper
     end
   end
 
-  # rubocop:disable Metrics/MethodLength(RuboCop)
   def build_test_toggle_url(url_params, aggregation, test, chart_type)
     case chart_type
     when "event"
@@ -108,5 +113,5 @@ module EventHelper
       )
     end
   end
-  # rubocop:enable Metrics/MethodLength(RuboCop)
+  RuboCop
 end

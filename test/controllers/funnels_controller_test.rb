@@ -66,7 +66,8 @@ class FunnelsControllerTest < ActionDispatch::IntegrationTest
 
       get project_funnel_path(@project.name, "no-funnel", params: { test: true })
       follow_redirect!
-      assert_redirected_to project_funnel_path(@project.name, funnel_test.name.parameterize, params: { test: true })
+      assert_redirected_to project_funnel_path(@project.name, funnel_test.name.parameterize,
+                                               params: { test: true })
     end
   end
 
@@ -96,7 +97,8 @@ class FunnelsControllerTest < ActionDispatch::IntegrationTest
 
     test "is successful" do
       post project_funnels_path(@project.name, params: { funnel: @funnel_attributes })
-      assert_redirected_to project_funnel_path(@project.name, @funnel_attributes[:name].parameterize)
+      assert_redirected_to project_funnel_path(@project.name,
+                                               @funnel_attributes[:name].parameterize)
     end
 
     test "created new funnel with correct name" do
