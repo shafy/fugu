@@ -38,7 +38,7 @@ class Project < ApplicationRecord
                 in: %w[project projects],
                 message: "'%{value}' is a reversed event name by Fugu and can't be used"
               }
-  validates :user, presence: true
+  validates :user
 
   before_validation :downcase_name
   before_validation :strip_name
