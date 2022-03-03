@@ -82,25 +82,30 @@ class EventsControllerTest < ActionDispatch::IntegrationTest
     test "to redirect to saved aggregation m and date 6m" do
       setup_live_events
       sign_in @user
-      get project_event_path(@project.name, @event.name.parameterize, params: { agg: "m", date: "6m"})
+      get project_event_path(@project.name, @event.name.parameterize,
+                             params: { agg: "m", date: "6m" })
       get project_events_path(@project.name)
-      assert_redirected_to project_event_path(@project.name, @event.name.parameterize, params: { agg: "m", date: "6m"})
+      assert_redirected_to project_event_path(@project.name, @event.name.parameterize,
+                                              params: { agg: "m", date: "6m" })
     end
 
     test "to redirect to saved event" do
       setup_live_events
       sign_in @user
-      get project_event_path(@project.name, @event2.name.parameterize, params: { agg: "d"})
+      get project_event_path(@project.name, @event2.name.parameterize, params: { agg: "d" })
       get project_events_path(@project.name)
-      assert_redirected_to project_event_path(@project.name, @event2.name.parameterize, params: { agg: "d"})
+      assert_redirected_to project_event_path(@project.name, @event2.name.parameterize,
+                                              params: { agg: "d" })
     end
 
     test "to redirect to saved property" do
       setup_live_events
       sign_in @user
-      get project_event_path(@project.name, @event.name.parameterize, params: { agg: "d", prop: "color" })
+      get project_event_path(@project.name, @event.name.parameterize,
+                             params: { agg: "d", prop: "color" })
       get project_events_path(@project.name)
-      assert_redirected_to project_event_path(@project.name, @event.name.parameterize, params: { agg: "d", prop: "color" })
+      assert_redirected_to project_event_path(@project.name, @event.name.parameterize,
+                                              params: { agg: "d", prop: "color" })
     end
 
     test "display correct project name" do
