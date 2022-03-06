@@ -113,5 +113,4 @@ module EventHelper
       )
     end
   end
-  RuboCop
 end
