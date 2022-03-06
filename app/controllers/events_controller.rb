@@ -20,14 +20,19 @@ class EventsController < ApplicationController
   before_action :show_not_active_flash, only: %i[index show]
 
   after_action :track_event, only: %i[show]
+  after_action :save_parameters, only: %i[show]
 
   def index
     return render layout: "data_view" unless @event_names&.first
 
+    new_params = { test: params[:test] }
+    %i[prop date agg].each { |i| new_params[i] = cookies.permanent[i] if cookies.permanent[i] }
+
+    selected_event = cookies.permanent[:slug] || @event_names.first
     redirect_to project_event_path(
       @project.name,
-      @event_names.first.parameterize,
-      params: { test: params[:test] }
+      selected_event.parameterize,
+      params: new_params
     )
   end
 
@@ -106,5 +111,12 @@ class EventsController < ApplicationController
 
   def track_event
     FuguService.track("Viewed Events")
+  end
+
+  def save_parameters
+    cookies.permanent[:prop] = @property if @property
+    cookies.permanent[:date] = CGI.escapeHTML(params[:date]) if params[:date]
+    cookies.permanent[:agg] = @aggregation if @aggregation
+    cookies.permanent[:slug] = @selected_event if @selected_event
   end
 end
