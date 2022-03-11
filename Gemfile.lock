@@ -136,6 +136,7 @@ GEM
     faraday-patron (1.0.0)
     faraday-rack (1.0.0)
     ffi (1.15.5)
+    foreman (0.87.2)
     globalid (1.0.0)
       activesupport (>= 5.0)
     i18n (1.10.0)
@@ -333,6 +334,7 @@ DEPENDENCIES
   dotenv-rails
   factory_bot_rails (~> 6.2.0)
   faraday (~> 1.8.0)
+  foreman (~> 0.87.2)
   importmap-rails (~> 1.0.0)
   jbuilder (~> 2.7)
   listen (~> 3.3)

@@ -2,6 +2,8 @@
 
 class FuguService
   def self.track(name, properties = {})
+    return unless ENV["FUGU_URL"]
+
     return if Rails.env.test?
 
     body = {
