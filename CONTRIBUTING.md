@@ -5,18 +5,26 @@
 This is an open-source project and we welcome contributions that improve the code, UX/UI and add new features. However, this doesn't mean that we will accept all contributions. The best way to contribute is to check the open issues or ask me (canolcer@hey.com) if there's something you can contribute to.
 If you want to contribute, fork this repo and create a pull request with your changes that we can review.
 
+If you have any questions, head over to our [GitHub Discussions](https://github.com/shafy/fugu/discussions) page.
+
 
 ## Development
 
 ### Setup
 
+There are a few ways you can get started with Fugu on your local machine.
+
 ### Gitpod
 
-We recommend developing with the excellent cloud-based development environment provided by [Gitpod](gitpod.io/). To start your ready-to-code development enviroment just add `gitpod.io/#` in front of the GitHub URL for any branch, or [click here](https://gitpod.io/#https://github.com/shafy/fugu) to get started with the main branch.
+We recommend developing with the excellent cloud-based development environment provided by [Gitpod](gitpod.io/). To start your ready-to-code development enviroment just add `gitpod.io/#` in front of the GitHub URL for any branch, or [click here](https://gitpod.io/#https://github.com/shafy/fugu) to get started with the main branch. Don't forget to add the environment variables from `.env.example` to your Gitpod account.
 
 ### Docker
 
-We haven't set up Docker for this project yet, but feel free to send a PR with a working setup if you do get to it.
+You can build the Docker image using the `Dockerfile.dev` configuration. If you don't have an existing PostgreSQL service on your machine, you can use our `docker-compose` setup to also start a PostgreSQL database. Just run `docker-compose -f docker-compose.dev.yml up`.
+
+Don't forget to create an `.env` file using `.env.example` as a template.
+
+Before running the app, make sure to create the server with `docker run --env-file .env your_image rails db:create` or `docker-compose -f docker-compose.dev.yml run web rails db:create`, respectively.
 
 ### Old school
 
