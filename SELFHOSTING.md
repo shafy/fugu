@@ -21,24 +21,23 @@ There are a couple of ways you can run Fugu with Docker.
 If you already have a Postgres server going and only need the Fugu app, you can use the Fugu Docker image.
 
 The simplest way is to run the Fugu image that we upload to the Docker registry:
-`docker run --env-file .env fugu/fugu:latest`
+`docker run --env-file .env shafyy/fugu:latest`
 
 If you prefer to build the image locally, you can do it like this before running it:
-`docker build -f Dockerfile.prod -t fugu/fugu`
+`docker build -f Dockerfile.prod -t fugu .`
 
 If you're setting up Fugu for the first time, make sure to create the database before running the server:
-`docker run --env-file .env fugu/fugu:latest rails db:create`
+`docker run --env-file .env shafyy/fugu:latest rails db:create`
 
 ### Docker image and Postgres database
 
 If you don't have an existing Postgres databse running on your server, we provide a `docker-compose` configuration that might come in handy.
 There are 3 different `docker-compose` configurations:
-- `docker-compose.prod-remote.yml` uses the remote `fugu/fugu:lates` image from the Docker registry
+- `docker-compose.prod-remote.yml` uses the remote `shafyy/fugu:latest` image from the Docker registry
 - `docker-compose.prod.yml` builds the image first based on `Dockerfile.prod`
 - `docker-compose.dev.yml` is meant to be used when developing Fugu
 
 In most cases, you would just want to go with the remote image:
-
 `docker-compose -f docker-compose.prod-remote.yml up`
 
 If you're setting up Fugu for the first time, make sure to create the database before running the server:
@@ -46,6 +45,7 @@ If you're setting up Fugu for the first time, make sure to create the database b
 
 `docker-compose` uses the environment variables defined in your local `.env` file.
 
+If you want to use a different `docker-compose` configuration, simply pass its file name to the `-f` option in the commands above.
 
 ## Tips
 

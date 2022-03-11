@@ -47,6 +47,8 @@ FROM ruby:3.0.0
 ENV RAILS_ENV development
 ENV RAILS_ROOT /app
 
+EXPOSE 3000
+
 RUN mkdir -p $RAILS_ROOT
 WORKDIR $RAILS_ROOT
 
