@@ -1,0 +1,27 @@
+.git
+.github
+.gitignore
+.dockerignore
+.env
+LICENSE.md
+README.md
+SELFHOSTING.md
+CONTRIBUTING.md
+.gitpod.Dockerfile
+.gitpod.yml
+docker-compose.*
+node_modules
+public/assets
+storage
+public/packs
+public/packs-test
+
+# Ignore all logfiles and tempfiles.
+log
+tmp
+!log/.keep
+!tmp/.keep
+
+# Ignore pidfiles, but keep the directory.
+!tmp/pids
+!tmp/pids/.keep

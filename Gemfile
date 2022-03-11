@@ -77,6 +77,8 @@ group :development do
   gem "spring"
 
   gem "annotate"
+
+  gem "foreman", "~> 0.87.2"
 end
 
 group :test do
