@@ -12,6 +12,8 @@ module Users
     end
 
     def create
+      return unless ENV["ALLOW_REGISTRATION"] == "true"
+
       super do |resource|
         FuguService.track("New User") if resource.persisted?
 

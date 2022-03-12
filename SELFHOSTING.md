@@ -62,8 +62,8 @@ If you want to use a different `docker-compose` configuration, simply pass its f
 
 ## Tips
 
-### ALLOW_NEW_ACCOUNTS
-After you've created your own account on your self-hosted instance, we recommend to set the environment variable `ALLOW_NEW_ACCOUNTS` to `false`. Otherwise, random people who know your URL can create Fugu accounts on your instance.
+### ALLOW_REGISTRATION
+After you've created your own account on your self-hosted instance, we recommend to set the environment variable `ALLOW_REGISTRATION` to `false`. Otherwise, random people who know your URL can create Fugu accounts on your instance.
 
 ## Questions and help
 If you have any questions, check out our [GitHub Discussions](https://github.com/shafy/fugu/discussions).

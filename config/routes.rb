@@ -20,13 +20,11 @@ Rails.application.routes.draw do
     post "/webhooks/", to: "stripe#webhooks", as: "stripe_webhooks"
   end
 
-  devise_for \
-    :users,
-    controllers: {
-      sessions: "users/sessions",
-      registrations: "users/registrations",
-      passwords: "users/passwords"
-    }
+  devise_for :users, controllers: {
+    sessions: "users/sessions",
+    registrations: "users/registrations",
+    passwords: "users/passwords"
+  }
 
   namespace :api do
     namespace :v1 do
