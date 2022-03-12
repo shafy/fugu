@@ -51,3 +51,4 @@ jobs:
           bundle exec rails test
         env:
           STRIPE_ENDPOINT_SECRET: ${{ secrets.STRIPE_ENDPOINT_SECRET }}
+          ALLOW_REGISTRATION: true
