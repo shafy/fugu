@@ -3,39 +3,46 @@
   <h2>Sign up</h2>
 
   <div class="flex flex-col justify-center items-center w-80">
-    <div class="my-4">
+    <% unless ENV["ALLOW_REGISTRATION"] == "true" %>
+      <div class="my-4">
       <p>
-        Welcome to Fugu! To get started, create an account.
-      </p>
-      <p>
-        You can start tracking test events for free, but will need to subscribe for live mode.
+        The admin of this instance currently doesn't allow new registrations for Fugu.
       </p>
     </div>
-
-    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), data: { turbo: false }) do |f| %>
-      <div class="mb-4 w-80">
-        <%= f.label :email %><br />
-        <%= f.email_field :email, autocomplete: "email", class: "mt-2 rounded-lg w-full" %>
+    <% else %>
+      <div class="my-4">
+        <p>
+          Welcome to Fugu! To get started, create an account.
+        </p>
+        <p>
+          You can start tracking test events for free, but will need to subscribe for live mode.
+        </p>
       </div>
 
-      <div class="mb-4 w-80">
-        <%= f.label :password %>
-        <% if @minimum_password_length %>
-        <em class="text-sm text-gray-600">(<%= @minimum_password_length %> characters minimum)</em>
-        <% end %><br />
-        <%= f.password_field :password, autocomplete: "new-password", class: "mt-2 rounded-lg w-full" %>
-      </div>
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), data: { turbo: false }) do |f| %>
+        <div class="mb-4 w-80">
+          <%= f.label :email %><br />
+          <%= f.email_field :email, autocomplete: "email", class: "mt-2 rounded-lg w-full" %>
+        </div>
 
-      <div class="mb-4 w-80">
-        <%= f.label :password_confirmation %><br />
-        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "mt-2 rounded-lg w-full" %>
-      </div>
+        <div class="mb-4 w-80">
+          <%= f.label :password %>
+          <% if @minimum_password_length %>
+            <em class="text-sm text-gray-600">(<%= @minimum_password_length %> characters minimum)</em>
+          <% end %><br />
+          <%= f.password_field :password, autocomplete: "new-password", class: "mt-2 rounded-lg w-full" %>
+        </div>
 
-      <div class="mb-4 w-80">
-        <%= f.submit "Sign up", class: "main-button border-none" %>
-      </div>
+        <div class="mb-4 w-80">
+          <%= f.label :password_confirmation %><br />
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "mt-2 rounded-lg w-full" %>
+        </div>
+
+        <div class="mb-4 w-80">
+          <%= f.submit "Sign up", class: "main-button border-none" %>
+        </div>
+      <% end %>
     <% end %>
-
     <%= render "devise/shared/links" %>
   </div>
 <% end %>
