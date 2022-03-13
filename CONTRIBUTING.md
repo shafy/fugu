@@ -44,3 +44,10 @@ rails db:create db:migrate
 
 ## Starting the server
 To start the server, run `./bin/dev` or run `rails s` and `rails tailwindcss:watch` as separate processes (the first command does basically the same with `foreman`). This is necessary because we need the [Tailwind](https://github.com/rails/tailwindcss-rails) watch process during development.
+
+
+## Fugu Cloud
+
+There are a few places in the codebase where you will encounter logic that is only needed for Fugu Cloud, the hosted solution by us. These parts of the code are not needed if you are self-hosting, and probably also not relevant for you as a contributor. For the most part this concerns code that relates to payment and subscriptions.
+
+Currently, we use the environment variable `FUGU_CLOUD` to determine if the instance is being self-hosted or not. Later on, we might improve this structure by factoring out the main code base to a Rails Engine.

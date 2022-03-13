@@ -52,3 +52,4 @@ jobs:
         env:
           STRIPE_ENDPOINT_SECRET: ${{ secrets.STRIPE_ENDPOINT_SECRET }}
           ALLOW_REGISTRATION: true
+          FUGU_CLOUD: true

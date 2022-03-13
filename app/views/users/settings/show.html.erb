@@ -1,43 +1,16 @@
 <% content_for :main do %>
-  <h1 class="text-xl mb-4 font-medium mb-8">Account settings</h1>
+  <h1 class="text-xl font-medium mb-8">Account settings</h1>
   <%= render "partials/narrow_box" do %>
     <h2>Email</h2>
     <p class="mb-4">
       <%= current_user.email %>
     </p>
-    <h2>Subscription</h2>
-    <p class="mb-4"> 
-      <% if current_user.active? %>
-        Your Fugu subscription is active and renews monthly.<br>
-        <%= link_to "Cancel subscription or update payment method", stripe_customer_portal_url,
-          data: { turbo: false }
-        %>
-      <% elsif current_user.canceled? %>
-         Your Fugu subscription is canceled, but will remain active until <%= @cancel_at %>.<br>
-        <%= link_to "Renew subscription", stripe_customer_portal_url,
-          data: { turbo: false }
-        %>
-      <% else %>
-        You don't have an active subscription.<br>
-        Fugu costs $9/month and includes 1 million events/month.<br>
-        <%= link_to "Start your subscription now", stripe_checkout_session_url,
-          data: { turbo: false }
-        %>
-        <% if current_user.stripe_customer_id.present? %>
-          <br>
-          <%= link_to "View past invoices", stripe_customer_portal_url,
-            data: { turbo: false }
-          %>
-        <% end %>
-      <% end %>
-    </p>
-    <h2>Support</h2>
-    <p class="mb-4">
-      Thanks for being an early Fugu user ❤️
-      Contact me if you have questions or need help: canolcer@hey.com or
-      <a href="https://twitter.com/canolcer" targt="_blank">@canolcer</a>.
-    </p>
 
+    <%# only needed by Fugu Cloud (not needed if you're self-hosting) %>
+    <%= render partial: "subscription", locals: { cancel_at: @cancel_at } if ENV["FUGU_CLOUD"] == "true" %>
+    <%# only needed by Fugu Cloud (not needed if you're self-hosting) %>
+    <%= render partial: "support" if ENV["FUGU_CLOUD"] == "true" %>
+   
     <%= button_to "Log out",
       destroy_user_session_path,
       method: :delete,

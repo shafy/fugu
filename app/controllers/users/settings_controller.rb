@@ -5,6 +5,9 @@ module Users
     before_action :show_not_active_flash, only: %i[show]
 
     def show
+      return unless ENV["FUGU_CLOUD"] == "true"
+
+      # following code is irrelevant if you're self-hosting
       return unless current_user.canceled? && current_user.stripe_customer_id.present?
 
       customer = retrieve_stripe_customer

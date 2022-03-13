@@ -36,7 +36,6 @@ Shoulda::Matchers.configure do |config|
 end
 
 # Database Cleaner
-
 DatabaseCleaner.strategy = :transaction
 
 module AroundEachTest
