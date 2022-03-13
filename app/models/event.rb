@@ -38,7 +38,8 @@ class Event < ApplicationRecord
                 message: "'%{value}' is a reserved event name by Fugu and can't be used"
               }
 
-  validate :user_cannot_be_inactive
+  include Inactivable
+
   validate :excluded_property_values
   validate :excluded_property_names
   validate :limit_property_name_length
@@ -247,14 +248,6 @@ class Event < ApplicationRecord
 
   def titleize_name
     self.name = name.downcase.titleize if name
-  end
-
-  def user_cannot_be_inactive
-    return unless api_key
-
-    return unless !api_key.test && api_key.project.user.inactive?
-
-    errors.add(:base, "You need an active subscription to capture events with your live API key")
   end
 
   def excluded_property_names
