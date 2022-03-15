@@ -2,6 +2,8 @@
 
 Fugu is a simple, privacy-friendly, open source and self-hostable product analytics.
 
+<img src="https://fugu.lol/images/fugu_screenshot_main.jpg" width="650" alt="Fugu Screenshot">
+
 
 ## Get Fugu
 There are two ways to use Fugu: Self-hosting or Fugu Cloud (managed version by us as a SaaS). 

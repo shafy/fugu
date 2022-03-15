@@ -43,8 +43,6 @@ COPY . .
 RUN SECRET_KEY_BASE=`bin/rake secret` rails assets:precompile --trace && \
     rm -rf tmp/cache vendor/assets test
 
-#RUN rm -rf tmp/cache vendor/assets test
-
 ###############################################################################
 # Stage 2: Run
 FROM ruby:3.0.0
@@ -66,6 +64,9 @@ COPY --from=builder /usr/local/bundle /usr/local/bundle
 
 # Copy app files
 COPY --from=builder $RAILS_ROOT $RAILS_ROOT
+
+# Default entrypoint (overriden if used with this project's docker-compose)
+ENTRYPOINT ["sh", "/app/docker-entrypoint.sh"]
 
 # Default command (overriden if used with this project's docker-compose)
 CMD ["rails", "server", "-b", "0.0.0.0"]
