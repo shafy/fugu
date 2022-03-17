@@ -3,10 +3,12 @@
 Rails.application.routes.draw do
   root to: "projects#index"
 
-  resources :projects, only: %i[index new create destroy], param: :slug do
-    resources :events, only: %i[index show], param: :slug
-    resources :funnels, param: :slug
-    get "settings", to: "projects#settings"
+  scope "/:user_id", as: :user do
+    resources :projects, only: %i[index new edit update create destroy], param: :slug do
+      resources :events, only: %i[index show], param: :slug
+      resources :funnels, param: :slug
+      get "settings", to: "projects#settings"
+    end
   end
 
   scope module: "users" do

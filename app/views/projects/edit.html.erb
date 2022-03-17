@@ -1,0 +1,27 @@
+<% content_for :main do %>
+  <h1>Edit project</h1>
+  <%= form_with model: @project, url: user_project_path do |form| %>
+    <div class="mb-4 w-80">
+      <div class="mb-2">
+        <%= form.label :name, 'Project name' %>
+      </div>
+      <%= form.text_field :name, autofocus: true, required: true, class: "rounded-lg w-full" %>
+      <em class="text-sm text-gray-600">
+        Project name can't include any special characters except "-".
+      </em>
+    </div>
+    <div class="mb-4 w-80">
+      <div class="mb-2">
+        <%= form.label :public, 'Make public' %>
+        <%= form.check_box :public, class: 'ml-2' %>
+      </div>
+      <em class="text-sm text-gray-600">
+        Public projects can be viewed by anyone who has this URL.
+      </em>
+    </div>
+    <%= form.hidden_field :project_id, value: @project.id %>
+    <div cass="mb-4">
+      <%= form.submit 'Update', class: 'main-button' %>
+    </div>
+  <% end %>
+<% end %>

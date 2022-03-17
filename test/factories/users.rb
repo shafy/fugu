@@ -17,12 +17,14 @@
 #  unconfirmed_email      :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  hash_id                :string
 #  stripe_customer_id     :string
 #
 # Indexes
 #
 #  index_users_on_confirmation_token    (confirmation_token) UNIQUE
 #  index_users_on_email                 (email) UNIQUE
+#  index_users_on_hash_id               (hash_id) UNIQUE
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #
 
@@ -30,6 +32,10 @@ FactoryBot.define do
   factory :user do
     sequence :email do |n|
       "#{n}@fugu.lol"
+    end
+
+    sequence :hash_id do |n|
+      "abc#{n}"
     end
 
     password { "secure_password" }

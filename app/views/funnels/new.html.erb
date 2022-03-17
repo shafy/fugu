@@ -1,7 +1,7 @@
 <% content_for :main do %>
-  <h1 class="text-xl mb-4 font-medium mb-8">Create new funnel</h1>
+  <h1 class="text-xl font-medium mb-8">Create new funnel</h1>
   <%= render "partials/narrow_box" do %>
-    <%= form_with model: @funnel, url: project_funnels_path do |funnel_form| %>
+    <%= form_with model: @funnel, url: user_project_funnels_path do |funnel_form| %>
       <p>Give your funnel a name:</p>
       <div class="flex flex-row items-center justify-start w-full mt-6 mb-8">
         <div class="w-20">
@@ -30,10 +30,10 @@
       <%= funnel_form.submit "Create funnel", class: "main-button" %>
     <% end %>
   <% end %>
-  <%= link_to "Cancel and go back to #{@project.name}", project_events_path(@project.name) %>
+  <%= link_to "Cancel and go back to #{@project.name}", user_project_events_path(current_user.hash_id, @project.name) %>
   <% if params[:test] == "true" %>
-    <%= link_to "Toggle LIVE mode", new_project_funnel_path(@project.name, params: { test: false }), class: "font-normal mt-2" %>
+    <%= link_to "Toggle LIVE mode", new_user_project_funnel_path(current_user.hash_id, @project.name, params: { test: false }), class: "font-normal mt-2" %>
   <% else %>
-    <%= link_to "Toggle TEST mode", new_project_funnel_path(@project.name, params: { test: true }), class: "font-normal mt-2" %>
+    <%= link_to "Toggle TEST mode", new_user_project_funnel_path(current_user.hash_id, @project.name, params: { test: true }), class: "font-normal mt-2" %>
   <% end %>
 <% end %>

@@ -3,19 +3,22 @@
 <% end %>
 
 <% content_for :no_data do %>
-  <p>
-    You haven't tracked any events for this project yet.
-    To get started, call the Fugu API from your mobile or web app.
-    Check out the
-    <a href="https://docs.fugu.lol" target="_blank">docs</a> to learn more.<br><br>
-    Tip: You'll find your API keys in your
-    <%= link_to "project settings", project_settings_path  %>.<br><br>
-    <% if params[:test] == "true" %>
-      Did you track events with your live API key?
-      <%= link_to "Toggle live mode!", project_events_path(@project.name) %>
-    <% else %>
-      Did you track events with your test API key?
-      <%= link_to "Toggle test mode!", project_events_path(@project.name, params: { test: true }) %>
-    <% end %>
-  </p>
+    <p>
+      You haven't tracked any events for this project yet.
+      <% if current_user %>
+        <%# we don't want to show the rest for public projects %>
+        To get started, call the Fugu API from your mobile or web app.
+        Check out the
+        <a href="https://docs.fugu.lol" target="_blank">docs</a> to learn more.<br><br>
+        Tip: You'll find your API keys in your
+        <%= link_to "project settings", user_project_settings_path(current_user.hash_id)  %>.<br><br>
+        <% if params[:test] == "true" %>
+          Did you track events with your live API key?
+          <%= link_to "Toggle live mode!", user_project_events_path(current_user.hash_id, @project.name) %>
+        <% else %>
+          Did you track events with your test API key?
+          <%= link_to "Toggle test mode!", user_project_events_path(current_user.hash_id, @project.name, params: { test: true }) %>
+        <% end %>
+      <% end %>
+    </p>
 <% end %>

@@ -5,13 +5,16 @@
 <% content_for :no_data do %>
   <p>
     You haven't created any funnels for this project yet.
-    To get started, <%= link_to "create a funnel", new_project_funnel_path(@project.name, params: { test: params[:test] }) %>.<br><br>
-    <% if params[:test] == "true" %>
-      Did you create funnels in live mode?
-      <%= link_to "Toggle live mode!", project_funnels_path(@project.name) %>
-    <% else %>
-      Did you create funnels in test mode?
-      <%= link_to "Toggle test mode!", project_funnels_path(@project.name, params: { test: true }) %>
+    <% if current_user %>
+        <%# we don't want to show the rest for public projects %>
+      To get started, <%= link_to "create a funnel", new_user_project_funnel_path(current_user.hash_id, @project.name, params: { test: params[:test] }) %>.<br><br>
+      <% if params[:test] == "true" %>
+        Did you create funnels in live mode?
+        <%= link_to "Toggle live mode!", user_project_funnels_path(current_user.hash_id, @project.name) %>
+      <% else %>
+        Did you create funnels in test mode?
+        <%= link_to "Toggle test mode!", user_project_funnels_path(current_user.hash_id, @project.name, params: { test: true }) %>
+      <% end %>
     <% end %>
   </p>
 <% end %>

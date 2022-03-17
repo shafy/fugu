@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
-  before_action :authenticate_user!
-
   include InactiveAlertable
 
   private
@@ -15,14 +13,21 @@ class ApplicationController < ActionController::Base
   end
 
   def set_project
-    @project = Project.find_by(name: params[:project_slug]&.downcase, user: current_user)
+    user = User.find_by(hash_id: params[:user_id])
+    @project = Project.find_by(name: params[:project_slug]&.downcase, user: user)
   end
 
   def authorize_project_user
-    return redirect_to projects_path unless current_user
+    return redirect_to user_projects_path(params[:user_id]) unless @project
 
-    return redirect_to projects_path unless @project
+    # don't show test data in public projects
+    if !current_user && @project.public && params[:test] == "true"
+      return redirect_to user_projects_path(params[:user_id])
+    end
 
-    return redirect_to projects_path unless current_user == @project.user
+    # don't authorize is project is public
+    return if @project.public
+
+    return redirect_to user_projects_path(params[:user_id]) unless current_user == @project.user
   end
 end

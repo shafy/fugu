@@ -17,17 +17,21 @@
 #  unconfirmed_email      :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  hash_id                :string
 #  stripe_customer_id     :string
 #
 # Indexes
 #
 #  index_users_on_confirmation_token    (confirmation_token) UNIQUE
 #  index_users_on_email                 (email) UNIQUE
+#  index_users_on_hash_id               (hash_id) UNIQUE
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #
 
 class User < ApplicationRecord
   has_many :projects, dependent: :destroy
+
+  validates :hash_id, presence: true, allow_blank: false
 
   enum status: {
     inactive: 0,
@@ -39,4 +43,18 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+
+  before_validation :add_hash_id, on: :create
+
+  private
+
+  def add_hash_id
+    # generate radnom hash_id for the user before being created
+    hash = SecureRandom.alphanumeric(4).downcase
+    unless User.exists?(hash_id: hash)
+      self.hash_id = hash
+      return
+    end
+    add_hash_id
+  end
 end

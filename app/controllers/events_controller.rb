@@ -6,6 +6,7 @@ class EventsController < ApplicationController
   include EventNameable
 
   before_action :set_project, only: %i[index show]
+  before_action :authenticate_user!, unless: -> { @project.public }
   before_action :authorize_project_user, only: %i[index show]
   before_action :set_api_key, only: %i[index show]
   before_action :set_dates, only: %i[show]
@@ -29,7 +30,8 @@ class EventsController < ApplicationController
     %i[prop date agg].each { |i| new_params[i] = cookies.permanent[i] if cookies.permanent[i] }
 
     selected_event = cookies.permanent[:slug] || @event_names.first
-    redirect_to project_event_path(
+    redirect_to user_project_event_path(
+      params[:user_id],
       @project.name,
       selected_event.parameterize,
       params: new_params
@@ -38,7 +40,7 @@ class EventsController < ApplicationController
 
   def show
     unless @selected_event
-      return redirect_to project_events_path(@project.name, params: { test: params[:test] })
+      return redirect_to user_project_events_path(params[:user_id], @project.name, params: { test: params[:test] })
     end
 
     events_array = Event.with_aggregation(

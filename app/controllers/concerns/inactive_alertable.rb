@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
-# These alerts are only used in the Fugu Cloud veresion (not imporatnt if you're self-hosting)
+# These alerts are only used in the Fugu Cloud version (not important if you're self-hosting)
 module InactiveAlertable
   extend ActiveSupport::Concern
 
   private
 
   def show_not_active_flash
+    return if @project&.public
+
     return unless ENV["FUGU_CLOUD"] == "true"
 
     flash.now[:not_active] = user_canceled_flash if current_user.canceled?

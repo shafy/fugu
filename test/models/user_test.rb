@@ -17,12 +17,14 @@
 #  unconfirmed_email      :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  hash_id                :string
 #  stripe_customer_id     :string
 #
 # Indexes
 #
 #  index_users_on_confirmation_token    (confirmation_token) UNIQUE
 #  index_users_on_email                 (email) UNIQUE
+#  index_users_on_hash_id               (hash_id) UNIQUE
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #
 
@@ -34,4 +36,5 @@ class UserTest < ActiveSupport::TestCase
   end
 
   should validate_presence_of(:email)
+  should validate_presence_of(:hash_id)
 end
