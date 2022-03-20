@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
       return redirect_to user_projects_path(params[:user_id])
     end
 
-    # don't authorize is project is public
+    # don't authorize is project if public
     return if @project.public
 
     return redirect_to user_projects_path(params[:user_id]) unless current_user == @project.user
