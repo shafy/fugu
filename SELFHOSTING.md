@@ -7,7 +7,7 @@ Fugu is open-source and can be self-hosted without any feature restrictions. Fol
 Create an `.env` file in the root directory of the app. Use `.env.example` as a template. If you are running on a managed service like Heroku or DigitalOcean, enter the environment variables in their system.
 
 ## Hosting
-Fugu is a pure Ruby on Rails app requiring a PostgreSQL database. Therefore, you can host it however you like. Below, we've added short guides for hosting with managed services like Heroku or using Docker.
+Fugu is a pure Ruby on Rails app requiring a PostgreSQL database. Therefore, you can host it however you like. Below, we've added short guides detailing a few popular self-hosting options.
 
 ### Heroku, DigitalOcean and other managed services
 Managed services like Heroku, Digital Ocean and Render offer fast a quick and simple way to deploy Ruby on Rails apps directly from GitHub. If you're using a managed service, have a look at their documentation on how to proceed. Normally, this is pretty straight forward.
@@ -66,6 +66,10 @@ The `docker-compose` configuration automatically creates and runs migrations for
 Note: `docker-compose` uses the environment variables defined in your local `.env` file.
 
 If you want to use a different `docker-compose` configuration, simply pass its file name to the `-f` option in the commands above.
+
+### Elestio
+
+[Elestio](https://elest.io) make deploying open-source software a breeze by offering a fully managed environment. You can select from different providers (e.g., Hetzner, Digital Ocean) or on-premise and then deploy Fugu (or other open-source software they support) with the click of a button.
 
 ## Tips
 
