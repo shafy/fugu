@@ -40,7 +40,8 @@ class EventsController < ApplicationController
 
   def show
     unless @selected_event
-      return redirect_to user_project_events_path(params[:user_id], @project.name, params: { test: params[:test] })
+      return redirect_to user_project_events_path(params[:user_id], @project.name,
+                                                  params: { test: params[:test] })
     end
 
     events_array = Event.with_aggregation(

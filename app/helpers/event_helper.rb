@@ -78,7 +78,8 @@ module EventHelper
       url_params[:user_id],
       url_params[:project_slug],
       url_params[:slug],
-      url_params.except(:project_slug, :slug, :user_id).merge({ prop: prop }).merge({ agg: aggregation })
+      url_params.except(:project_slug, :slug,
+                        :user_id).merge({ prop: prop }).merge({ agg: aggregation })
     )
   end
 
@@ -89,7 +90,8 @@ module EventHelper
         url_params[:user_id],
         url_params[:project_slug],
         url_params[:slug],
-        url_params.except(:project_slug, :slug, :user_id).merge({ date: date }).merge({ agg: aggregation })
+        url_params.except(:project_slug, :slug,
+                          :user_id).merge({ date: date }).merge({ agg: aggregation })
       )
     when "funnel"
       user_project_funnel_path(

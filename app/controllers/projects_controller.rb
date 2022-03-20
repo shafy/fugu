@@ -2,7 +2,7 @@
 
 class ProjectsController < ApplicationController
   before_action :authenticate_user!
-  
+
   before_action :set_project, only: %i[settings]
   before_action :show_not_active_flash, only: %i[settings]
 
