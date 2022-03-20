@@ -1,6 +1,6 @@
 <% content_for :main do %>
   <h1>Add a new project</h1>
-  <%= form_with model: @project do |form| %>
+  <%= form_with model: @project, url: user_projects_path do |form| %>
     <div class="mb-4 w-80">
       <div class="mb-2">
         <%= form.label :name, 'Project name' %>

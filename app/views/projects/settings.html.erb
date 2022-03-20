@@ -1,9 +1,17 @@
 <% content_for :main do %>
-  <h1 class="text-xl mb-4 font-medium mb-8">Project settings</h1>
+  <h1 class="text-xl font-medium mb-8">Project settings</h1>
   <%= render "partials/narrow_box" do %>
     <h2>Project name</h2>
     <p>
       <%= @project.name %>
+    </p>
+    <h2>Visibility</h2>
+    <p>
+      <% unless @project.public %>
+        This project is private.
+      <% else %>
+        This project is public. Share the project URL with your friends to impress them.
+      <% end %>
     </p>
     <h2>API keys</h2>
     <div>
@@ -12,13 +20,17 @@
       <div class="font-medium mb-2 mt-4">Live API key</div> <code><%=  @project.api_key_live.key_value %></code>
     </div>
     <div class="mt-6 mb-4">
+      <%= link_to "Edit project",
+          edit_user_project_path(current_user.hash_id, @project.name),
+          class: "bg-transparent underline font-medium hover:text-green-500 cursor-pointer"
+      %>
       <%= button_to "Delete project",
-          project_path(@project.name),
+          user_project_path(current_user.hash_id, @project.name),
           method: :delete,
-          class: "bg-transparent underline font-medium hover:text-green-500 cursor-pointer",
+          class: "bg-transparent underline font-medium hover:text-green-500 cursor-pointer mt-2",
           onclick: "return confirm('This will delete this project and all its events forever. Are you sure?');"
       %>
     </div>
   <% end %>
-  <%= link_to "Back to #{@project.name}", project_events_path(@project.name) %>
+  <%= link_to "Back to #{@project.name}", user_project_events_path(current_user.hash_id, @project.name) %>
 <% end %>

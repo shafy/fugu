@@ -1,10 +1,10 @@
 <% content_for :main do %>
-<h1 class="text-xl mb-4 font-medium mb-8">Projects</h1>
+<h1 class="text-xl font-medium mb-8">Projects</h1>
   <%= render "partials/narrow_box" do %>
     <% if @projects.any? %>
       <% @projects.each do |project| %>
         <div class="mb-2">
-          <%= link_to project.name, project_events_path(project.name), class: "no-underline text-lg" %>
+          <%= link_to project.name, user_project_events_path(current_user.hash_id, project.name), class: "no-underline text-lg" %>
         </div>
       <% end %>
     <% else %>
@@ -15,6 +15,6 @@
         <a href="https://docs.fugu.lol" target="_blank">docs</a> for more info.
       </p>
     <% end %>
-    <%= link_to 'Add a new project', new_project_path, class: "mt-4" %>
+    <%= link_to 'Add a new project', new_user_project_path(current_user.hash_id), class: "mt-4" %>
   <% end %>
 <% end %>

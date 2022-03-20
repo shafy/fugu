@@ -46,51 +46,59 @@ module EventHelper
   end
 
   def build_event_url(url_params, aggregation, event_name)
-    project_event_path(
+    user_project_event_path(
+      url_params[:user_id],
       url_params[:project_slug],
       event_name.parameterize,
-      url_params.except(:prop, :project_slug, :slug)
+      url_params.except(:prop, :project_slug, :slug, :user_id)
         .merge({ agg: aggregation })
     )
   end
 
   def build_funnel_url(url_params, funnel_name)
-    project_funnel_path(
+    user_project_funnel_path(
+      url_params[:user_id],
       url_params[:project_slug],
       funnel_name.parameterize,
-      url_params.except(:prop, :project_slug, :slug)
+      url_params.except(:prop, :project_slug, :slug, :user_id)
     )
   end
 
   def build_agg_url(url_params, agg)
-    project_event_path(
+    user_project_event_path(
+      url_params[:user_id],
       url_params[:project_slug],
       url_params[:slug],
-      url_params.except(:project_slug, :slug).merge({ agg: agg })
+      url_params.except(:project_slug, :slug, :user_id).merge({ agg: agg })
     )
   end
 
   def build_property_url(url_params, aggregation, prop)
-    project_event_path(
+    user_project_event_path(
+      url_params[:user_id],
       url_params[:project_slug],
       url_params[:slug],
-      url_params.except(:project_slug, :slug).merge({ prop: prop }).merge({ agg: aggregation })
+      url_params.except(:project_slug, :slug,
+                        :user_id).merge({ prop: prop }).merge({ agg: aggregation })
     )
   end
 
   def build_date_url(url_params, aggregation, date, chart_type)
     case chart_type
     when "event"
-      project_event_path(
+      user_project_event_path(
+        url_params[:user_id],
         url_params[:project_slug],
         url_params[:slug],
-        url_params.except(:project_slug, :slug).merge({ date: date }).merge({ agg: aggregation })
+        url_params.except(:project_slug, :slug,
+                          :user_id).merge({ date: date }).merge({ agg: aggregation })
       )
     when "funnel"
-      project_funnel_path(
+      user_project_funnel_path(
+        url_params[:user_id],
         url_params[:project_slug],
         url_params[:slug],
-        url_params.except(:project_slug, :slug).merge({ date: date })
+        url_params.except(:project_slug, :slug, :user_id).merge({ date: date })
       )
     end
   end
@@ -99,17 +107,20 @@ module EventHelper
     case chart_type
     when "event"
       url_params = url_params.permit(*Event::EVENT_PARAMS)
-      project_event_path(
+      user_project_event_path(
+        url_params[:user_id],
         url_params[:project_slug],
         url_params[:slug],
-        url_params.except(:project_slug, :slug).merge({ test: test }).merge({ agg: aggregation })
+        url_params.except(:project_slug, :slug, :user_id)
+          .merge({ test: test }).merge({ agg: aggregation })
       )
     when "funnel"
       url_params = url_params.permit(*Funnel::FUNNEL_PARAMS)
-      project_funnel_path(
+      user_project_funnel_path(
+        url_params[:user_id],
         url_params[:project_slug],
         url_params[:slug],
-        url_params.except(:project_slug, :slug).merge({ test: test })
+        url_params.except(:project_slug, :slug, :user_id).merge({ test: test })
       )
     end
   end

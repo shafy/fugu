@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class StripeController < ApplicationController
+  before_action :authenticate_user!, except: %i[webhooks]
   skip_before_action :verify_authenticity_token, only: %i[webhooks]
-  skip_before_action :authenticate_user!, only: %i[webhooks]
   before_action :verify_webhook, only: %i[webhooks]
 
   def checkout_session

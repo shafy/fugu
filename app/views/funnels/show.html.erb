@@ -23,15 +23,15 @@
 
 <% content_for :project_footer do %>
   <div class="flex flex-row items-center justify-end w-full my-4 gap-x-4">
-    <%= link_to "Create new funnel", new_project_funnel_path(@project.name, params: { test: params[:test] }), class: "font-normal" %>
-    <%= link_to "Project settings", project_settings_path, class: "font-normal" %>
+    <%= link_to "Create new funnel", new_user_project_funnel_path(params[:user_id], @project.name, params: { test: params[:test] }), class: "font-normal" %>
+    <%= link_to "Project settings", user_project_settings_path(params[:user_id]), class: "font-normal" %>
     <%= render partial: "partials/mode_toggle",
       locals: {
         project_name: @project.name,
         test_mode: params[:test] == "true",
         aggregation: nil,
         chart_type: "funnel"
-      }
+      } if current_user
     %>
   </div>
 <% end %>

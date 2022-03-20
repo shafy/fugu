@@ -19,7 +19,7 @@
     </div>
   <% end %>
 
-  <%= yield :project_footer %>
+  <%= yield :project_footer if current_user %>
 <% end %>
 
 <%= render template: "layouts/application" %>

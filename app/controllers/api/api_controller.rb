@@ -3,17 +3,7 @@
 module Api
   class ApiController < ApplicationController
     skip_before_action :verify_authenticity_token
-    skip_before_action :authenticate_user!
-    # before_action :authorize_request
     around_action :handle_exceptions
-
-    # def authorize_request
-    #   token = UserAuthorizationService.new(request.headers).authenticate_request!
-    #   # set auth0_id
-    #   @auth0_id = token[0]["sub"]
-    # rescue JWT::VerificationError, JWT::DecodeError
-    #   render json: { error: 'Not Authenticated' }, status: :unauthorized
-    # end
 
     private
 
