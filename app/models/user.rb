@@ -17,7 +17,7 @@
 #  unconfirmed_email      :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
-#  hash_id                :string
+#  hash_id                :string           not null
 #  stripe_customer_id     :string
 #
 # Indexes
@@ -46,10 +46,10 @@ class User < ApplicationRecord
 
   before_validation :add_hash_id, on: :create
 
-  private
-
   def add_hash_id
-    # generate radnom hash_id for the user before being created
+    # generate random hash_id for the user before being created
+    return if hash_id.present?
+
     hash = SecureRandom.alphanumeric(4).downcase
     unless User.exists?(hash_id: hash)
       self.hash_id = hash

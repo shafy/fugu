@@ -17,7 +17,7 @@
 #  unconfirmed_email      :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
-#  hash_id                :string
+#  hash_id                :string           not null
 #  stripe_customer_id     :string
 #
 # Indexes
