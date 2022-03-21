@@ -45,10 +45,10 @@ class ProjectsController < ApplicationController
     @project = Project.find_by(name: params[:slug]&.downcase, user: current_user)
     if @project.destroy
       flash[:notice] = "Your project was successfully deleted"
-      redirect_to projects_path
+      redirect_to user_projects_path(current_user)
     else
       flash[:error] = "We couldn't delete the project: #{@project.errors.full_messages.first}"
-      redirect_to project_events_path(@project.name)
+      redirect_to user_project_events_path(current_user.hash_id, @project.name)
     end
   end
 
