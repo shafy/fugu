@@ -20,17 +20,21 @@
       <div class="font-medium mb-2 mt-4">Live API key</div> <code><%=  @project.api_key_live.key_value %></code>
     </div>
     <h2 class="mt-6">Embedding</h2>
+    <% if @project.public %>
       <p>
         Copy and paste the embed code anywhere to display your project.
         Your project's visibility needs to be set to public. Check out the docs to learn how to customize your embed code.
       </p>
-    <div class="code--multiline">
-      <code>
-        <%=
-          %(<iframe src="#{user_project_events_url(current_user.hash_id, @project.name, { embed: true })}" title="Fugu" loading="lazy" referrerpolicy="no-referrer" scrolling="no" height="600px" width="800px"></iframe>)
-        %>
-      </code>
-    </div>
+      <div class="code--multiline">
+        <code>
+          <%=
+            %(<iframe src="#{user_project_events_url(current_user.hash_id, @project.name, { embed: true })}" title="Fugu" loading="lazy" referrerpolicy="no-referrer" scrolling="no" height="600px" width="800px"></iframe>)
+          %>
+        </code>
+      </div>
+    <% else %>
+      To display your embed code, edit your project and set it's visibility to public.
+    <% end %>
     <div class="mt-6 mb-4">
       <%= link_to "Edit project",
           edit_user_project_path(current_user.hash_id, @project.name),
