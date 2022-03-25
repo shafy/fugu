@@ -20,6 +20,7 @@ class FunnelsController < ApplicationController
   before_action :build_funnel, only: %i[create]
 
   after_action :track_event, only: %i[index]
+  after_action :allow_iframe, only: %i[index show]
 
   def index
     return render layout: "data_view" unless @funnel_names&.first
@@ -28,7 +29,7 @@ class FunnelsController < ApplicationController
       params[:user_id],
       @project.name,
       @funnel_names.first.parameterize,
-      params.permit(:test, :embed)
+      helpers.evergreen_params
     )
   end
 
@@ -37,7 +38,7 @@ class FunnelsController < ApplicationController
       return redirect_to user_project_funnels_path(
         params[:user_id],
         @project.name,
-        params.permit(:test, :embed)
+        helpers.evergreen_params
       )
     end
 

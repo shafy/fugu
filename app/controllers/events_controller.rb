@@ -22,11 +22,12 @@ class EventsController < ApplicationController
 
   after_action :track_event, only: %i[show]
   after_action :save_parameters, only: %i[show]
+  after_action :allow_iframe, only: %i[index show]
 
   def index
     return render layout: "data_view" unless @event_names&.first
 
-    new_params = { test: params[:test], embed: params[:embed] }
+    new_params = helpers.evergreen_params
     %i[prop date agg].each { |i| new_params[i] = cookies.permanent[i] if cookies.permanent[i] }
 
     selected_event = cookies.permanent[:slug] || @event_names.first
@@ -41,7 +42,7 @@ class EventsController < ApplicationController
   def show
     unless @selected_event
       return redirect_to user_project_events_path(params[:user_id], @project.name,
-                                                  params.permit(:test, :embed))
+                                                  helpers.evergreen_params)
     end
 
     events_array = Event.with_aggregation(

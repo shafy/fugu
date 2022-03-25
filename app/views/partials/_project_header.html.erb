@@ -3,6 +3,11 @@
     <div class="text-lg font-medium mr-6"><%= project_name %></div>
     
   </div>
-  <%= link_to "Events", user_project_events_path(params[:user_id], @project.name, params.permit(:test, :embed)) %>
-  <%= link_to "Funnels", user_project_funnels_path(params[:user_id], @project.name, params.permit(:test, :embed)), class: "ml-4" %>
+  <%= link_to "Events",
+    user_project_events_path(params[:user_id], @project.name, evergreen_params)
+  %>
+  <%= link_to "Funnels",
+    user_project_funnels_path(params[:user_id], @project.name, evergreen_params),
+    class: "ml-4"
+  %>
 </div>

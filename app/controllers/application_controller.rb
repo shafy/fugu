@@ -30,4 +30,10 @@ class ApplicationController < ActionController::Base
 
     return redirect_to user_projects_path(params[:user_id]) unless current_user == @project.user
   end
+
+  def allow_iframe
+    return unless params[:embed] == "true"
+
+    response.headers.except! "X-Frame-Options"
+  end
 end
