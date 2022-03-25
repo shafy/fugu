@@ -6,7 +6,7 @@ on:
 
 jobs:
   docker:
-    if: ${{ secrets.RELEASE_DOCKERHUB }} == 'true'
+    if: github.repository == 'shafy/fugu'
     runs-on: ubuntu-latest
     steps:
       -
