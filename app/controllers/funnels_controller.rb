@@ -28,7 +28,7 @@ class FunnelsController < ApplicationController
       params[:user_id],
       @project.name,
       @funnel_names.first.parameterize,
-      params: { test: params[:test] }
+      params.permit(:test, :embed)
     )
   end
 
@@ -37,7 +37,7 @@ class FunnelsController < ApplicationController
       return redirect_to user_project_funnels_path(
         params[:user_id],
         @project.name,
-        params: { test: params[:test] }
+        params.permit(:test, :embed)
       )
     end
 

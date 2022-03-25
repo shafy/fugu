@@ -45,7 +45,7 @@ class Funnel < ApplicationRecord
   before_validation :titleize_name
   before_validation :strip_name
 
-  FUNNEL_PARAMS = %i[user_id project_slug slug test event prop date].freeze
+  FUNNEL_PARAMS = %i[user_id project_slug slug test event prop date embed].freeze
 
   private
 
