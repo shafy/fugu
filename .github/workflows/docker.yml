@@ -26,4 +26,4 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: shafyy/fugu:latest shafyy/fugu:1.1.2
+          tags: shafyy/fugu:latest
