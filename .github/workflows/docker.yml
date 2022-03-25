@@ -6,8 +6,8 @@ on:
 
 jobs:
   docker:
+    if: ${{ secrets.RELEASE_DOCKERHUB }} == 'true'
     runs-on: ubuntu-latest
-    if: ${{ secrets.RELEASE_DOCKERHUB == 'true' }}
     steps:
       -
         name: Set up QEMU
