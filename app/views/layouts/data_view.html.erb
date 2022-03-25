@@ -19,7 +19,7 @@
     </div>
   <% end %>
 
-  <%= yield :project_footer if current_user %>
+  <%= yield :project_footer if current_user && params[:embed] != "true" %>
 <% end %>
 
 <%= render template: "layouts/application" %>

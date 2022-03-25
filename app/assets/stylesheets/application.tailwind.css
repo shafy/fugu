@@ -46,10 +46,15 @@ h2 {
 }
 
 code {
-  font-family: monospace;
-  background-color: rgb(229, 231, 235);
-  padding: 0.5rem;
-  border-radius: 0.25rem;
+  @apply font-mono text-sm bg-gray-900 p-2 rounded text-white
+}
+
+.code--multiline {
+  @apply p-4 rounded my-4 w-full bg-gray-900 text-white
+}
+
+.code--multiline > code {
+  @apply bg-transparent p-0
 }
 
 .main-button {

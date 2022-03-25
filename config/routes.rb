@@ -33,4 +33,10 @@ Rails.application.routes.draw do
       resources :events, only: %i[create]
     end
   end
+
+  if Rails.env.development?
+    namespace :development do
+      resources :embed_mock, only: [:index]
+    end
+  end
 end

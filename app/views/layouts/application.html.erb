@@ -17,16 +17,17 @@
   </head>
 
   <body class="font-system min-h-screen flex flex-col">
-    <%= render "partials/header" %>
-    <% flash.each do |key, value| %>
-      <%= content_tag :div,
-          value,
-          class: "flex flex-row text-center justify-center border-2 p-4 shadow-sm flash-#{key}" unless value.blank? %>
+    <% unless params[:embed] == "true" %>
+      <%= render "partials/header" %>
+      <% flash.each do |key, value| %>
+        <%= content_tag :div,
+            value,
+            class: "flex flex-row text-center justify-center border-2 p-4 shadow-sm flash-#{key}" unless value.blank? %>
+      <% end %>
     <% end %>
     <main class="w-full max-w-5xl p-4 flex flex-col justify-center items-center mx-auto">
-        
         <%= content_for?(:data_view) ? yield(:data_view) : yield(:main) %>
     </main>
-    <%= render "partials/footer" %>
+    <%= render "partials/footer" unless params[:embed] == "true" %>
   </body>
 </html>

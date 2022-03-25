@@ -1,0 +1,15 @@
+<% content_for :main do %>
+
+  <h1 class="text-center my-10">Embedding testing ground</h1>
+    <iframe
+    src="<%= user_project_events_url(current_user.hash_id, @project.name, { embed: true }) %>"
+    title="Fugu"
+    scrolling="no"
+    loading="lazy"
+    referrerpolicy="no-referrer"
+    height="<%= params[:height] || '800' %>"
+    width="<%= params[:width] || '1000' %>"
+    class="mx-auto mt-10"
+  >
+  </iframe>
+<% end %>
