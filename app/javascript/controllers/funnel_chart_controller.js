@@ -127,5 +127,5 @@ const calcConversionRates = (value, context) => {
   if (context.dataIndex == 0) {
     return value;
   }
-  return `${value}\n(${percentages[context.dataIndex]}%)`;
+  return `${value}\n(${percentages[context.dataIndex] || 0}%)`;
 }
