@@ -26,4 +26,5 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: shafyy/fugu:latest
+          file: "{context}/Dockerfile.prod"
+          tags: shafyy/fugu:latest, shafyy/fugu:${{ github.ref_name }}
