@@ -21,10 +21,25 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - 
+        name: Set Versions
+        uses: actions/github-script@v4
+        id: set_version
+        with:
+          script: |
+            const tag = context.ref.substring(10)
+            const no_v = tag.replace('v', '')
+            const dash_index = no_v.lastIndexOf('-')
+            const no_dash = (dash_index > -1) ?  no_v.substring(0, dash_index) : no_v
+            core.setOutput('tag', tag)
+            core.setOutput('no-v', no_v)
+            core.setOutput('no-dash', no_dash)
       -
         name: Build and push
         uses: docker/build-push-action@v2
         with:
           push: true
           file: Dockerfile.prod
-          tags: shafyy/fugu:latest,shafyy/fugu:${{ github.ref_name }}
+          tags: |
+            ${{secrets.DOCKERHUB_USERNAME}}/fugu:latest
+            ${{secrets.DOCKERHUB_USERNAME}}/fugu:${{steps.set_version.outputs.no-dash}}
