@@ -24,7 +24,7 @@ You can build the Docker image using the `Dockerfile.dev` configuration. If you 
 
 Don't forget to create an `.env` file using `.env.example` as a template.
 
-Before running the app, make sure to create the server with `docker run --env-file .env your_image rails db:create` or `docker-compose -f docker-compose.dev.yml run web rails db:create`, respectively.
+If you're not using `docker-compose`, make sure to create the database with `docker run --env-file .env your_image rails db:create` before starting the Rails server.
 
 ### Old school
 
