@@ -17,7 +17,14 @@ const htmlLegendPlugin = {
       propertiesUnselected.firstChild.remove();
     }
 
+    // this.chart.data.datasets.forEach((dataset, index) => {
+    //   this.chart.setDatasetVisibility(index, true);
+    // });
+
+    //console.log(chart.data.datasets)
+
     items.forEach(item => {
+      //console.log(item)
       const propertyItem = propertyItemTemplate.content.cloneNode(true);
       const propertyItemContents = propertyItem.querySelectorAll("div");
       const colorBox = propertyItemContents[0];

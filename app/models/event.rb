@@ -89,7 +89,11 @@ class Event < ApplicationRecord
       }
       total_count += events_grouped[k][:total_count]
     end
-    [events_grouped.sort_by { |k, v| [-v[:total_count], k] }.to_h, total_count]
+    events_grouped.sort_by { |k, v| [-v[:total_count], k] }.each_with_index do |e, i|
+      e[1][:visible] = true
+      break if i >= 5
+    end
+    [events_grouped.sort.to_h, total_count]
   end
 
   # rubocop:disable Metrics/ParameterLists

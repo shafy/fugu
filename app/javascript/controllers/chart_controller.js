@@ -75,7 +75,7 @@ export default class extends Controller {
 
   createDataSet(label, data, index) {
     return {
-      label: htmlDecode(label),
+      label: `${htmlDecode(label)} (${data["total_count"]})`,
       backgroundColor: this.colorPalette[index % this.colorPalette.length],
       borderColor: this.colorPalette[index % this.colorPalette.length],
       borderJointStyle: "round",
@@ -86,7 +86,7 @@ export default class extends Controller {
       pointHitRadius: 5,
       hoverBorderWidth: 4,
       data: data["data"],
-      hidden: index > 5
+      hidden: !data["visible"]
     }
   }
 
@@ -118,7 +118,6 @@ export default class extends Controller {
     e.preventDefault();
 
     this.chart.data.datasets.forEach((dataset, index) => {
-      //dataset.hidden = true;
       this.chart.setDatasetVisibility(index, false);
     });
     this.chart.update();
