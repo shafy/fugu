@@ -80,3 +80,15 @@ code {
   background-color: rgb(252, 165, 165);
   border-color: rgb(248, 113, 113);
 }
+
+.property-item-unselected--colorbox {
+  @apply bg-gray-200;
+}
+
+.property-item-unselected--textbox {
+  @apply text-gray-400;
+}
+
+.property-item-li {
+  @apply flex flex-row gap-x-1 justify-center items-center cursor-pointer;
+}
