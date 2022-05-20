@@ -13,3 +13,5 @@ pin "@hotwired/stimulus-importmap-autoloader", to: "stimulus-importmap-autoloade
 
 pin_all_from "app/javascript/controllers", under: "controllers"
 pin "@hotwired/turbo-rails", to: "turbo.min.js", preload: true
+
+pin "chart_helpers", to: "helpers/chart_helpers.js", preload: true

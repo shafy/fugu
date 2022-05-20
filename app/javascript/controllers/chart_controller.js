@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 import { Chart, registerables } from "chart.js";
-import { formatDates, htmlDecode, htmlLegendPlugin } from "./helpers/chart_helpers";
+import { formatDates, htmlDecode, htmlLegendPlugin } from "chart_helpers";
 
 Chart.register(...registerables);
 
