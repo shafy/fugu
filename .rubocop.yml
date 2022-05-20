@@ -49,3 +49,6 @@ Style/StringLiteralsInInterpolation:
 
 Style/FormatStringToken:
   Enabled: false
+
+Rails/I18nLocaleTexts:
+  Enabled: false

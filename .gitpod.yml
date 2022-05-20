@@ -4,7 +4,7 @@ image:
 ports:
   # Rails server
   - port: 3000
-    onOpen: ignore
+    onOpen: open-browser
   # PostgreSQL server
   - port: 5432
     onOpen: ignore

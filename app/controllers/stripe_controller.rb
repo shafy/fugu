@@ -62,7 +62,9 @@ class StripeController < ApplicationController
 
   def verify_webhook
     Stripe::Webhook.construct_event(
-      request.raw_post, request.env["HTTP_STRIPE_SIGNATURE"], ENV["STRIPE_ENDPOINT_SECRET"]
+      request.raw_post,
+      request.env["HTTP_STRIPE_SIGNATURE"],
+      ENV.fetch("STRIPE_ENDPOINT_SECRET", nil)
     )
   rescue StandardError => e
     Sentry.capture_exception(e)
@@ -115,7 +117,7 @@ class StripeController < ApplicationController
       customer_email: current_user.stripe_customer_id ? nil : current_user.email,
       customer: current_user.stripe_customer_id,
       line_items: [{
-        price: ENV["STRIPE_STANDARD_PRICE_ID"],
+        price: ENV.fetch("STRIPE_STANDARD_PRICE_ID", nil),
         quantity: 1
       }],
       mode: "subscription",

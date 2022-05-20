@@ -2,7 +2,7 @@
 
 module StripeTestHelper
   def stripe_event_signature(event_json)
-    secret = ENV["STRIPE_ENDPOINT_SECRET"]
+    secret = ENV.fetch("STRIPE_ENDPOINT_SECRET", nil)
     timestamp = Time.zone.now
     signature = Stripe::Webhook::Signature.send(:compute_signature, timestamp, event_json, secret)
     scheme = Stripe::Webhook::Signature::EXPECTED_SCHEME

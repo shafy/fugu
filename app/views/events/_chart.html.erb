@@ -1,17 +1,52 @@
-<div class="flex flex-col w-full p-4 rounded-md shadow-md bg-yellow-50">
+<div
+  data-controller="chart"
+  data-chart-dates-value="<%= dates.to_json %>"
+  data-chart-events-value="<%= events.to_json %>"
+  data-chart-event-name-value="<%= selected_event.titleize %>"
+  data-chart-agg-value="<%= @aggregation %>"
+  data-chart-has-prop-values-value="<%= @property_values.present? %>"
+  class="flex flex-col w-full p-4 rounded-md shadow-md bg-yellow-50"
+>
   <div class="text-sm font-medium mb-2>">
     Total events
     <div class="text-2xl">
       <%= @total_count %>
     </div>
   </div>
-  <div data-controller="chart"
-        data-chart-dates-value="<%= dates.to_json %>"
-        data-chart-events-value="<%= events.to_json %>"
-        data-chart-event-name-value="<%= selected_event.titleize %>"
-        data-chart-agg-value="<%= @aggregation %>"
-        class="h-[28rem]"
-  >
+  <div class="h-[28rem]">
     <canvas data-chart-target="chart" class="h-full pt-4"></canvas>
   </div>
+  <% if @property_values.present? %>
+    <div id="legend-container" class="flex flex-col w-full gap-y-4">
+      <p class="text-sm font-medium mt-2">Property values</p>
+      <div id="properties-selected" class="flex flex-col w-full">
+        <div class="flex flex-row my-2 items-center justify-start gap-x-2">
+          <p class="text-sm">Selected</p>
+          <%= link_to "(deselect all)",
+              "",
+              class: "bg-transparent underline text-sm font-light hover:text-green-500 cursor-pointer",
+              data: { action: "chart#deselectAllPropValues" }
+          %>
+        </div>
+        <ul class="flex flex-row w-full flex-wrap gap-3 text-sm">
+        </ul>
+      </div>
+      <div id="properties-unselected" class="flex flex-col w-full">
+        <div class="flex flex-row my-2 items-center justify-start gap-x-2">
+          <p class="text-sm">Not selected</p>
+          <%= link_to "(select all)",
+              "",
+              class: "bg-transparent underline text-sm font-light hover:text-green-500 cursor-pointer",
+              data: { action: "chart#selectAllPropValues" }
+          %>
+        </div>
+        <ul class="flex flex-row w-full flex-wrap gap-3 text-sm">
+        </ul>
+      </div>
+      <template id="property-item-template">
+        <div class="h-4 w-4 rounded-sm"></div>
+        <div></div>
+      </template>
+    </div>
+  <% end %>
 </div>

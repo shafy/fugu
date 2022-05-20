@@ -2,17 +2,17 @@
 
 class FuguService
   def self.track(name, properties = {})
-    return unless ENV["FUGU_URL"]
+    return unless ENV.fetch("FUGU_URL", nil)
 
     return if Rails.env.test?
 
     body = {
-      api_key: ENV["FUGU_API_KEY"],
+      api_key: ENV.fetch("FUGU_API_KEY", nil),
       name: name,
       properties: properties
     }
 
-    Faraday.post(ENV["FUGU_URL"]) do |req|
+    Faraday.post(ENV.fetch("FUGU_URL", nil)) do |req|
       req.headers["Content-Type"] = "application/json"
       req.body = body.to_json
     end

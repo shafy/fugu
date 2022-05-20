@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 import { Chart, registerables } from "chart.js";
+import { formatDates, htmlDecode, htmlLegendPlugin } from "../helpers/chart_helpers";
 
 Chart.register(...registerables);
 
@@ -10,6 +11,7 @@ export default class extends Controller {
     events: Object,
     agg: String,
     eventName: String,
+    hasPropValues: Boolean,
   }
 
   connect() {
@@ -19,7 +21,7 @@ export default class extends Controller {
 
   showChart() {
     const data = {
-      labels: this.formatDates(),
+      labels: formatDates(this.datesValue, this.aggValue),
       datasets: Object.keys(this.eventsValue).map((e, i) => this.createDataSet(e, this.eventsValue[e], i))
     };
 
@@ -54,28 +56,26 @@ export default class extends Controller {
         },
         spanGaps: true,
         plugins: {
+          htmlLegend: {
+            display: this.hasPropValuesValue
+          },
           legend: {
-             display: this.displayLegend(),
-             position: "bottom"
+            display: false
           }
-        }
-      }
+        },
+      },
+      plugins: [ htmlLegendPlugin ]
     }
     Chart.defaults.font.family = "'-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Oxygen-Sans', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif";
-    new Chart(
+    this.chart = new Chart(
       this.chartTarget,
       config
     );
   }
 
-  displayLegend() {
-    let objKeys = Object.keys(this.eventsValue)
-    return objKeys.length != 1 || (objKeys.length === 1 && objKeys[0] !== "")
-  }
-
   createDataSet(label, data, index) {
     return {
-      label: this.htmlDecode(label),
+      label: htmlDecode(label),
       backgroundColor: this.colorPalette[index % this.colorPalette.length],
       borderColor: this.colorPalette[index % this.colorPalette.length],
       borderJointStyle: "round",
@@ -105,30 +105,22 @@ export default class extends Controller {
     ]
   }
 
-  formatDates() {
-    let dateOption;
-    switch(this.aggValue) {
-      case "d":
-        dateOption = { weekday: "short", year: "2-digit", month: "short", day: "2-digit" };
-        break;
-      case "w":
-        dateOption = { year: "numeric", month: "short", day: "2-digit" };
-        break;
-      case "m":
-        dateOption = { year: "numeric", month: "short" };
-        break;
-      case "y":
-        dateOption = { year: "numeric"};
-        break;
-    }
-    return this.datesValue.map((e) => { 
-      let d = new Date(e);
-      return d.toLocaleDateString("en-US", dateOption);
+  selectAllPropValues(e) {
+    e.preventDefault();
+
+    this.chart.data.datasets.forEach((dataset, index) => {
+      this.chart.setDatasetVisibility(index, true);
     });
+    this.chart.update();
   }
 
-  htmlDecode(input) {
-    var doc = new DOMParser().parseFromString(input, "text/html");
-    return doc.documentElement.textContent;
+  deselectAllPropValues(e) {
+    e.preventDefault();
+
+    this.chart.data.datasets.forEach((dataset, index) => {
+      //dataset.hidden = true;
+      this.chart.setDatasetVisibility(index, false);
+    });
+    this.chart.update();
   }
 }
