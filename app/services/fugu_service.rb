@@ -13,7 +13,7 @@ class FuguService
     }
 
     begin
-      Faraday.post(ENV.fetch("FUGU_URLd", nil)) do |req|
+      Faraday.post(ENV.fetch("FUGU_URL", nil)) do |req|
         req.headers["Content-Type"] = "application/json"
         req.body = body.to_json
       end
