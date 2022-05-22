@@ -91,7 +91,7 @@ class Event < ApplicationRecord
     end
     events_grouped.sort_by { |k, v| [-v[:total_count], k] }.each_with_index do |e, i|
       e[1][:visible] = true
-      break if i >= 5
+      break if i >= 4
     end
     [events_grouped.sort.to_h, total_count]
   end

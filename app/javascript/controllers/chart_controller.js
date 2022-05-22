@@ -1,6 +1,14 @@
 import { Controller } from "@hotwired/stimulus"
 import { Chart, registerables } from "chart.js";
-import { formatDates, htmlDecode, htmlLegendPlugin } from "chart_helpers";
+import {
+  LS_VISIBLE_PROP_VALUES,
+  formatDates,
+  formatLocalStorageName,
+  htmlDecode,
+  htmlLegendPlugin,
+  initLocalStoragePropValues,
+  localStorageItemJSON
+} from "chart_helpers";
 
 Chart.register(...registerables);
 
@@ -12,11 +20,26 @@ export default class extends Controller {
     agg: String,
     eventName: String,
     hasPropValues: Boolean,
+    propertyName: String,
+    projectId: String
   }
 
   connect() {
+    //console.log("yo ", localStorage.getItem("visiblePropValues"))
+    initLocalStoragePropValues(this.eventsValue, this.projectIdValue, this.propertyNameValue);
+    this.visiblePropValues =  localStorageItemJSON(
+                                formatLocalStorageName(
+                                  this.projectIdValue,
+                                  this.propertyNameValue,
+                                  LS_VISIBLE_PROP_VALUES
+                                )
+                              );
     this.initColorPalette();
     this.showChart();
+    // localStorage.setItem(
+    //   "visiblePropValues",
+    //   JSON.stringify(Object.keys(this.eventsValue).filter(v => this.eventsValue[v].visible))
+    // );
   }
 
   showChart() {
@@ -57,7 +80,9 @@ export default class extends Controller {
         spanGaps: true,
         plugins: {
           htmlLegend: {
-            display: this.hasPropValuesValue
+            display: this.hasPropValuesValue,
+            projectId: this.projectIdValue,
+            propertyName: this.propertyNameValue
           },
           legend: {
             display: false
@@ -86,7 +111,8 @@ export default class extends Controller {
       pointHitRadius: 5,
       hoverBorderWidth: 4,
       data: data["data"],
-      hidden: !data["visible"]
+      //hidden: !data["visible"]
+      hidden: !this.visiblePropValues.includes(htmlDecode(label))
     }
   }
 
