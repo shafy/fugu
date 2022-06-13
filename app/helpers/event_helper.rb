@@ -50,7 +50,7 @@ module EventHelper
       url_params[:user_id],
       url_params[:project_slug],
       event_name.parameterize,
-      url_params.except(:prop, :project_slug, :slug, :user_id)
+      url_params.except(:project_slug, :slug, :user_id)
         .merge({ agg: aggregation })
     )
   end

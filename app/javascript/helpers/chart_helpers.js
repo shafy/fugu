@@ -1,3 +1,7 @@
+// constants
+const LS_VISIBLE_PROP_VALUES = "visiblePropValues";
+
+// functions
 const htmlLegendPlugin = {
   id: "htmlLegend",
   afterUpdate(chart, _args, options) {
@@ -17,14 +21,7 @@ const htmlLegendPlugin = {
       propertiesUnselected.firstChild.remove();
     }
 
-    // this.chart.data.datasets.forEach((dataset, index) => {
-    //   this.chart.setDatasetVisibility(index, true);
-    // });
-
-    //console.log(chart.data.datasets)
-
     items.forEach(item => {
-      //console.log(item)
       const propertyItem = propertyItemTemplate.content.cloneNode(true);
       const propertyItemContents = propertyItem.querySelectorAll("div");
       const colorBox = propertyItemContents[0];
@@ -39,6 +36,14 @@ const htmlLegendPlugin = {
       li.onclick = () => {
         chart.setDatasetVisibility(item.datasetIndex, !chart.isDatasetVisible(item.datasetIndex));
         chart.update();
+
+        // add or remove from list of visible prop values in local storage
+        updateLocalStoragePropValues(
+          item.text.split(" (")[0],
+          chart.isDatasetVisible(item.datasetIndex),
+          options.projectId,
+          options.propertyName
+        );
       };
 
       if (item.hidden) {
@@ -102,4 +107,47 @@ const htmlDecode = (input) => {
   return doc.documentElement.textContent;
 }
 
-export { formatDates, htmlLegendPlugin, htmlDecode };
+const updateLocalStoragePropValues = (propValue, add, projectId, propertyName) => {
+  const itemName = formatLocalStorageName(projectId, propertyName, LS_VISIBLE_PROP_VALUES);
+  let currentPropValues = localStorageItemJSON(itemName);
+  if (!currentPropValues) return;
+
+  if (add && !currentPropValues.includes(propValue)) {
+    // add to array
+    currentPropValues.push(propValue)
+  } else {
+    // remove from array
+    currentPropValues = currentPropValues.filter(item => item !== propValue)
+  }
+  localStorage.setItem(itemName, JSON.stringify(currentPropValues));
+}
+
+const initLocalStoragePropValues = (events, projectId, propertyName) => {
+  const itemName = formatLocalStorageName(projectId, propertyName, LS_VISIBLE_PROP_VALUES)
+  const currentPropValues = localStorageItemJSON(itemName);
+  if (!currentPropValues || currentPropValues === "") {
+    // init local storage with inital set of selected property values
+    localStorage.setItem(
+      itemName,
+      JSON.stringify(Object.keys(events).filter(v => events[v].visible))
+    );
+  }
+}
+
+const localStorageItemJSON = (itemName) => {
+  return JSON.parse(localStorage.getItem(itemName));
+}
+
+const formatLocalStorageName = (projectId, propertyName, description) => {
+  return `${projectId}_${propertyName}_${description}`;
+}
+
+export {
+  LS_VISIBLE_PROP_VALUES,
+  formatDates,
+  formatLocalStorageName,
+  initLocalStoragePropValues,
+  htmlLegendPlugin, 
+  htmlDecode,
+  localStorageItemJSON
+};

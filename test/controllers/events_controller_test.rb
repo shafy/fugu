@@ -161,7 +161,7 @@ class EventsControllerTest < ActionDispatch::IntegrationTest
       assert_match("data-name='#{@event.name.parameterize}' selected", @response.body)
     end
 
-    test "selects correct propery value from dropdown" do
+    test "selects correct property value from dropdown" do
       setup_live_events
       sign_in @user
       get user_project_event_path(@user.hash_id,
@@ -357,7 +357,7 @@ class EventsControllerTest < ActionDispatch::IntegrationTest
       path = user_project_event_path(@user.hash_id,
                                      @project.name,
                                      @event2.name.parameterize,
-                                     params: { agg: "m", date: "6m" })
+                                     params: { agg: "m", prop: "color", date: "6m" })
       assert_match("data-url='#{path}'", @response.body)
     end
 
