@@ -28,9 +28,11 @@ class EventsController < ApplicationController
     return render layout: "data_view" unless @event_names&.first
 
     new_params = helpers.evergreen_params
-    %i[prop date agg].each { |i| new_params[i] = cookies.permanent[i] if cookies.permanent[i] }
+    %w[prop date agg].each do |i|
+      new_params[i] = cookies.permanent["#{@project.id}_#{i}"] if cookies.permanent["#{@project.id}_#{i}"]
+    end
 
-    selected_event = cookies.permanent[:slug] || @event_names.first
+    selected_event = cookies.permanent["#{@project.id}_slug"] || @event_names.first
     redirect_to user_project_event_path(
       params[:user_id],
       @project.name,
@@ -118,9 +120,9 @@ class EventsController < ApplicationController
   end
 
   def save_parameters
-    cookies.permanent[:prop] = @property if @property
-    cookies.permanent[:date] = CGI.escapeHTML(params[:date]) if params[:date]
-    cookies.permanent[:agg] = @aggregation if @aggregation
-    cookies.permanent[:slug] = @selected_event if @selected_event
+    cookies.permanent["#{@project.id}_prop"] = @property if @property
+    cookies.permanent["#{@project.id}_date"] = CGI.escapeHTML(params[:date]) if params[:date]
+    cookies.permanent["#{@project.id}_agg"] = @aggregation if @aggregation
+    cookies.permanent["#{@project.id}_slug"] = @selected_event if @selected_event
   end
 end

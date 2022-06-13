@@ -25,7 +25,6 @@ export default class extends Controller {
   }
 
   connect() {
-    //console.log("yo ", localStorage.getItem("visiblePropValues"))
     initLocalStoragePropValues(this.eventsValue, this.projectIdValue, this.propertyNameValue);
     this.visiblePropValues =  localStorageItemJSON(
                                 formatLocalStorageName(
@@ -36,10 +35,6 @@ export default class extends Controller {
                               );
     this.initColorPalette();
     this.showChart();
-    // localStorage.setItem(
-    //   "visiblePropValues",
-    //   JSON.stringify(Object.keys(this.eventsValue).filter(v => this.eventsValue[v].visible))
-    // );
   }
 
   showChart() {
