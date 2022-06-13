@@ -18,7 +18,7 @@ class FuguService
         req.body = body.to_json
       end
     rescue StandardError => e
-      logger = Logger.new(STDOUT)
+      logger = Logger.new($stdout)
       logger.error("Error while calling Fugu API: #{e}")
     end
   end

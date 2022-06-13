@@ -29,7 +29,8 @@ class EventsController < ApplicationController
 
     new_params = helpers.evergreen_params
     %w[prop date agg].each do |i|
-      new_params[i] = cookies.permanent["#{@project.id}_#{i}"] if cookies.permanent["#{@project.id}_#{i}"]
+      cookie_key = "#{@project.id}_#{i}"
+      new_params[i] = cookies.permanent[cookie_key] if cookies.permanent[cookie_key]
     end
 
     selected_event = cookies.permanent["#{@project.id}_slug"] || @event_names.first
