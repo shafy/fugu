@@ -1,6 +1,6 @@
 # Fugu 🐡
 
-Fugu is a simple, privacy-friendly, open source and self-hostable product analytics.
+Fugu is a simple, privacy-friendly, open source and self-hostable product analytics. Check out the [Fugu website](https://fugu.lol) to learn more and play with an interactive demo.
 
 <img src="https://fugu.lol/images/fugu_screenshot_main.jpg" width="650" alt="Fugu Screenshot">
 
