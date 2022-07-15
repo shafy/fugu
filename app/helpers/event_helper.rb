@@ -22,7 +22,7 @@ module EventHelper
       disabled = "disabled" if possible_aggregations.exclude?(k)
       selected = "selected" if k == aggregation
       agg_url = build_agg_url(url_params.permit(*Event::EVENT_PARAMS), k)
-      "<option data-url='#{agg_url}' data-name='#{k}' #{disabled} #{selected}>#{v.capitalize}"\
+      "<option data-url='#{agg_url}' data-name='#{k}' #{disabled} #{selected}>#{v.capitalize}" \
         "</option>"
     end
   end

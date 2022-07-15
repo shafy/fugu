@@ -38,6 +38,7 @@ export default class extends Controller {
   }
 
   showChart() {
+    console.log(this.eventsValue)
     const data = {
       labels: formatDates(this.datesValue, this.aggValue),
       datasets: Object.keys(this.eventsValue).map((e, i) => this.createDataSet(e, this.eventsValue[e], i))
@@ -93,9 +94,14 @@ export default class extends Controller {
     );
   }
 
-  createDataSet(label, data, index) {
+  createDataSet(labelData, data, index) {
+    let label = ""
+    if (labelData !== "") {
+      label = `${htmlDecode(labelData)} (${data["total_count"]})`
+    }
+
     return {
-      label: `${htmlDecode(label)} (${data["total_count"]})`,
+      label,
       backgroundColor: this.colorPalette[index % this.colorPalette.length],
       borderColor: this.colorPalette[index % this.colorPalette.length],
       borderJointStyle: "round",
@@ -107,7 +113,7 @@ export default class extends Controller {
       hoverBorderWidth: 4,
       data: data["data"],
       //hidden: !data["visible"]
-      hidden: !this.visiblePropValues.includes(htmlDecode(label))
+      hidden: !this.visiblePropValues.includes(htmlDecode(labelData))
     }
   }
 

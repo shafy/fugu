@@ -264,8 +264,8 @@ class Event < ApplicationRecord
     return unless (properties.keys.map(&:downcase) & excluded_names).any?
 
     errors.add(:properties,
-               "You've used a property name that's prohibited by Fugu (such as 'all')."\
-               " Learn more about property constraints in the Fugu docs: https://docs.fugu.lol")
+               "You've used a property name that's prohibited by Fugu (such as 'all'). " \
+               "Learn more about property constraints in the Fugu docs: https://docs.fugu.lol")
   end
 
   def excluded_property_values
@@ -284,8 +284,9 @@ class Event < ApplicationRecord
     return unless contains_excluded_values
 
     errors.add(:properties,
-               "You've used a property value that's prohibited by Fugu (such as an email address)."\
-               " Learn more about property constraints in the Fugu docs: https://docs.fugu.lol")
+               "You've used a property value that's prohibited by Fugu " \
+               "(such as an email address). " \
+               "Learn more about property constraints in the Fugu docs: https://docs.fugu.lol")
   end
 
   def limit_property_name_length
@@ -296,8 +297,8 @@ class Event < ApplicationRecord
     return unless properties.keys.map(&:length).any? { |l| l > 15 }
 
     errors.add(:properties,
-               "You've used a property name that's too long (> 15 characters)."\
-               " Please choose a shorter name.")
+               "You've used a property name that's too long (> 15 characters). " \
+               "Please choose a shorter name.")
   end
 end
 # rubocop: enable Metrics/ClassLength
