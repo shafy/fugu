@@ -102,13 +102,13 @@ class FunnelsController < ApplicationController
   def show_test_funnel_creation_alert
     return unless params[:test] == "true"
 
-    flash.now[:info] = "You are creating a funnel in test mode. "\
-                       "This means that you can only select events tracked in test mode. "\
+    flash.now[:info] = "You are creating a funnel in test mode. " \
+                       "This means that you can only select events tracked in test mode. " \
                        "Unlike test events, test funnels are not deleted after 14 days."
   end
 
   def show_no_events_alert
-    flash.now[:alert] = "You haven't tracked any events in the current mode. "\
+    flash.now[:alert] = "You haven't tracked any events in the current mode. " \
                         "Make sure to track events before creating a funnel."
   end
 end
