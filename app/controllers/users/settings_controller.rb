@@ -2,6 +2,7 @@
 
 module Users
   class SettingsController < ApplicationController
+    before_action :authenticate_user!
     before_action :show_not_active_flash, only: %i[show]
 
     def show
