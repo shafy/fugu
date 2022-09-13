@@ -46,7 +46,7 @@ Rails.application.configure do
   # config.action_cable.allowed_request_origins = [ "http://example.com", /http:\/\/example.*/ ]
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = true
+  config.force_ssl = ENV.fetch("FORCE_SSL_PROD", true)
 
   config.ssl_options = {hsts: {subdomains: true, preload: true, expires: 1.year}}
 
@@ -66,7 +66,7 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
-  config.action_mailer.default_url_options = { host: ENV['APP_DOMAIN'] }
+  config.action_mailer.default_url_options = { host: ENV["APP_DOMAIN"] }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.

@@ -73,6 +73,8 @@ If you want to use a different `docker-compose` configuration, simply pass its f
 
 ## Tips
 
+### FORCE_SSL_PROD
+If your hosting setup uses localhost internally (e.g., if you have a reverse proxy in front of your Docker setup), you might want to set the environment variable `FORCE_SSL_PROD` to `false`. Otherwise, Rails will force the traffic to `https://localhost`, which then leads to an exception in the Puma server.
 
 ### Creating and initial user
 After you've deployed Fugu for the first time, you can simply navigate to the root URL and create a user account. If for some reason you want to create an initial user account automatically, define the environment variables `INIT_USER_EMAIL` and `INIT_USER_PASSWORD` and (re)deploy. You can then just log in with this user.
