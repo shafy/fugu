@@ -1,27 +1,17 @@
 # Fugu 🐡
 
-Fugu is a simple, privacy-friendly, open source and self-hostable product analytics. Check out the [Fugu website](https://fugu.lol) to learn more and play with an interactive demo.
+Fugu is a free, simple, privacy-friendly, open source and self-hostable product analytics. Check out the [Fugu website](https://fugu.lol) to learn more and play with an interactive demo.
 
 <img src="https://fugu.lol/images/fugu_screenshot_main.jpg" width="650" alt="Fugu Screenshot">
 
+## Getting started
 
-## Get Fugu
-There are two ways to use Fugu: Self-hosting or Fugu Cloud (managed version by us as a SaaS). 
-
-If you don't have the strict need to host Fugu on your own premises, we recommend using Fugu Cloud. It costs $9/month, and you don't need to worry about managing your own version, updating, etc.
-
-Our servers are located in the EU (Germany), and your data doesn't leave the EU. We don't track any personal data. Read more in our [privacy policy](https://fugu.lol/legal/privacy).
-
-Head over to [our website](https://fugu.lol) to sign up and get started super duper fast.
-
+Fugu is a simple Ruby on Rails app and includes configuration for Docker and Docker Compose to simplify self-hosting. You can run it wherever you want, from Heroku over Hetzner to your own bare metal machine. Read the [Self-Hosting guide](/SELFHOSTING.md) for detailed instructions on how to get running with few steps. 
 
 ## Docs
 
 Visit the [Fugu Docs](https://docs.fugu.lol).
 
-## Self-hosting
-
-Fugu is and will always be free to host on your own server/cloud. Check out the [self-hosting guide](/SELFHOSTING.md) to learn more.
 
 ## Contributing
 
